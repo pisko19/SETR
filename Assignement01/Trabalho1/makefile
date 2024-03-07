@@ -1,0 +1,12 @@
+CXX = g++
+CXXFLAGS = -Wall -Wfatal-errors -ggdb -pthread
+
+TARGETS = ass01
+
+.PHONY:	all clean cleanall
+
+all: $(TARGETS)
+ass01: main.o MyDLL.o
+	$(CXX) -o $@ $^ $(CXXFLAGS)
+
+	
