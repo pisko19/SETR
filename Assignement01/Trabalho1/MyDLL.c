@@ -53,7 +53,7 @@ MyDLL* MyDLLFind(DLL_List* dll, uint16_t key) {
        	return NULL;
       }
     }
-    printf("\nKey found !\nKey -> %d\nData->%s\n",current->key,current->data);
+    printf("\nKey found !\nKey -> %d\nData-> %s\n",current->key,current->data);
     return current;
     
 }

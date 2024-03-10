@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #define MAX_ELEM_SIZE 100
-#define MAX_LIST_SIZE 50
+#define MAX_LIST_SIZE 10
 
 typedef struct MyDLL {
     uint16_t key;
