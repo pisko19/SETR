@@ -15,14 +15,15 @@ typedef struct MyDLL {
 
 typedef struct DLL_List {
     MyDLL nodes[MAX_LIST_SIZE];
-    MyDLL* Head; // está mal, verificar
-    MyDLL* Tail;  // da para fazer com array
+    MyDLL* Head;
+    MyDLL* Tail;
     int size;
 } DLL_List;
 
 void MyDLLInit(DLL_List* dll);
-int MyDLLAdd(DLL_List* dll, uint16_t key, uint8_t* data);
-uint8_t* MyDLLFind(DLL_List* dll, uint16_t key);
+int MyDLLInsert(DLL_List* dll, uint16_t key, uint8_t* data);
+MyDLL* MyDLLFind(DLL_List* dll, uint16_t key);
+void MyDLLRemove(DLL_List* dll, uint16_t key);
 void MyDLLPrint(DLL_List* dll);
 
 #endif
