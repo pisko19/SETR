@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stddef.h>
+#include <stdlib.h>
 #include "MyDLL.h"
 
 void MyDLLInit(DLL_List* dll) {
@@ -57,5 +58,37 @@ MyDLL* MyDLLFind(DLL_List* dll, uint16_t key) {
     
 }
 
-
+int MyDLLRemove(DLL_List* dll, uint16_t key) {
+    MyDLL* current = dll->Head;
+    MyDLL* previous = NULL;
+    
+    // Este while para se encontrar a chave, caso chega ao fim da lista e não encontre da erro
+    while(current->key!=key){
+      previous = current;
+      current = current->Next;
+      if(current == NULL){
+      	printf("\nError 2 -> This key do not exist in this list\n");
+       	return -1;
+      }
+    }
+    // Este else serve para o caso em que o no que queremos retirar é o primeiro
+    if(previous != NULL){
+    	previous->Next = current->Next;
+    }else {
+    	dll->Head = current->Next;
+    }
+    
+    // Este else serve para o caso em que o no que queremos retirar é o ultimo
+    if(current->Next != NULL){
+    	current->Next->Previous = previous;
+    } else {
+    	dll->Tail = previous;
+    } 
+    
+    dll->size--;
+    
+    return 0;
+      
+    	
+}
 

@@ -23,7 +23,7 @@ typedef struct DLL_List {
 void MyDLLInit(DLL_List* dll);
 int MyDLLInsert(DLL_List* dll, uint16_t key, uint8_t* data);
 MyDLL* MyDLLFind(DLL_List* dll, uint16_t key);
-void MyDLLRemove(DLL_List* dll, uint16_t key);
+int MyDLLRemove(DLL_List* dll, uint16_t key);
 void MyDLLPrint(DLL_List* dll);
 
 #endif

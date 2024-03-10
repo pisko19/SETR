@@ -17,7 +17,10 @@ int main() {
     // Print the data in the list
     MyDLLPrint(&dll);
 
-    MyDLLFind(&dll,99);
+    //MyDLLFind(&dll,99);
+    
+    MyDLLRemove(&dll,keys[6]);
+    MyDLLPrint(&dll);
     return 0;
 }
 
