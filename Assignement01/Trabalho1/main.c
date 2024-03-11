@@ -57,9 +57,28 @@ void Teste3 (int x){
 
 }
 
+void Teste4 (){
+    #define List_Elements 6
+    DLL_List dll;
+    MyDLLInit(&dll); // Initialize the DLL
+    
+    uint16_t keys[List_Elements] = {100, 105, 1078, 102, 154, 200};
+    uint8_t datas[List_Elements][MAX_ELEM_SIZE] = {"Pedro,103457", "Carlos,103187", "Americo,45412", "João,87412", "Romario,45872", "JOSE,541256"};
+   
+    for (int k = 0; k < List_Elements; k++) {
+        MyDLLInsert(&dll, keys[k], datas[k]); // Add nodes to the DLL
+    }
+    printf("\nBEFORE REMOVE\n");
+    MyDLLPrint(&dll);
+    MyDLLRemove(&dll,keys[2]);
+    MyDLLInsert(&dll,512,"Maria,784521");
+    printf("\nAFTER REMOVE\n");
+    MyDLLPrint(&dll);
+}
+
 
 int main() {
-    int teste = 3;
+    int teste = 4;
     int x;
     switch(teste){
     	case(1):
@@ -77,7 +96,10 @@ int main() {
     	scanf("%d",&x);
     	Teste3(x);
     	break;
-    
+        
+        case(4):
+        Teste4();
+        break;
     
     }
     return 0;

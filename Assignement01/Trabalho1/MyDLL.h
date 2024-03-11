@@ -16,7 +16,7 @@
 #include <stdint.h>
 
 #define MAX_ELEM_SIZE 100 /**< Maximum size of the data element */
-#define MAX_LIST_SIZE 10 /**< Maximum number of nodes in the list */
+#define MAX_LIST_SIZE 6 /**< Maximum number of nodes in the list */
 
 /**
  *  \struct MyDLL
