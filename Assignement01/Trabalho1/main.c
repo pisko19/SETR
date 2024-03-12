@@ -135,35 +135,59 @@ void Teste5(){
      }
 }
 
+
+void Teste6()
+{
+  #define List_Elements 6
+  DLL_List dll;
+  MyDLLInit(&dll); // Initialize the DLL 
+  uint16_t keys[List_Elements] = {100, 105, 1078, 102, 154, 200};
+  uint8_t datas[List_Elements][MAX_ELEM_SIZE] = {"Pedro,103457", "Carlos,103187", "Americo,45412", "João,87412", "Romario,45872", "JOSE,541256"};
+  for (int k = 0; k < List_Elements; k++) {
+        MyDLLInsert(&dll, keys[k], datas[k]); // Add nodes to the DLL
+    }
+  printf("\nComplete List: \n");
+  MyDLLPrint(&dll);
+  
+  MyDLL* NextNode = MyDLLFindNext(&dll, 1078);
+  printf("Next element of key 1078 has the key -> %d and the following data ->  %s\n",NextNode -> key, NextNode -> data);
+  MyDLL* PreviousNode = MyDLLFindPrevious(&dll, 1078);
+  printf("Previous element of key 1078 has the key -> %d and the following data ->  %s\n",PreviousNode -> key, PreviousNode -> data);
+  
+}
+
 int main() {
-    int teste = 4;
+    int teste = 6;
     int x;
     switch(teste){
     	case(1):
-    	printf("\nWhat element of the list you want to delete ? (1 to 6)\n");
-    	scanf("%d",&x);
-    	Teste1(x-1);
-    	break;
+        printf("\nWhat element of the list you want to delete ? (1 to 6)\n");
+        scanf("%d",&x);
+        Teste1(x-1);
+        break;
     	
     	case(2):
-    	Teste2();
-    	break;
+        Teste2();
+        break;
     	
     	case(3):
-    	printf("\nWhat is the key number that you want to find ?\n");
-    	scanf("%d",&x);
-    	Teste3(x);
-    	break;
+        printf("\nWhat is the key number that you want to find ?\n");
+        scanf("%d",&x);
+        Teste3(x);
+        break;
         
-        case(4):
+      case(4):
         // Este codigo da erro ao introduzir um novo elemento 
         printf("\nWhat element of the list you want to delete ? (1 to 6)\n");
-    	scanf("%d",&x);
+    	  scanf("%d",&x);
         Teste4(x-1);
         break;
         
-        case(5):
+      case(5):
         Teste5();
+        break;
+      case(6):
+        Teste6();
         break;
         
     
