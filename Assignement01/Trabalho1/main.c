@@ -57,7 +57,7 @@ void Teste3 (int x){
 
 }
 
-void Teste4 (){
+void Teste4 (int index){
     #define List_Elements 6
     DLL_List dll;
     MyDLLInit(&dll); // Initialize the DLL
@@ -70,12 +70,13 @@ void Teste4 (){
     }
     printf("\nBEFORE REMOVE\n");
     MyDLLPrint(&dll);
-    MyDLLRemove(&dll,keys[2]);
-    MyDLLInsert(&dll,512,"Maria,784521");
+    MyDLLRemove(&dll,keys[index]);
     printf("\nAFTER REMOVE\n");
     MyDLLPrint(&dll);
+    MyDLLInsert(&dll,512,"Maria,784521");
+    printf("\nAFTER NEW INSERT\n");
+    MyDLLPrint(&dll);
 }
-
 
 int main() {
     int teste = 4;
@@ -98,8 +99,12 @@ int main() {
     	break;
         
         case(4):
-        Teste4();
+        // Este codigo da erro ao introduzir um novo elemento 
+        printf("\nWhat element of the list you want to delete ? (0 to 5)\n");
+    	scanf("%d",&x);
+        Teste4(x);
         break;
+        
     
     }
     return 0;

@@ -5,10 +5,9 @@
 #include "MyDLL.h"
 
 void MyDLLInit(DLL_List* dll) {
-    static DLL_List static_dll; // Static instance of DLL_List
-    static_dll.size = 0;
-    *dll = static_dll; // Copy the static instance to the provided pointer
-    
+    dll->size=0;
+    dll->Head = NULL;
+    dll->Tail = NULL;    
 }
 
 
