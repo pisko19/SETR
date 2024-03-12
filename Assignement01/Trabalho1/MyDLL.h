@@ -16,7 +16,10 @@
 #include <stdint.h>
 
 #define MAX_ELEM_SIZE 100 /**< Maximum size of the data element */
-#define MAX_LIST_SIZE 10 /**< Maximum number of nodes in the list */
+#define MAX_LIST_SIZE 8 /**< Maximum number of nodes in the list */
+#define FULL -1
+#define OK 0
+#define NotKey NULL
 
 /**
  *  \struct MyDLL
@@ -67,7 +70,7 @@ MyDLL* MyDLLFind(DLL_List* dll, uint16_t key);
  *  \brief Remove a node from the doubly linked list by its key.
  *  \param dll Pointer to the doubly linked list.
  *  \param key The key of the node to remove.
- *  \return 1 if successful, 0 otherwise.
+ *  \return a DLL List.
  */
 int MyDLLRemove(DLL_List* dll, uint16_t key);
 

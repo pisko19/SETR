@@ -7,17 +7,26 @@
 void MyDLLInit(DLL_List* dll) {
     dll->size=0;
     dll->Head = NULL;
-    dll->Tail = NULL;    
+    dll->Tail = NULL;
+    for(int k=0;k<MAX_LIST_SIZE;k++){
+        dll->nodes[k].key = 0;
+    }    
 }
 
 
 int MyDLLInsert(DLL_List* dll, uint16_t key, uint8_t* data) {
     if (dll->size >= MAX_LIST_SIZE) {
         printf("\n\nError 1 -> List is full (The size of the list is %d)\n",MAX_LIST_SIZE);
-        return -1; // Não há espaço na DLL
+        return FULL; // Não há espaço na DLL
+    }
+    MyDLL* newNode = NULL;
+    for (int k=0;k<MAX_LIST_SIZE;k++){
+        if(dll->nodes[k].key == 0){
+           newNode = &dll->nodes[k];
+        }
     }
     
-    MyDLL* newNode = &dll->nodes[dll->size];
+    
     newNode->key = key;
     for (int i = 0; i < MAX_ELEM_SIZE; i++) {
         newNode->data[i] = data[i];
@@ -28,10 +37,11 @@ int MyDLLInsert(DLL_List* dll, uint16_t key, uint8_t* data) {
     } else {
         dll->Tail->Next = newNode;
         newNode->Previous = dll->Tail;
+        newNode->Next = NULL;
         dll->Tail = newNode;
     }
     dll->size++;
-    return 0;
+    return OK;
 }
 
 void MyDLLPrint(DLL_List* dll) {
@@ -49,7 +59,7 @@ MyDLL* MyDLLFind(DLL_List* dll, uint16_t key) {
       current = current->Next;
       if(current ==NULL){
       	printf("\nError 2 -> This key do not exist in this list\n");
-       	return NULL;
+       	return NotKey;
       }
     }
     printf("\nKey found !\nKey -> %d\nData-> %s\n",current->key,current->data);
@@ -70,6 +80,8 @@ int MyDLLRemove(DLL_List* dll, uint16_t key) {
        	return -1;
       }
     }
+    current->key = 0;
+    
     // Este else serve para o caso em que o no que queremos retirar é o primeiro
     if(previous != NULL){
     	previous->Next = current->Next;
@@ -86,8 +98,8 @@ int MyDLLRemove(DLL_List* dll, uint16_t key) {
     
     dll->size--;
     
-    return 0;
-      
+    return OK;
+    
     	
 }
 
