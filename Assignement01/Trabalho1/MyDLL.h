@@ -17,9 +17,10 @@
 
 #define MAX_ELEM_SIZE 100 /**< Maximum size of the data element */
 #define MAX_LIST_SIZE 8 /**< Maximum number of nodes in the list */
-#define FULL -1
-#define OK 0
-#define NotKey NULL
+#define FULL -1 /**< Error code when the list is full */
+#define OK 0 /**< Error code when the lfunction is done */
+#define NotKey NULL /**< Error code when the key is not found */
+#define NotKeyInt -2 /**< Error code when the key is not found (int) */
 
 /**
  *  \struct MyDLL
