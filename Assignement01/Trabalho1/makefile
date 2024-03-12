@@ -8,5 +8,11 @@ TARGETS = ass01
 all: $(TARGETS)
 ass01: main.o MyDLL.o
 	$(CXX) -o $@ $^ $(CXXFLAGS)
+	
+main.o: main.c
+	gcc -c main.c
+	
+MyDLL.o: MyDLL.c MyDLL.h
+	gcc -c MyDLL.c
 
 	

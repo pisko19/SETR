@@ -107,7 +107,7 @@ void Teste5(){
         case(2):
            if(dll.size < MAX_LIST_SIZE){
               printf("\n What is your key ?\n");
-              scanf("%d",&key);
+              scanf("%hd",&key);
               printf("\n What is your data ?\n");
               scanf("%s",&data);
               int x = MyDLLInsert(&dll,key,&data);
@@ -125,7 +125,7 @@ void Teste5(){
           case(3):
             if (dll.size != 0){
               printf("\n What is the key that you want to remove ?\n");
-              scanf("%d",&key);
+              scanf("%hd",&key);
               MyDLLRemove(&dll,key);
             } else {
               printf("\n The list is empty\n");
@@ -136,7 +136,7 @@ void Teste5(){
 }
 
 int main() {
-    int teste = 5;
+    int teste = 4;
     int x;
     switch(teste){
     	case(1):
