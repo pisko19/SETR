@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['previous_43',['Previous',['../structMyDLL.html#af3bf5dfbb7ad50e3f1c0bc955ead1b0b',1,'MyDLL']]]
+  ['previous_65',['Previous',['../group__MyDLL.html#gaf3bf5dfbb7ad50e3f1c0bc955ead1b0b',1,'MyDLL']]]
 ];

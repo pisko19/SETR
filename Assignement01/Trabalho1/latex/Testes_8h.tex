@@ -1,0 +1,155 @@
+\hypertarget{Testes_8h}{}\doxysection{Testes.\+h File Reference}
+\label{Testes_8h}\index{Testes.h@{Testes.h}}
+
+
+This file contains declarations of functions for testing the \mbox{\hyperlink{structMyDLL}{My\+DLL}} functionality.  
+
+
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}My\+DLL.\+h\char`\"{}}\newline
+Include dependency graph for Testes.\+h\+:
+% FIG 0
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{Testes_8h_a12021df2b849b20f5040577d5ead24e7}{Teste1}} (int index)
+\begin{DoxyCompactList}\small\item\em Perform Test 1\+: Removal of a node from the doubly linked list. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Testes_8h_a4441b2cae248cc5c9183f6b04d9b94a0}{Teste2}} ()
+\begin{DoxyCompactList}\small\item\em Perform Test 2\+: Insertion of multiple nodes into the doubly linked list, and when this it\textquotesingle{}s full it returns an error. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Testes_8h_a8a801c8a2a4272e7eb9a653d161d932b}{Teste3}} (int x)
+\begin{DoxyCompactList}\small\item\em Perform Test 3\+: Searching functionality of the doubly linked list. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Testes_8h_a0a277c3904838429da44bd7c4b994377}{Teste4}} (int index)
+\begin{DoxyCompactList}\small\item\em Perform Test 4\+: Removal and insertion operations together. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Testes_8h_afd3b8b42f32f81c2ff5ad1dccf8128f3}{Teste5}} ()
+\begin{DoxyCompactList}\small\item\em Perform Test 5\+: Menu-\/driven interface to interact with the doubly linked list. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Testes_8h_ae03c9efdb22f3367c6aba33f0be36a4c}{Teste6}} ()
+\begin{DoxyCompactList}\small\item\em Perform Test 6\+: Finding the next and previous nodes in the list. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Testes_8h_a047bddb2838a26a80d901109e53e8de6}{Teste7}} ()
+\begin{DoxyCompactList}\small\item\em Perform Test 7\+: Sorting functionality of the doubly linked list. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains declarations of functions for testing the \mbox{\hyperlink{structMyDLL}{My\+DLL}} functionality. 
+
+This file declares several test functions to verify the functionality of the \mbox{\hyperlink{structMyDLL}{My\+DLL}} library. These functions perform various operations such as insertion, removal, searching, and sorting on a doubly linked list-\/based database implemented using the \mbox{\hyperlink{structMyDLL}{My\+DLL}} library.
+
+\begin{DoxyAuthor}{Author}
+Pedro Afonso 104206 
+
+Carlos Teixeira 103187 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+12/03/2024 
+\end{DoxyDate}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{Testes_8h_a12021df2b849b20f5040577d5ead24e7}\label{Testes_8h_a12021df2b849b20f5040577d5ead24e7}} 
+\index{Testes.h@{Testes.h}!Teste1@{Teste1}}
+\index{Teste1@{Teste1}!Testes.h@{Testes.h}}
+\doxysubsubsection{\texorpdfstring{Teste1()}{Teste1()}}
+{\footnotesize\ttfamily void Teste1 (\begin{DoxyParamCaption}\item[{int}]{index }\end{DoxyParamCaption})}
+
+
+
+Perform Test 1\+: Removal of a node from the doubly linked list. 
+
+This function verifies the removal of a node from the doubly linked list.
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & Index of the key to be removed from the list. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This function prints the contents of the list after the removal. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{Testes_8h_a4441b2cae248cc5c9183f6b04d9b94a0}\label{Testes_8h_a4441b2cae248cc5c9183f6b04d9b94a0}} 
+\index{Testes.h@{Testes.h}!Teste2@{Teste2}}
+\index{Teste2@{Teste2}!Testes.h@{Testes.h}}
+\doxysubsubsection{\texorpdfstring{Teste2()}{Teste2()}}
+{\footnotesize\ttfamily void Teste2 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Perform Test 2\+: Insertion of multiple nodes into the doubly linked list, and when this it\textquotesingle{}s full it returns an error. 
+
+This function verifies the insertion of multiple nodes into the doubly linked list. \begin{DoxyReturn}{Returns}
+This function prints the contents of the list after the insertion. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{Testes_8h_a8a801c8a2a4272e7eb9a653d161d932b}\label{Testes_8h_a8a801c8a2a4272e7eb9a653d161d932b}} 
+\index{Testes.h@{Testes.h}!Teste3@{Teste3}}
+\index{Teste3@{Teste3}!Testes.h@{Testes.h}}
+\doxysubsubsection{\texorpdfstring{Teste3()}{Teste3()}}
+{\footnotesize\ttfamily void Teste3 (\begin{DoxyParamCaption}\item[{int}]{x }\end{DoxyParamCaption})}
+
+
+
+Perform Test 3\+: Searching functionality of the doubly linked list. 
+
+This function verifies the searching functionality of the doubly linked list.
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & The key to be searched in the list. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This function returns the node that was searched. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{Testes_8h_a0a277c3904838429da44bd7c4b994377}\label{Testes_8h_a0a277c3904838429da44bd7c4b994377}} 
+\index{Testes.h@{Testes.h}!Teste4@{Teste4}}
+\index{Teste4@{Teste4}!Testes.h@{Testes.h}}
+\doxysubsubsection{\texorpdfstring{Teste4()}{Teste4()}}
+{\footnotesize\ttfamily void Teste4 (\begin{DoxyParamCaption}\item[{int}]{index }\end{DoxyParamCaption})}
+
+
+
+Perform Test 4\+: Removal and insertion operations together. 
+
+This function verifies the removal and insertion operations together in the doubly linked list.
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & Index of the key to be removed from the list. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+This function prints the contents of the list after the removal and insertion. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{Testes_8h_afd3b8b42f32f81c2ff5ad1dccf8128f3}\label{Testes_8h_afd3b8b42f32f81c2ff5ad1dccf8128f3}} 
+\index{Testes.h@{Testes.h}!Teste5@{Teste5}}
+\index{Teste5@{Teste5}!Testes.h@{Testes.h}}
+\doxysubsubsection{\texorpdfstring{Teste5()}{Teste5()}}
+{\footnotesize\ttfamily void Teste5 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Perform Test 5\+: Menu-\/driven interface to interact with the doubly linked list. 
+
+This function provides a menu-\/driven interface to interact with the doubly linked list. \mbox{\Hypertarget{Testes_8h_ae03c9efdb22f3367c6aba33f0be36a4c}\label{Testes_8h_ae03c9efdb22f3367c6aba33f0be36a4c}} 
+\index{Testes.h@{Testes.h}!Teste6@{Teste6}}
+\index{Teste6@{Teste6}!Testes.h@{Testes.h}}
+\doxysubsubsection{\texorpdfstring{Teste6()}{Teste6()}}
+{\footnotesize\ttfamily void Teste6 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Perform Test 6\+: Finding the next and previous nodes in the list. 
+
+This function verifies the functionality of finding the next and previous nodes in the list. \begin{DoxyReturn}{Returns}
+This function returns the node of next and the previous of the key that was selected. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{Testes_8h_a047bddb2838a26a80d901109e53e8de6}\label{Testes_8h_a047bddb2838a26a80d901109e53e8de6}} 
+\index{Testes.h@{Testes.h}!Teste7@{Teste7}}
+\index{Teste7@{Teste7}!Testes.h@{Testes.h}}
+\doxysubsubsection{\texorpdfstring{Teste7()}{Teste7()}}
+{\footnotesize\ttfamily void Teste7 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Perform Test 7\+: Sorting functionality of the doubly linked list. 
+
+This function verifies the sorting functionality of the doubly linked list. \begin{DoxyReturn}{Returns}
+This function prints the contents of the list after the sorting in both ascending and descending ways. 
+\end{DoxyReturn}

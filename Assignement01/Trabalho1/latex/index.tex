@@ -1,58 +1,33 @@
-This module provides functionality for creating and manipulating a doubly linked list (DLL) in C programming language. $\ast$
+This module provides functionality for creating and manipulating a doubly linked list (DLL) in the C programming language. The DLL is a data structure that consists of a sequence of elements, where each element contains a key-\/value pair and maintains references to both the next and previous elements in the sequence.
 
-
+{\bfseries{Features\+:}}
 \begin{DoxyItemize}
-\item The DLL is a data structure that consists of a sequence of elements, where each element contains a key-\/value pair and maintains references to both the next and previous elements in the sequence.
-\item \doxysubsection*{Features}
-\end{DoxyItemize}
-
-
-\begin{DoxyItemize}
-\item 
-\begin{DoxyItemize}
-\item 
-\end{DoxyItemize}{\bfseries{Insertion\+:}} Insert a new element into the DLL with a specified key and data.
+\item {\bfseries{Insertion\+:}} Insert a new element into the DLL with a specified key and data.
 \item {\bfseries{Removal\+:}} Remove an element from the DLL by its key.
 \item {\bfseries{Search\+:}} Find an element in the DLL by its key.
 \item {\bfseries{Initialization\+:}} Initialize an empty DLL.
 \item {\bfseries{Printing\+:}} Print the contents of the DLL.
-\item 
-\item \doxysubsection*{File Structure}
+\item {\bfseries{Sorting\+:}} Sort the DLL in ascending or descending order based on keys.
+\item {\bfseries{Clearing\+:}} Remove all nodes from the DLL.
 \end{DoxyItemize}
 
-
+{\bfseries{File Structure\+:}}
 \begin{DoxyItemize}
-\item 
-\begin{DoxyItemize}
-\item 
-\end{DoxyItemize}{\bfseries{\mbox{\hyperlink{MyDLL_8h}{My\+DLL.\+h}}\+:}} Header file containing declarations of structures and functions.
+\item {\bfseries{\mbox{\hyperlink{MyDLL_8h}{My\+DLL.\+h}}\+:}} Header file containing declarations of structures and functions.
 \item {\bfseries{My\+DLL.\+c\+:}} Source file containing implementations of functions declared in \mbox{\hyperlink{MyDLL_8h}{My\+DLL.\+h}}.
 \item {\bfseries{main.\+c\+:}} Main program file demonstrating usage of the DLL module through test scenarios.
-\item 
-\item \doxysubsection*{Usage}
+\item {\bfseries{\mbox{\hyperlink{Testes_8h}{Testes.\+h}}\+:}} Header file containing declarations of functions for testing the \mbox{\hyperlink{structMyDLL}{My\+DLL}} functionality.
+\item {\bfseries{Testes.\+c\+:}} Source file containing implementations of functions declared in \mbox{\hyperlink{Testes_8h}{Testes.\+h}} for testing the \mbox{\hyperlink{structMyDLL}{My\+DLL}} functionality.
 \end{DoxyItemize}
 
+{\bfseries{Usage\+:}} To use this DLL module in your C program, include the header file \mbox{\hyperlink{MyDLL_8h}{My\+DLL.\+h}} in your source code. You can then call the provided functions to perform operations on the doubly linked list. Make sure to link My\+DLL.\+c with your main program file during compilation.
 
+{\bfseries{Test Scenarios\+:}} The module includes test scenarios in the main.\+c file to demonstrate the functionality of the DLL module. These scenarios cover insertion, removal, search, sorting, and clearing operations on the DLL. Additionally, the \mbox{\hyperlink{Testes_8h}{Testes.\+h}} and Testes.\+c files provide test functions for verifying the behavior of the \mbox{\hyperlink{structMyDLL}{My\+DLL}} library. These functions perform various operations such as insertion, removal, searching, sorting, and clearing on a doubly linked list-\/based database implemented using the \mbox{\hyperlink{structMyDLL}{My\+DLL}} library. Each test function is designed to validate specific aspects of the DLL\textquotesingle{}s functionality, ensuring robustness and correctness.
+
+{\bfseries{Author\+:}}
 \begin{DoxyItemize}
-\item To use this DLL module in your C program, include the header file {\ttfamily \mbox{\hyperlink{MyDLL_8h}{My\+DLL.\+h}}} in your source code. You can then call the provided functions to perform operations on the doubly linked list.
-\item \doxysubsection*{Test Scenarios}
+\item Pedro Afonso (104206)
+\item Carlos Teixeira (103187)
 \end{DoxyItemize}
 
-
-\begin{DoxyItemize}
-\item The module includes test scenarios in the {\ttfamily main.\+c} file to demonstrate the functionality of the DLL module. These scenarios cover insertion, removal, and search operations on the DLL.
-\item \doxysubsection*{Author}
-\end{DoxyItemize}
-
-
-\begin{DoxyItemize}
-\item -\/ Pedro Afonso (104206)~\newline
-
-\item -\/ Carlos Teixeira (103187)
-\item \doxysubsection*{Bug Reports}
-\end{DoxyItemize}
-
-
-\begin{DoxyItemize}
-\item If you encounter any bugs or issues while using this DLL module, please report them \href{https://github.com/pisko19/SETR/issues}{\texttt{ here}}. 
-\end{DoxyItemize}
+{\bfseries{Bug Reports\+:}} If you encounter any bugs or issues while using this DLL module, please report them \href{https://github.com/pisko19/SETR/issues}{\texttt{ here}}. 

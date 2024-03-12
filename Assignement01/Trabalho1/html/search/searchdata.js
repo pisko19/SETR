@@ -1,9 +1,9 @@
 var indexSectionsWithContent =
 {
-  0: "bdhkmnpst",
+  0: "bdfhkmnopst",
   1: "dm",
-  2: "m",
-  3: "ms",
+  2: "mt",
+  3: "mst",
   4: "dhknpst",
   5: "m",
   6: "bd"
@@ -16,7 +16,7 @@ var indexSectionNames =
   2: "files",
   3: "functions",
   4: "variables",
-  5: "defines",
+  5: "groups",
   6: "pages"
 };
 
@@ -27,7 +27,7 @@ var indexSectionLabels =
   2: "Files",
   3: "Functions",
   4: "Variables",
-  5: "Macros",
+  5: "Modules",
   6: "Pages"
 };
 

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['key_5',['key',['../structMyDLL.html#a692a33b41d13377a5f47c2476d910fa5',1,'MyDLL']]]
+  ['head_5',['Head',['../group__MyDLL.html#ga5c5f18210d549ed4508a67f51da9d223',1,'DLL_List']]]
 ];

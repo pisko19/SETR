@@ -1,0 +1,9 @@
+digraph dependency_graph {
+    node [shape=rectangle, style=rounded];
+    rankdir=LR;
+    "MyDLL.h" -> { "MyDLLInit()", "MyDLLInsert()", "MyDLLFind()", "MyDLLRemove()", "MyDLLPrint()",
+                   "MyDLLFindNext()", "MyDLLFindPrevious()", "MyDLLSortAscending()", "MyDLLSortDescending()",
+                   "swapNodes()", "MyDLLClear()", "DLL_List", "MyDLL" };
+    "DLL_List" -> { "nodes[MAX_LIST_SIZE]", "Head", "Tail", "size" };
+}
+

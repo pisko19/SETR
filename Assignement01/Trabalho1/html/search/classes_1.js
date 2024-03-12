@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['mydll_26',['MyDLL',['../structMyDLL.html',1,'']]]
+  ['mydll_39',['MyDLL',['../structMyDLL.html',1,'']]]
 ];

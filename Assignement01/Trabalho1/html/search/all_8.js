@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['tail_24',['Tail',['../structDLL__List.html#a9207531e02e793ed3698ce9a5aa9d241',1,'DLL_List']]]
+  ['previous_26',['Previous',['../group__MyDLL.html#gaf3bf5dfbb7ad50e3f1c0bc955ead1b0b',1,'MyDLL']]]
 ];

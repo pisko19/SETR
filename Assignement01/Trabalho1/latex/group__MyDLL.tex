@@ -1,0 +1,375 @@
+\hypertarget{group__MyDLL}{}\doxysection{My\+DLL}
+\label{group__MyDLL}\index{MyDLL@{MyDLL}}
+
+
+Functions and structures for working with a doubly linked list-\/based database.  
+
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structMyDLL}{My\+DLL}}
+\begin{DoxyCompactList}\small\item\em A structure representing a doubly linked list node. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}}
+\begin{DoxyCompactList}\small\item\em A structure representing a doubly linked list. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group__MyDLL_gaa84da8be2a5293eca8340e41e267af15}{MAX\+\_\+\+ELEM\+\_\+\+SIZE}}~100
+\item 
+\#define \mbox{\hyperlink{group__MyDLL_ga52a03eea6b90f6bc967ed15a7e6a36b9}{MAX\+\_\+\+LIST\+\_\+\+SIZE}}~8
+\item 
+\#define \mbox{\hyperlink{group__MyDLL_ga7b05b8118861711fd8573e92759bbc34}{FULL}}~-\/1
+\item 
+\#define \mbox{\hyperlink{group__MyDLL_gaba51915c87d64af47fb1cc59348961c9}{OK}}~0
+\item 
+\#define \mbox{\hyperlink{group__MyDLL_ga375faf90c5c25165d32e4ba2bc2d8633}{Not\+Key}}~NULL
+\item 
+\#define \mbox{\hyperlink{group__MyDLL_gad966757bf39e47e1aa0d99ba215adcfc}{Not\+Key\+Int}}~-\/2
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group__MyDLL_ga3d18d69be50de39503f2602240a26a86}\label{group__MyDLL_ga3d18d69be50de39503f2602240a26a86}} 
+typedef struct \mbox{\hyperlink{structMyDLL}{My\+DLL}} {\bfseries My\+DLL}
+\item 
+\mbox{\Hypertarget{group__MyDLL_ga013814978baff15adaff1f0ec35a5784}\label{group__MyDLL_ga013814978baff15adaff1f0ec35a5784}} 
+typedef struct \mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} {\bfseries DLL\+\_\+\+List}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{group__MyDLL_ga7bbbb937afa23d40c118e6c6c02a6204}{My\+DLLInit}} (\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$dll)
+\begin{DoxyCompactList}\small\item\em Initialize a doubly linked list. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__MyDLL_ga995df0db0073df3bfb0fe89c1e63fea2}{My\+DLLInsert}} (\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$dll, uint16\+\_\+t key, uint8\+\_\+t $\ast$data)
+\begin{DoxyCompactList}\small\item\em Insert a new node into the doubly linked list. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structMyDLL}{My\+DLL}} $\ast$ \mbox{\hyperlink{group__MyDLL_ga2533d45a12658930b8c2c67119f3367b}{My\+DLLFind}} (\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$dll, uint16\+\_\+t key)
+\begin{DoxyCompactList}\small\item\em Find a node in the doubly linked list by its key. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__MyDLL_gaa2498562892bfd14e73482982915f327}{My\+DLLRemove}} (\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$dll, uint16\+\_\+t key)
+\begin{DoxyCompactList}\small\item\em Remove a node from the doubly linked list by its key. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__MyDLL_ga041aea7aac47c215cea3e9eee46d097f}{My\+DLLPrint}} (\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$dll)
+\begin{DoxyCompactList}\small\item\em Print the contents of the doubly linked list. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structMyDLL}{My\+DLL}} $\ast$ \mbox{\hyperlink{group__MyDLL_ga100438da3aedfbd99feb880ad5fe8c19}{My\+DLLFind\+Next}} (\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$dll, uint16\+\_\+t key)
+\begin{DoxyCompactList}\small\item\em Find the next node in the doubly linked list based on the key. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structMyDLL}{My\+DLL}} $\ast$ \mbox{\hyperlink{group__MyDLL_ga3bdacbef238b925cb83802a80c366cdf}{My\+DLLFind\+Previous}} (\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$dll, uint16\+\_\+t key)
+\begin{DoxyCompactList}\small\item\em Find the previous node in the doubly linked list based on the key. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__MyDLL_gaa78591560a0b9fcde509319d14b4c8f7}{My\+DLLSort\+Ascending}} (\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$dll)
+\begin{DoxyCompactList}\small\item\em Sort the doubly linked list in ascending order based on the keys. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__MyDLL_gaecb656ecccb717bad0eb9b9503812a51}{My\+DLLSort\+Descending}} (\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$dll)
+\begin{DoxyCompactList}\small\item\em Sort the doubly linked list in descending order based on the keys. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__MyDLL_ga92efe67fd3766987f054bac6afc0161a}{swap\+Nodes}} (\mbox{\hyperlink{structMyDLL}{My\+DLL}} $\ast$a, \mbox{\hyperlink{structMyDLL}{My\+DLL}} $\ast$b)
+\begin{DoxyCompactList}\small\item\em Swap the data of two nodes in the list. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__MyDLL_ga9414b3092dbb7a1c247c057ad1e3deb5}{My\+DLLClear}} (\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$dll)
+\begin{DoxyCompactList}\small\item\em Clear all nodes from the doubly linked list. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{group__MyDLL_ga692a33b41d13377a5f47c2476d910fa5}{My\+DLL\+::key}}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{group__MyDLL_ga64d5419aa95706edecb1c4fd6669d3cc}{My\+DLL\+::data}} \mbox{[}\mbox{\hyperlink{group__MyDLL_gaa84da8be2a5293eca8340e41e267af15}{MAX\+\_\+\+ELEM\+\_\+\+SIZE}}\mbox{]}
+\item 
+struct \mbox{\hyperlink{structMyDLL}{My\+DLL}} $\ast$ \mbox{\hyperlink{group__MyDLL_ga2b0214424e470fa9d2c827c0971b22ef}{My\+DLL\+::\+Next}}
+\item 
+struct \mbox{\hyperlink{structMyDLL}{My\+DLL}} $\ast$ \mbox{\hyperlink{group__MyDLL_gaf3bf5dfbb7ad50e3f1c0bc955ead1b0b}{My\+DLL\+::\+Previous}}
+\item 
+\mbox{\hyperlink{structMyDLL}{My\+DLL}} \mbox{\hyperlink{group__MyDLL_gafde85a988aed6a4eb2413fef9dfee656}{DLL\+\_\+\+List\+::nodes}} \mbox{[}\mbox{\hyperlink{group__MyDLL_ga52a03eea6b90f6bc967ed15a7e6a36b9}{MAX\+\_\+\+LIST\+\_\+\+SIZE}}\mbox{]}
+\item 
+\mbox{\hyperlink{structMyDLL}{My\+DLL}} $\ast$ \mbox{\hyperlink{group__MyDLL_ga5c5f18210d549ed4508a67f51da9d223}{DLL\+\_\+\+List\+::\+Head}}
+\item 
+\mbox{\hyperlink{structMyDLL}{My\+DLL}} $\ast$ \mbox{\hyperlink{group__MyDLL_ga9207531e02e793ed3698ce9a5aa9d241}{DLL\+\_\+\+List\+::\+Tail}}
+\item 
+int \mbox{\hyperlink{group__MyDLL_ga071a215919fba93a71298cf27bdc1248}{DLL\+\_\+\+List\+::size}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Functions and structures for working with a doubly linked list-\/based database. 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{group__MyDLL_ga7b05b8118861711fd8573e92759bbc34}\label{group__MyDLL_ga7b05b8118861711fd8573e92759bbc34}} 
+\index{MyDLL@{MyDLL}!FULL@{FULL}}
+\index{FULL@{FULL}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{FULL}{FULL}}
+{\footnotesize\ttfamily \#define FULL~-\/1}
+
+Error code when the list is full \mbox{\Hypertarget{group__MyDLL_gaa84da8be2a5293eca8340e41e267af15}\label{group__MyDLL_gaa84da8be2a5293eca8340e41e267af15}} 
+\index{MyDLL@{MyDLL}!MAX\_ELEM\_SIZE@{MAX\_ELEM\_SIZE}}
+\index{MAX\_ELEM\_SIZE@{MAX\_ELEM\_SIZE}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{MAX\_ELEM\_SIZE}{MAX\_ELEM\_SIZE}}
+{\footnotesize\ttfamily \#define MAX\+\_\+\+ELEM\+\_\+\+SIZE~100}
+
+Maximum size of the data element \mbox{\Hypertarget{group__MyDLL_ga52a03eea6b90f6bc967ed15a7e6a36b9}\label{group__MyDLL_ga52a03eea6b90f6bc967ed15a7e6a36b9}} 
+\index{MyDLL@{MyDLL}!MAX\_LIST\_SIZE@{MAX\_LIST\_SIZE}}
+\index{MAX\_LIST\_SIZE@{MAX\_LIST\_SIZE}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{MAX\_LIST\_SIZE}{MAX\_LIST\_SIZE}}
+{\footnotesize\ttfamily \#define MAX\+\_\+\+LIST\+\_\+\+SIZE~8}
+
+Maximum number of nodes in the list \mbox{\Hypertarget{group__MyDLL_ga375faf90c5c25165d32e4ba2bc2d8633}\label{group__MyDLL_ga375faf90c5c25165d32e4ba2bc2d8633}} 
+\index{MyDLL@{MyDLL}!NotKey@{NotKey}}
+\index{NotKey@{NotKey}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{NotKey}{NotKey}}
+{\footnotesize\ttfamily \#define Not\+Key~NULL}
+
+Error code when the key is not found \mbox{\Hypertarget{group__MyDLL_gad966757bf39e47e1aa0d99ba215adcfc}\label{group__MyDLL_gad966757bf39e47e1aa0d99ba215adcfc}} 
+\index{MyDLL@{MyDLL}!NotKeyInt@{NotKeyInt}}
+\index{NotKeyInt@{NotKeyInt}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{NotKeyInt}{NotKeyInt}}
+{\footnotesize\ttfamily \#define Not\+Key\+Int~-\/2}
+
+Error code when the key is not found (int) \mbox{\Hypertarget{group__MyDLL_gaba51915c87d64af47fb1cc59348961c9}\label{group__MyDLL_gaba51915c87d64af47fb1cc59348961c9}} 
+\index{MyDLL@{MyDLL}!OK@{OK}}
+\index{OK@{OK}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{OK}{OK}}
+{\footnotesize\ttfamily \#define OK~0}
+
+Error code when the function is done 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{group__MyDLL_ga9414b3092dbb7a1c247c057ad1e3deb5}\label{group__MyDLL_ga9414b3092dbb7a1c247c057ad1e3deb5}} 
+\index{MyDLL@{MyDLL}!MyDLLClear@{MyDLLClear}}
+\index{MyDLLClear@{MyDLLClear}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{MyDLLClear()}{MyDLLClear()}}
+{\footnotesize\ttfamily void My\+DLLClear (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$}]{dll }\end{DoxyParamCaption})}
+
+
+
+Clear all nodes from the doubly linked list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dll} & Pointer to the doubly linked list. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group__MyDLL_ga2533d45a12658930b8c2c67119f3367b}\label{group__MyDLL_ga2533d45a12658930b8c2c67119f3367b}} 
+\index{MyDLL@{MyDLL}!MyDLLFind@{MyDLLFind}}
+\index{MyDLLFind@{MyDLLFind}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{MyDLLFind()}{MyDLLFind()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structMyDLL}{My\+DLL}}$\ast$ My\+DLLFind (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$}]{dll,  }\item[{uint16\+\_\+t}]{key }\end{DoxyParamCaption})}
+
+
+
+Find a node in the doubly linked list by its key. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dll} & Pointer to the doubly linked list. \\
+\hline
+{\em key} & The key of the node to find. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to the node if found, NULL otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__MyDLL_ga100438da3aedfbd99feb880ad5fe8c19}\label{group__MyDLL_ga100438da3aedfbd99feb880ad5fe8c19}} 
+\index{MyDLL@{MyDLL}!MyDLLFindNext@{MyDLLFindNext}}
+\index{MyDLLFindNext@{MyDLLFindNext}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{MyDLLFindNext()}{MyDLLFindNext()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structMyDLL}{My\+DLL}}$\ast$ My\+DLLFind\+Next (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$}]{dll,  }\item[{uint16\+\_\+t}]{key }\end{DoxyParamCaption})}
+
+
+
+Find the next node in the doubly linked list based on the key. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dll} & Pointer to the doubly linked list. \\
+\hline
+{\em key} & The key of the current node. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to the next node if found, NULL otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__MyDLL_ga3bdacbef238b925cb83802a80c366cdf}\label{group__MyDLL_ga3bdacbef238b925cb83802a80c366cdf}} 
+\index{MyDLL@{MyDLL}!MyDLLFindPrevious@{MyDLLFindPrevious}}
+\index{MyDLLFindPrevious@{MyDLLFindPrevious}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{MyDLLFindPrevious()}{MyDLLFindPrevious()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structMyDLL}{My\+DLL}}$\ast$ My\+DLLFind\+Previous (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$}]{dll,  }\item[{uint16\+\_\+t}]{key }\end{DoxyParamCaption})}
+
+
+
+Find the previous node in the doubly linked list based on the key. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dll} & Pointer to the doubly linked list. \\
+\hline
+{\em key} & The key of the current node. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to the previous node if found, NULL otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__MyDLL_ga7bbbb937afa23d40c118e6c6c02a6204}\label{group__MyDLL_ga7bbbb937afa23d40c118e6c6c02a6204}} 
+\index{MyDLL@{MyDLL}!MyDLLInit@{MyDLLInit}}
+\index{MyDLLInit@{MyDLLInit}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{MyDLLInit()}{MyDLLInit()}}
+{\footnotesize\ttfamily void My\+DLLInit (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$}]{dll }\end{DoxyParamCaption})}
+
+
+
+Initialize a doubly linked list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dll} & Pointer to the doubly linked list. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group__MyDLL_ga995df0db0073df3bfb0fe89c1e63fea2}\label{group__MyDLL_ga995df0db0073df3bfb0fe89c1e63fea2}} 
+\index{MyDLL@{MyDLL}!MyDLLInsert@{MyDLLInsert}}
+\index{MyDLLInsert@{MyDLLInsert}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{MyDLLInsert()}{MyDLLInsert()}}
+{\footnotesize\ttfamily int My\+DLLInsert (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$}]{dll,  }\item[{uint16\+\_\+t}]{key,  }\item[{uint8\+\_\+t $\ast$}]{data }\end{DoxyParamCaption})}
+
+
+
+Insert a new node into the doubly linked list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dll} & Pointer to the doubly linked list. \\
+\hline
+{\em key} & The key associated with the new node. \\
+\hline
+{\em data} & Pointer to the data to be stored in the new node. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if successful, 0 otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__MyDLL_ga041aea7aac47c215cea3e9eee46d097f}\label{group__MyDLL_ga041aea7aac47c215cea3e9eee46d097f}} 
+\index{MyDLL@{MyDLL}!MyDLLPrint@{MyDLLPrint}}
+\index{MyDLLPrint@{MyDLLPrint}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{MyDLLPrint()}{MyDLLPrint()}}
+{\footnotesize\ttfamily void My\+DLLPrint (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$}]{dll }\end{DoxyParamCaption})}
+
+
+
+Print the contents of the doubly linked list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dll} & Pointer to the doubly linked list. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group__MyDLL_gaa2498562892bfd14e73482982915f327}\label{group__MyDLL_gaa2498562892bfd14e73482982915f327}} 
+\index{MyDLL@{MyDLL}!MyDLLRemove@{MyDLLRemove}}
+\index{MyDLLRemove@{MyDLLRemove}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{MyDLLRemove()}{MyDLLRemove()}}
+{\footnotesize\ttfamily int My\+DLLRemove (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$}]{dll,  }\item[{uint16\+\_\+t}]{key }\end{DoxyParamCaption})}
+
+
+
+Remove a node from the doubly linked list by its key. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dll} & Pointer to the doubly linked list. \\
+\hline
+{\em key} & The key of the node to remove. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if successful, 0 otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__MyDLL_gaa78591560a0b9fcde509319d14b4c8f7}\label{group__MyDLL_gaa78591560a0b9fcde509319d14b4c8f7}} 
+\index{MyDLL@{MyDLL}!MyDLLSortAscending@{MyDLLSortAscending}}
+\index{MyDLLSortAscending@{MyDLLSortAscending}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{MyDLLSortAscending()}{MyDLLSortAscending()}}
+{\footnotesize\ttfamily void My\+DLLSort\+Ascending (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$}]{dll }\end{DoxyParamCaption})}
+
+
+
+Sort the doubly linked list in ascending order based on the keys. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dll} & Pointer to the doubly linked list. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group__MyDLL_gaecb656ecccb717bad0eb9b9503812a51}\label{group__MyDLL_gaecb656ecccb717bad0eb9b9503812a51}} 
+\index{MyDLL@{MyDLL}!MyDLLSortDescending@{MyDLLSortDescending}}
+\index{MyDLLSortDescending@{MyDLLSortDescending}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{MyDLLSortDescending()}{MyDLLSortDescending()}}
+{\footnotesize\ttfamily void My\+DLLSort\+Descending (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$}]{dll }\end{DoxyParamCaption})}
+
+
+
+Sort the doubly linked list in descending order based on the keys. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dll} & Pointer to the doubly linked list. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group__MyDLL_ga92efe67fd3766987f054bac6afc0161a}\label{group__MyDLL_ga92efe67fd3766987f054bac6afc0161a}} 
+\index{MyDLL@{MyDLL}!swapNodes@{swapNodes}}
+\index{swapNodes@{swapNodes}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{swapNodes()}{swapNodes()}}
+{\footnotesize\ttfamily void swap\+Nodes (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMyDLL}{My\+DLL}} $\ast$}]{a,  }\item[{\mbox{\hyperlink{structMyDLL}{My\+DLL}} $\ast$}]{b }\end{DoxyParamCaption})}
+
+
+
+Swap the data of two nodes in the list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & Pointer to the first node. \\
+\hline
+{\em b} & Pointer to the second node. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{group__MyDLL_ga64d5419aa95706edecb1c4fd6669d3cc}\label{group__MyDLL_ga64d5419aa95706edecb1c4fd6669d3cc}} 
+\index{MyDLL@{MyDLL}!data@{data}}
+\index{data@{data}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily uint8\+\_\+t My\+DLL\+::data\mbox{[}\mbox{\hyperlink{group__MyDLL_gaa84da8be2a5293eca8340e41e267af15}{MAX\+\_\+\+ELEM\+\_\+\+SIZE}}\mbox{]}}
+
+The data stored in the node \mbox{\Hypertarget{group__MyDLL_ga5c5f18210d549ed4508a67f51da9d223}\label{group__MyDLL_ga5c5f18210d549ed4508a67f51da9d223}} 
+\index{MyDLL@{MyDLL}!Head@{Head}}
+\index{Head@{Head}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{Head}{Head}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structMyDLL}{My\+DLL}}$\ast$ DLL\+\_\+\+List\+::\+Head}
+
+Pointer to the head of the list \mbox{\Hypertarget{group__MyDLL_ga692a33b41d13377a5f47c2476d910fa5}\label{group__MyDLL_ga692a33b41d13377a5f47c2476d910fa5}} 
+\index{MyDLL@{MyDLL}!key@{key}}
+\index{key@{key}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{key}{key}}
+{\footnotesize\ttfamily uint16\+\_\+t My\+DLL\+::key}
+
+The key associated with the node \mbox{\Hypertarget{group__MyDLL_ga2b0214424e470fa9d2c827c0971b22ef}\label{group__MyDLL_ga2b0214424e470fa9d2c827c0971b22ef}} 
+\index{MyDLL@{MyDLL}!Next@{Next}}
+\index{Next@{Next}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{Next}{Next}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structMyDLL}{My\+DLL}}$\ast$ My\+DLL\+::\+Next}
+
+Pointer to the next node \mbox{\Hypertarget{group__MyDLL_gafde85a988aed6a4eb2413fef9dfee656}\label{group__MyDLL_gafde85a988aed6a4eb2413fef9dfee656}} 
+\index{MyDLL@{MyDLL}!nodes@{nodes}}
+\index{nodes@{nodes}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{nodes}{nodes}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structMyDLL}{My\+DLL}} DLL\+\_\+\+List\+::nodes\mbox{[}\mbox{\hyperlink{group__MyDLL_ga52a03eea6b90f6bc967ed15a7e6a36b9}{MAX\+\_\+\+LIST\+\_\+\+SIZE}}\mbox{]}}
+
+Array of nodes in the list \mbox{\Hypertarget{group__MyDLL_gaf3bf5dfbb7ad50e3f1c0bc955ead1b0b}\label{group__MyDLL_gaf3bf5dfbb7ad50e3f1c0bc955ead1b0b}} 
+\index{MyDLL@{MyDLL}!Previous@{Previous}}
+\index{Previous@{Previous}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{Previous}{Previous}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structMyDLL}{My\+DLL}}$\ast$ My\+DLL\+::\+Previous}
+
+Pointer to the previous node \mbox{\Hypertarget{group__MyDLL_ga071a215919fba93a71298cf27bdc1248}\label{group__MyDLL_ga071a215919fba93a71298cf27bdc1248}} 
+\index{MyDLL@{MyDLL}!size@{size}}
+\index{size@{size}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{size}{size}}
+{\footnotesize\ttfamily int DLL\+\_\+\+List\+::size}
+
+Current size of the list \mbox{\Hypertarget{group__MyDLL_ga9207531e02e793ed3698ce9a5aa9d241}\label{group__MyDLL_ga9207531e02e793ed3698ce9a5aa9d241}} 
+\index{MyDLL@{MyDLL}!Tail@{Tail}}
+\index{Tail@{Tail}!MyDLL@{MyDLL}}
+\doxysubsubsection{\texorpdfstring{Tail}{Tail}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structMyDLL}{My\+DLL}}$\ast$ DLL\+\_\+\+List\+::\+Tail}
+
+Pointer to the tail of the list 
