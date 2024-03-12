@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include "MyDLL.h"
@@ -99,7 +100,104 @@ int MyDLLRemove(DLL_List* dll, uint16_t key) {
     dll->size--;
     
     return OK;
-    
-    	
+}
+
+MyDLL* MyDLLFindNext(DLL_List* dll, uint16_t key) {
+    MyDLL* current = MyDLLFind(dll, key);
+    if (current == NULL) {
+        printf("Error: Element with key %d not found\n", key);
+        return NULL;
+    }
+
+    // Check if the current element is the last element in the list
+    if (current->Next == NULL) {
+        printf("Error: Current element with key %d is the last element in the list\n", key);
+        return NULL;
+    }
+
+    return current->Next;
+}
+
+MyDLL* MyDLLFindPrevious(DLL_List* dll, uint16_t key) {
+    MyDLL* current = MyDLLFind(dll, key);
+    if (current == NULL) {
+        printf("Error: Element with key %d not found\n", key);
+        return NULL;
+    }
+
+    // Check if the current element is the last element in the list
+    if (current->Previous == NULL) {
+        printf("Error: Current element with key %d is the first element in the list\n", key);
+        return NULL;
+    }
+
+    return current->Previous;
+}
+
+void swapNodes(MyDLL* a, MyDLL* b) {
+    uint16_t tempKey = a->key;
+    uint8_t tempData[MAX_ELEM_SIZE];
+
+    memcpy(tempData, a->data, MAX_ELEM_SIZE);
+    a->key = b->key;
+    memcpy(a->data, b->data, MAX_ELEM_SIZE);
+    b->key = tempKey;
+    memcpy(b->data, tempData, MAX_ELEM_SIZE);
+}
+
+// Function to perform bubble sort on the doubly linked list
+void MyDLLSortAscending(DLL_List* dll) {
+    int swapped;
+    MyDLL* ptr1;
+    MyDLL* lptr = NULL;
+
+    // Checking for empty list
+    if (dll->Head == NULL)
+        return;
+
+    do {
+        swapped = 0;
+        ptr1 = dll->Head;
+
+        while (ptr1->Next != lptr) {
+            if (ptr1->key > ptr1->Next->key) {
+                swapNodes(ptr1, ptr1->Next);
+                swapped = 1;
+            }
+            ptr1 = ptr1->Next;
+        }
+        lptr = ptr1;
+    } while (swapped);
+}
+
+void MyDLLSortDescending(DLL_List* dll) {
+    int swapped;
+    MyDLL* ptr1;
+    MyDLL* lptr = NULL;
+
+    // Checking for empty list
+    if (dll->Head == NULL)
+        return;
+
+    do {
+        swapped = 0;
+        ptr1 = dll->Head;
+
+        while (ptr1->Next != lptr) {
+            if (ptr1->key < ptr1->Next->key) {
+                swapNodes(ptr1, ptr1->Next);
+                swapped = 1;
+            }
+            ptr1 = ptr1->Next;
+        }
+        lptr = ptr1;
+    } while (swapped);
+}
+
+void MyDLLClear(DLL_List* dll) {
+    // Reset list properties
+    dll->Head = NULL;
+    dll->Tail = NULL;
+    dll->size = 0;
 }
 

@@ -80,4 +80,42 @@ int MyDLLRemove(DLL_List* dll, uint16_t key);
  */
 void MyDLLPrint(DLL_List* dll);
 
+
+/**
+ *  \brief Find the next node in the doubly linked list based on the key.
+ *  \param dll Pointer to the doubly linked list.
+ *  \param key The key of the current node.
+ *  \return Pointer to the next node if found, NULL otherwise.
+ */
+MyDLL* MyDLLFindNext(DLL_List* dll, uint16_t key);
+
+/**
+ *  \brief Find the previous node in the doubly linked list based on the key.
+ *  \param dll Pointer to the doubly linked list.
+ *  \param key The key of the current node.
+ *  \return Pointer to the previous node if found, NULL otherwise.
+ */
+MyDLL* MyDLLFindPrevious(DLL_List* dll, uint16_t key);
+
+/**
+ *  \brief Sort the doubly linked list in ascending order based on the keys.
+ *  \param dll Pointer to the doubly linked list.
+ */
+void MyDLLSortAscending(DLL_List* dll);
+
+/**
+ *  \brief Sort the doubly linked list in descending order based on the keys.
+ *  \param dll Pointer to the doubly linked list.
+ */
+void MyDLLSortDescending(DLL_List* dll);
+
+/**
+ *  \brief Swap the data of two nodes in the list.
+ *  \param a Pointer to the first node.
+ *  \param b Pointer to the second node.
+ */
+void swapNodes(MyDLL* a, MyDLL* b);
+
+void MyDLLClear(DLL_List* dll);
+
 #endif

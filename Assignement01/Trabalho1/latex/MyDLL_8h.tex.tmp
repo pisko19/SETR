@@ -20,7 +20,16 @@ struct \mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}}
 \item 
 \#define \mbox{\hyperlink{MyDLL_8h_aa84da8be2a5293eca8340e41e267af15}{MAX\+\_\+\+ELEM\+\_\+\+SIZE}}~100
 \item 
-\#define \mbox{\hyperlink{MyDLL_8h_a52a03eea6b90f6bc967ed15a7e6a36b9}{MAX\+\_\+\+LIST\+\_\+\+SIZE}}~10
+\#define \mbox{\hyperlink{MyDLL_8h_a52a03eea6b90f6bc967ed15a7e6a36b9}{MAX\+\_\+\+LIST\+\_\+\+SIZE}}~8
+\item 
+\mbox{\Hypertarget{MyDLL_8h_a7b05b8118861711fd8573e92759bbc34}\label{MyDLL_8h_a7b05b8118861711fd8573e92759bbc34}} 
+\#define {\bfseries FULL}~-\/1
+\item 
+\mbox{\Hypertarget{MyDLL_8h_aba51915c87d64af47fb1cc59348961c9}\label{MyDLL_8h_aba51915c87d64af47fb1cc59348961c9}} 
+\#define {\bfseries OK}~0
+\item 
+\mbox{\Hypertarget{MyDLL_8h_a375faf90c5c25165d32e4ba2bc2d8633}\label{MyDLL_8h_a375faf90c5c25165d32e4ba2bc2d8633}} 
+\#define {\bfseries Not\+Key}~NULL
 \end{DoxyCompactItemize}
 \doxysubsection*{Typedefs}
 \begin{DoxyCompactItemize}
@@ -43,7 +52,20 @@ int \mbox{\hyperlink{MyDLL_8h_a995df0db0073df3bfb0fe89c1e63fea2}{My\+DLLInsert}}
 int \mbox{\hyperlink{MyDLL_8h_aa2498562892bfd14e73482982915f327}{My\+DLLRemove}} (\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$dll, uint16\+\_\+t key)
 \begin{DoxyCompactList}\small\item\em Remove a node from the doubly linked list by its key. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{MyDLL_8h_a041aea7aac47c215cea3e9eee46d097f}{My\+DLLPrint}} (\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$dll)
-\begin{DoxyCompactList}\small\item\em Print the contents of the doubly linked list. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Print the contents of the doubly linked list. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structMyDLL}{My\+DLL}} $\ast$ \mbox{\hyperlink{MyDLL_8h_a100438da3aedfbd99feb880ad5fe8c19}{My\+DLLFind\+Next}} (\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$dll, uint16\+\_\+t key)
+\begin{DoxyCompactList}\small\item\em Find the next node in the doubly linked list based on the key. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structMyDLL}{My\+DLL}} $\ast$ \mbox{\hyperlink{MyDLL_8h_a3bdacbef238b925cb83802a80c366cdf}{My\+DLLFind\+Previous}} (\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$dll, uint16\+\_\+t key)
+\begin{DoxyCompactList}\small\item\em Find the previous node in the doubly linked list based on the key. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{MyDLL_8h_aa78591560a0b9fcde509319d14b4c8f7}{My\+DLLSort\+Ascending}} (\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$dll)
+\begin{DoxyCompactList}\small\item\em Sort the doubly linked list in ascending order based on the keys. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{MyDLL_8h_aecb656ecccb717bad0eb9b9503812a51}{My\+DLLSort\+Descending}} (\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$dll)
+\begin{DoxyCompactList}\small\item\em Sort the doubly linked list in descending order based on the keys. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{MyDLL_8h_a92efe67fd3766987f054bac6afc0161a}{swap\+Nodes}} (\mbox{\hyperlink{structMyDLL}{My\+DLL}} $\ast$a, \mbox{\hyperlink{structMyDLL}{My\+DLL}} $\ast$b)
+\begin{DoxyCompactList}\small\item\em Swap the data of two nodes in the list. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{MyDLL_8h_a9414b3092dbb7a1c247c057ad1e3deb5}\label{MyDLL_8h_a9414b3092dbb7a1c247c057ad1e3deb5}} 
+void {\bfseries My\+DLLClear} (\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$dll)
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -54,7 +76,7 @@ Detailed description starts here.
 \begin{DoxyAuthor}{Author}
 Pedro Afonso, 104206 
 
-Carlos Teixeira, 103xxx 
+Carlos Teixeira, 103187 
 \end{DoxyAuthor}
 \begin{DoxyDate}{Date}
 10/3/2024 
@@ -74,7 +96,7 @@ Maximum size of the data element \mbox{\Hypertarget{MyDLL_8h_a52a03eea6b90f6bc96
 \index{MyDLL.h@{MyDLL.h}!MAX\_LIST\_SIZE@{MAX\_LIST\_SIZE}}
 \index{MAX\_LIST\_SIZE@{MAX\_LIST\_SIZE}!MyDLL.h@{MyDLL.h}}
 \doxysubsubsection{\texorpdfstring{MAX\_LIST\_SIZE}{MAX\_LIST\_SIZE}}
-{\footnotesize\ttfamily \#define MAX\+\_\+\+LIST\+\_\+\+SIZE~10}
+{\footnotesize\ttfamily \#define MAX\+\_\+\+LIST\+\_\+\+SIZE~8}
 
 Maximum number of nodes in the list 
 
@@ -98,6 +120,46 @@ Find a node in the doubly linked list by its key.
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
 Pointer to the node if found, NULL otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{MyDLL_8h_a100438da3aedfbd99feb880ad5fe8c19}\label{MyDLL_8h_a100438da3aedfbd99feb880ad5fe8c19}} 
+\index{MyDLL.h@{MyDLL.h}!MyDLLFindNext@{MyDLLFindNext}}
+\index{MyDLLFindNext@{MyDLLFindNext}!MyDLL.h@{MyDLL.h}}
+\doxysubsubsection{\texorpdfstring{MyDLLFindNext()}{MyDLLFindNext()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structMyDLL}{My\+DLL}}$\ast$ My\+DLLFind\+Next (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$}]{dll,  }\item[{uint16\+\_\+t}]{key }\end{DoxyParamCaption})}
+
+
+
+Find the next node in the doubly linked list based on the key. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dll} & Pointer to the doubly linked list. \\
+\hline
+{\em key} & The key of the current node. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to the next node if found, NULL otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{MyDLL_8h_a3bdacbef238b925cb83802a80c366cdf}\label{MyDLL_8h_a3bdacbef238b925cb83802a80c366cdf}} 
+\index{MyDLL.h@{MyDLL.h}!MyDLLFindPrevious@{MyDLLFindPrevious}}
+\index{MyDLLFindPrevious@{MyDLLFindPrevious}!MyDLL.h@{MyDLL.h}}
+\doxysubsubsection{\texorpdfstring{MyDLLFindPrevious()}{MyDLLFindPrevious()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structMyDLL}{My\+DLL}}$\ast$ My\+DLLFind\+Previous (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$}]{dll,  }\item[{uint16\+\_\+t}]{key }\end{DoxyParamCaption})}
+
+
+
+Find the previous node in the doubly linked list based on the key. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dll} & Pointer to the doubly linked list. \\
+\hline
+{\em key} & The key of the current node. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Pointer to the previous node if found, NULL otherwise. 
 \end{DoxyReturn}
 \mbox{\Hypertarget{MyDLL_8h_a7bbbb937afa23d40c118e6c6c02a6204}\label{MyDLL_8h_a7bbbb937afa23d40c118e6c6c02a6204}} 
 \index{MyDLL.h@{MyDLL.h}!MyDLLInit@{MyDLLInit}}
@@ -169,5 +231,52 @@ Remove a node from the doubly linked list by its key.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-1 if successful, 0 otherwise. 
+a DLL List. 
 \end{DoxyReturn}
+\mbox{\Hypertarget{MyDLL_8h_aa78591560a0b9fcde509319d14b4c8f7}\label{MyDLL_8h_aa78591560a0b9fcde509319d14b4c8f7}} 
+\index{MyDLL.h@{MyDLL.h}!MyDLLSortAscending@{MyDLLSortAscending}}
+\index{MyDLLSortAscending@{MyDLLSortAscending}!MyDLL.h@{MyDLL.h}}
+\doxysubsubsection{\texorpdfstring{MyDLLSortAscending()}{MyDLLSortAscending()}}
+{\footnotesize\ttfamily void My\+DLLSort\+Ascending (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$}]{dll }\end{DoxyParamCaption})}
+
+
+
+Sort the doubly linked list in ascending order based on the keys. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dll} & Pointer to the doubly linked list. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{MyDLL_8h_aecb656ecccb717bad0eb9b9503812a51}\label{MyDLL_8h_aecb656ecccb717bad0eb9b9503812a51}} 
+\index{MyDLL.h@{MyDLL.h}!MyDLLSortDescending@{MyDLLSortDescending}}
+\index{MyDLLSortDescending@{MyDLLSortDescending}!MyDLL.h@{MyDLL.h}}
+\doxysubsubsection{\texorpdfstring{MyDLLSortDescending()}{MyDLLSortDescending()}}
+{\footnotesize\ttfamily void My\+DLLSort\+Descending (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structDLL__List}{DLL\+\_\+\+List}} $\ast$}]{dll }\end{DoxyParamCaption})}
+
+
+
+Sort the doubly linked list in descending order based on the keys. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dll} & Pointer to the doubly linked list. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{MyDLL_8h_a92efe67fd3766987f054bac6afc0161a}\label{MyDLL_8h_a92efe67fd3766987f054bac6afc0161a}} 
+\index{MyDLL.h@{MyDLL.h}!swapNodes@{swapNodes}}
+\index{swapNodes@{swapNodes}!MyDLL.h@{MyDLL.h}}
+\doxysubsubsection{\texorpdfstring{swapNodes()}{swapNodes()}}
+{\footnotesize\ttfamily void swap\+Nodes (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMyDLL}{My\+DLL}} $\ast$}]{a,  }\item[{\mbox{\hyperlink{structMyDLL}{My\+DLL}} $\ast$}]{b }\end{DoxyParamCaption})}
+
+
+
+Swap the data of two nodes in the list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & Pointer to the first node. \\
+\hline
+{\em b} & Pointer to the second node. \\
+\hline
+\end{DoxyParams}
