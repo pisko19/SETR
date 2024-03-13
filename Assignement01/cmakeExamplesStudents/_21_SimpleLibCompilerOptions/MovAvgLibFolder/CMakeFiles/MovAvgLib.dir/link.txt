@@ -1,2 +1,0 @@
-/usr/bin/ar qc libMovAvgLib.a CMakeFiles/MovAvgLib.dir/movavg.c.o
-/usr/bin/ranlib libMovAvgLib.a
