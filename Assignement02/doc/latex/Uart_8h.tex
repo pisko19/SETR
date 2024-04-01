@@ -1,0 +1,66 @@
+\hypertarget{Uart_8h}{}\doxysection{/home/pedro/\+Documentos/\+SETR/\+Assignement02/header/\+Uart.h File Reference}
+\label{Uart_8h}\index{/home/pedro/Documentos/SETR/Assignement02/header/Uart.h@{/home/pedro/Documentos/SETR/Assignement02/header/Uart.h}}
+
+
+Header file containing declarations of structures and functions for UART communication.  
+
+
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group__Uart_ga0592dba56693fad79136250c11e5a7fe}{MAX\+\_\+\+SIZE}}~20
+\item 
+\#define \mbox{\hyperlink{group__Uart_ga7e4912ef6d5612f8ebca463ff206d9ce}{UART\+\_\+\+RX\+\_\+\+SIZE}}~30
+\item 
+\#define \mbox{\hyperlink{group__Uart_ga7bd31e3844f5461db2cbe6d906ca4040}{UART\+\_\+\+TX\+\_\+\+SIZE}}~30
+\item 
+\#define \mbox{\hyperlink{group__Uart_gaaba783a919ec55e409334086e6d2a3bb}{SOS}}~\textquotesingle{}\#\textquotesingle{}
+\item 
+\#define \mbox{\hyperlink{group__Uart_gaadbbc7b02d94a4c18646813ac8d7dec1}{EOS}}~\textquotesingle{}!\textquotesingle{}
+\item 
+\#define \mbox{\hyperlink{group__Uart_ga29fd18bed01c4d836c7ebfe73a125c3f}{END}}~0
+\item 
+\#define \mbox{\hyperlink{group__Uart_gae0a8163e86e94d72f61e24571477c186}{Value\+Error}}~-\/1
+\item 
+\#define \mbox{\hyperlink{group__Uart_ga795fc5b1fc0aaba4598340abf7d2a1f8}{EOS\+\_\+\+Error}}~-\/2
+\item 
+\#define \mbox{\hyperlink{group__Uart_ga2d948821529a9c63940d32a4504185cb}{Len\+\_\+\+Error}}~-\/3
+\item 
+\#define \mbox{\hyperlink{group__Uart_ga0e91e847a955cfeca08d6f3a5a89210b}{Size\+\_\+\+Error}}~-\/4
+\item 
+\#define \mbox{\hyperlink{group__Uart_gae0055fb85175f413cc6a45b11719e32b}{CMD\+\_\+\+Error}}~-\/5
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{group__Uart_gaced3facd7540036687482d443d6aecde}{cmd\+Proc}} (void)
+\begin{DoxyCompactList}\small\item\em Process a received command. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_ga5bf655ec1590a14989ef53cbb2caf4a5}{rx\+Char}} (unsigned char character)
+\begin{DoxyCompactList}\small\item\em Add a character to the receive buffer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_ga7280049d3ddbcc04fcbf4da25f46998d}{tx\+Char}} (unsigned char character)
+\begin{DoxyCompactList}\small\item\em Add a character to the transmit buffer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__Uart_ga9673956bc68b02d05c4957ab1b40724c}{Reset\+Rx\+Char}} (void)
+\begin{DoxyCompactList}\small\item\em Reset the receive buffer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__Uart_gaaf799f6c05312f43107024da9378761a}{Reset\+Tx\+Char}} (void)
+\begin{DoxyCompactList}\small\item\em Reset the transmit buffer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_ga041e482d7c9408e7dfaaafee90efd950}{get\+Tx\+Buf}} (unsigned char $\ast$buf, int len)
+\begin{DoxyCompactList}\small\item\em Get the transmit buffer. \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{group__Uart_ga77e129fc98b3b9c3c28ae4eab0c88fe3}{Check\+Sum}} (unsigned char $\ast$buf, int nbytes)
+\begin{DoxyCompactList}\small\item\em Calculate the checksum of a string. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__Uart_ga776c25f8b6461c270e977f43606396c0}{add\+Value}} (int $\ast$arr, int $\ast$size, int value)
+\begin{DoxyCompactList}\small\item\em Add a value to an array with shifting. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header file containing declarations of structures and functions for UART communication. 
+
+This file provides the necessary structures and functions to work with UART communication in a microcontroller project. It includes declarations for functions to process commands received via UART, as well as functions to manage receive and transmit buffers. Additionally, macros are defined for maximum buffer sizes and error codes.
+
+\begin{DoxyAuthor}{Author}
+Pedro Afonso, 104206 
+
+Carlos Teixeira 103187 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+01/04/2024 
+\end{DoxyDate}
