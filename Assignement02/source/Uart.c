@@ -3,16 +3,18 @@
 
 #include "../header/Uart.h"
 
+
 static unsigned char RxBuffer[UART_RX_SIZE];
 static unsigned char TxBuffer[UART_TX_SIZE];
 static unsigned char RxBufferLen = 0;
 static unsigned char TxBufferLen = 0;
-static int temp[MAX_SIZE];
-static int hum[MAX_SIZE];
-static int co2[MAX_SIZE];
-static unsigned int tempIndex = 0;
-static unsigned int humIndex = 0;
-static unsigned int co2Index = 0;
+
+unsigned int temp[MAX_SIZE];
+unsigned int hum[MAX_SIZE];
+unsigned int co2[MAX_SIZE];
+unsigned int tempIndex = 0;
+unsigned int humIndex = 0;
+unsigned int co2Index = 0;
 
 
 int rxChar(unsigned char character){
@@ -78,20 +80,17 @@ unsigned int CheckSum(unsigned char* buf, int nbytes){
   return sum;
 
 }
-
-void addValue(int *arr, int *size, int value){
+void addValue(unsigned int *arr, unsigned int *size, int value) {
+    for(unsigned int i = *size; i > 0; i--) {
+        arr[i] = arr[i - 1];
+    }
+    arr[0] = (unsigned int)value;
    
-   for(int i = *size; i>0; i--){
-      arr[i] = arr[i-1];
-   }
-   arr[0] = value;
-   
-   if(*size < MAX_SIZE-1){
-      (*size)++;
-   }
-
-
+    if(*size < MAX_SIZE - 1) {
+        (*size)++;
+    }
 }
+
 int cmdProc(void){
 
   int i;
@@ -134,7 +133,7 @@ int cmdProc(void){
                     return EOS_Error;
                  
                  // Add the temperature to the temperature array
-                 addValue(&temp,&tempIndex,x);
+                 addValue(temp,&tempIndex,x);
                  
                  // Send the chars to the TxBuffer with the CheckSum byte
                  for(int i=0;i<RxBufferLen;i++){
@@ -166,7 +165,7 @@ int cmdProc(void){
                     return EOS_Error;
                  
                  // Add the humidity to the humidity array
-                 addValue(&hum,&humIndex,x);
+                 addValue(hum,&humIndex,x);
                  
                  // Send the chars to the TxBuffer with the CheckSum byte
                  for(int i=0;i<RxBufferLen;i++){
@@ -198,7 +197,7 @@ int cmdProc(void){
                     return EOS_Error;
                  
                  // Add the CO2 to the CO2 array
-                 addValue(&co2,&co2Index,x);     
+                 addValue(co2,&co2Index,x);     
                  
                  // Send the chars to the TxBuffer with the CheckSum byte
                  for(int i=0;i<RxBufferLen;i++){
@@ -237,7 +236,7 @@ int cmdProc(void){
                     return ValueError;
                     
                    // Add the temperature to the temperature array
-                   addValue(&temp,&tempIndex,x);
+                   addValue(temp,&tempIndex,x);
                  
                    action += 4;
                  }
@@ -251,7 +250,7 @@ int cmdProc(void){
                       return ValueError;
                    
                    // Add the humidity to the humidity array
-                   addValue(&hum,&humIndex,x);
+                   addValue(hum,&humIndex,x);
                  
                    action += 4;
                     
@@ -266,7 +265,7 @@ int cmdProc(void){
                       return ValueError;
                    
                    // Add the CO2 to the CO2 array
-                   addValue(&co2,&co2Index,x);  
+                   addValue(co2,&co2Index,x);  
                  
                    action += 6;
                 
@@ -292,9 +291,8 @@ int cmdProc(void){
           case 'R':  
           
           default :
-     
-     
+             // Add default behavior here if needed
+             return CMD_Error;
      }
   }
 }
-

@@ -123,6 +123,15 @@ unsigned int CheckSum(unsigned char* buf, int nbytes);
  */
 void addValue(int *arr, int *size, int value);
 
+extern unsigned int temp[];
+extern unsigned int hum[];
+extern unsigned int co2[];
+extern unsigned int tempIndex;
+extern unsigned int humIndex;
+extern unsigned int co2Index;
+
+
+
 #endif /* Uart_H_ */
 
 /** @} */ // End of Uart group

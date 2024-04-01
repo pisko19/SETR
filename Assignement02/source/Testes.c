@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "../header/Testes.h"
+#include "../header/Uart.h"
 
 void Teste_RxChar(void){
     int x;

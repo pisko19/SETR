@@ -16,6 +16,6 @@ main.o: ../source/main.c
 Uart.o: ../source/Uart.c ../header/Uart.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Testes.o: ../source/Testes.c ../header/Testes.h
+Testes.o: ../source/Testes.c ../header/Testes.h 
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
