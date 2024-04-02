@@ -7,7 +7,7 @@ TARGETS = ass02
 
 all: $(TARGETS)
 
-ass02: main.o Uart.o Testes.o
+ass02: main.o Uart.o Testes.o unity.o
 	$(CXX) -o $@ $^ $(CXXFLAGS)
 
 main.o: ../source/main.c
@@ -17,5 +17,8 @@ Uart.o: ../source/Uart.c ../header/Uart.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 Testes.o: ../source/Testes.c ../header/Testes.h 
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+unity.o: ../source/unity.c ../header/unity.h ../header/unity.h 
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
