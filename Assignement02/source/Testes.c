@@ -5,22 +5,24 @@
 
 void Teste_RxChar(void){
     int x;
-    unsigned char y;
+    unsigned char y[UART_TX_SIZE];
     
     printf("\nTESTE RxChar:\n\nReturn of rxChar:   ");
-    for(int i=0;i<UART_RX_SIZE+2;i++){
-       x = rxChar('5');
+    for(unsigned int i=0;i<UART_RX_SIZE+2;i++){
+       x = rxChar((unsigned char)(i+'0'));
        printf("%d ",x);
     }
-    printf("\nValues of RxBuffer: ");
-    for (int i=0; i<UART_RX_SIZE+2; i++){
-       y=RxBuffer[i];
-       printf("%c ",y);
+    
+    printf("\nValues in RxBuffer: ");
+    getRxBuf(y,getRxBufLen());
+    for(int i=0;i<UART_RX_SIZE+2;i++){
+       printf("%c ",y[i]);
     }
-    printf("\nLength: %d ",RxBufferLen);
-    printf("\nResetRxChar\n");
+    
+    printf("\nReceiver buffer length: %d ",getRxBufLen());
+    printf("\nResetRxChar");
     ResetRxChar();
-    printf("Length: %d\n\n",RxBufferLen);
+    printf("\nReceiver buffer length: %d ",getRxBufLen());
 
 }
 
@@ -34,16 +36,17 @@ void Teste_TxChar(void){
        x = txChar('4');
        printf("%d ",x);
     }
+    
     printf("\nValues in TxBuffer: ");
-    getTxBuf(y,UART_TX_SIZE);
+    getTxBuf(y,getTxBufLen());
     for(int i=0;i<UART_TX_SIZE+2;i++){
        printf("%c ",y[i]);
     }
     
-    printf("\nLength: %d ",TxBufferLen);
-    printf("\nResetTxChar\n");
+    printf("\nTransmisser buffer Length: %d ",getTxBufLen());
+    printf("\nResetTxChar");
     ResetTxChar();
-    printf("Length: %d\n\n",TxBufferLen);
+    printf("\nTransmisser buffer Length: %d\n\n",getTxBufLen());
 }
 
 
@@ -63,29 +66,40 @@ void Teste_Proc(void){
     rxChar('!');
     
     int x;
-    unsigned char y;
-    printf("\nValues of RxBuffer: ");
-    for (int i=0; i<UART_RX_SIZE; i++){
-       y=RxBuffer[i];
-       printf("%c",y);
+    int y;
+    unsigned char yr[UART_RX_SIZE];
+    unsigned char yt[UART_TX_SIZE];
+    
+    printf("\nValues in RxBuffer: ");
+    getRxBuf(yr,UART_RX_SIZE);
+    for(int i=0;i<UART_RX_SIZE+2;i++){
+       printf("%c",yr[i]);
     }
+    
     printf("\nReturn of cmdProc: ");
     x=cmdProc();
-    printf("%d\n",x);
-    
-    char teste[UART_TX_SIZE];
-    getTxBuf(teste,TxBufferLen);
-    printf("Values of TxBuffer (First): %s\n",teste);
-    getTxBuf(teste,TxBufferLen);
-    printf("Values of TxBuffer (Second): %s\n",teste);
+    printf("%d\n\n",x);
+   
+    printf("Length Transmisser Buffer (First): %d\n",getTxBufLen());
+    y = getTxBuf(yt,getTxBufLen());
+    if(y==0)
+       printf("Values of TxBuffer (Second): %s\n",yt);
+    else
+       printf("TxBuffer is empty !\n",yt);
+       
+    printf("\nLength Transmisser Buffer (Second): %d\n",getTxBufLen());
+    y = getTxBuf(yt,getTxBufLen());
+    if(y==0)
+       printf("Values of TxBuffer (Second): %s\n",yt);
+    else
+       printf("TxBuffer is empty !\n",yt);
 }
 
 
 void Teste_Proc_Temp(void){
 
     unsigned char T[7] = {'#','P','t','+','7','0','!'};
-    char teste[UART_TX_SIZE];
-    unsigned char y;
+    unsigned char teste[UART_TX_SIZE];
     unsigned char X[7] = {'7','1','2','3','4','5','6'};
     int j = 0;
     int tSleep = 1;
@@ -105,19 +119,20 @@ void Teste_Proc_Temp(void){
             rxChar(T[i]);
           }
        }
-       printf("\nValues of RxBuffer : ");
-       for (int i=0; i<UART_RX_SIZE; i++){
-          y=RxBuffer[i];
-          printf("%c",y);
-        }
+       printf("\nValues in RxBuffer: ");
+       getRxBuf(teste,UART_RX_SIZE);
+       for(int i=0;i<UART_RX_SIZE+2;i++){
+           printf("%c",teste[i]);
+       }
     
        x = cmdProc();
        getTxBuf(teste,TxBufferLen);
+       
        printf("\nValues of TxBuffer : %s",teste);
        if(x == ValueError)
           printf("\nThe value of the temperature is incorrect !\n");
        else
-          printf("\nThe temperature is %d ºC\n",temp[0]);
+          printf("\nThe temperature is %d ºC\n",getInstantTemp());
        j++;
     }
     
@@ -136,11 +151,11 @@ void Teste_Proc_Temp(void){
             rxChar(T[i]);
           }
        }
-       printf("\nValues of RxBuffer : ");
-       for (int i=0; i<UART_RX_SIZE; i++){
-          y=RxBuffer[i];
-          printf("%c",y);
-        }
+       printf("\nValues in RxBuffer: ");
+       getRxBuf(teste,UART_RX_SIZE);
+       for(int i=0;i<UART_RX_SIZE+2;i++){
+           printf("%c",teste[i]);
+       }
     
        x = cmdProc();
        getTxBuf(teste,TxBufferLen);
@@ -148,7 +163,7 @@ void Teste_Proc_Temp(void){
        if(x == ValueError)
           printf("\nThe value of the temperature is incorrect !\n");
        else
-          printf("\nThe temperature is %d ºC\n",temp[0]);
+          printf("\nThe temperature is %d ºC\n",getInstantTemp());
        j++;
     }
 }
@@ -156,8 +171,8 @@ void Teste_Proc_Temp(void){
 
 void Teste_Proc_Hum(void){
 
-    unsigned char T[7] = {'#','P','h','0','0','0','!'};
-    char teste[UART_TX_SIZE];
+    char T[7] = {'#','P','h','0','0','0','!'};
+    unsigned char teste[UART_TX_SIZE];
     unsigned char y;
     int X = 0;
     int j = 0;
@@ -170,16 +185,16 @@ void Teste_Proc_Hum(void){
        ResetTxChar();
        ResetRxChar();
        sleep(tSleep);
-       numtoChar(X+j*15,&T,3);
+       numtoChar(X+j*15,T,3);
        
        for(int i=0; i<sizeof(T); i++)
             rxChar(T[i]);
             
-       printf("\nValues of RxBuffer : ");
-       for (int i=0; i<UART_RX_SIZE; i++){
-          y=RxBuffer[i];
-          printf("%c",y);
-        }
+       printf("\nValues in RxBuffer: ");
+       getRxBuf(teste,UART_RX_SIZE);
+       for(int i=0;i<UART_RX_SIZE+2;i++){
+           printf("%c",teste[i]);
+       }
     
        x = cmdProc();
        getTxBuf(teste,TxBufferLen);
@@ -187,7 +202,7 @@ void Teste_Proc_Hum(void){
        if(x == ValueError)
           printf("\nThe value of the humidity is incorrect !\n");
        else
-          printf("\nThe humidity is %d %\n",hum[0]);
+          printf("\nThe humidity is %d % \n",getInstantHum());
        j++;
     }
 }
@@ -195,8 +210,8 @@ void Teste_Proc_Hum(void){
 
 void Teste_Proc_CO2(void){
 
-    unsigned char T[9] = {'#','P','c','0','0','0','0','0','!'};
-    char teste[UART_TX_SIZE];
+    char T[9] = {'#','P','c','0','0','0','0','0','!'};
+    unsigned char teste[UART_TX_SIZE];
     unsigned char y;
     int X = 200;
     int j = 0;
@@ -209,16 +224,16 @@ void Teste_Proc_CO2(void){
        ResetTxChar();
        ResetRxChar();
        sleep(tSleep);
-       numtoChar(X+j*2500,&T,5);
+       numtoChar(X+j*2500,T,5);
        
        for(int i=0; i<sizeof(T); i++)
             rxChar(T[i]);
           
-       printf("\nValues of RxBuffer : ");
-       for (int i=0; i<UART_RX_SIZE; i++){
-          y=RxBuffer[i];
-          printf("%c",y);
-        }
+       printf("\nValues in RxBuffer: ");
+       getRxBuf(teste,UART_RX_SIZE);
+       for(int i=0;i<UART_RX_SIZE+2;i++){
+           printf("%c",teste[i]);
+       }
     
        x = cmdProc();
        getTxBuf(teste,TxBufferLen);
@@ -226,16 +241,16 @@ void Teste_Proc_CO2(void){
        if(x == ValueError)
           printf("\nThe value of the CO2 is incorrect !\n");
        else
-          printf("\nThe CO2 is %d ppm\n",co2[0]);
+          printf("\nThe CO2 is %d ppm\n",getInstantCO2());
        j++;
     }
 }
 
 void Teste_Proc_All(void){
 
-    unsigned char T[17] = {'#','A','t','-','3','7','h','0','5','8','c','1','7','4','2','0','!'};
+    char T[17] = {'#','A','t','-','3','7','h','0','5','8','c','1','7','4','2','0','!'};
     unsigned char y;
-    char teste[UART_TX_SIZE];
+    unsigned char teste[UART_TX_SIZE];
     
     ResetTxChar();
     ResetRxChar();
@@ -243,11 +258,13 @@ void Teste_Proc_All(void){
         rxChar(T[i]);
             
     }
-    printf("\nValues of RxBuffer : ");
-    for(int i=0; i<UART_RX_SIZE; i++){
-        y=RxBuffer[i];
-        printf("%c",y);
+    
+    printf("\nValues in RxBuffer: ");
+    getRxBuf(teste,UART_RX_SIZE);
+    for(int i=0;i<UART_RX_SIZE+2;i++){
+        printf("%c",teste[i]);
     }
+    
     int x = cmdProc();
     getTxBuf(teste,TxBufferLen);
     printf("\nValues of TxBuffer : %s\n",teste);
@@ -256,12 +273,14 @@ void Teste_Proc_All(void){
        printf("\nThe value of the humidity is incorrect !");
        printf("\nThe value of the temperature is incorrect !");}
     else{
-       printf("\nThe CO2 is %d ppm",co2[0]);
-       printf("\nThe humidity is %d %",hum[0]);
-       printf("\nThe temperature is %d ºC\n",temp[0]);}
+       printf("\nThe CO2 is %d ppm",getInstantCO2());
+       printf("\nThe humidity is %d %",getInstantHum());
+       printf("\nThe temperature is %d ºC\n",getInstantTemp());}
 
 }
-void numtoChar(int num, unsigned char* array, int len) {
+
+
+void numtoChar(int num, char array[], int len) {
     char digits[len]; // Initialize digits array with size len
     for (int i = 0; i < len; i++)
         digits[i] = '0'; // Initialize digits array with zeros
@@ -284,7 +303,7 @@ void numtoChar(int num, unsigned char* array, int len) {
 void TESTE (void){
     unsigned char T[17] = {'#','A','t','-','3','7','h','0','5','8','c','1','7','4','2','0','!'};
     unsigned char y;
-    char teste[UART_TX_SIZE];
+    unsigned char teste[UART_TX_SIZE];
     
     ResetTxChar();
     ResetRxChar();

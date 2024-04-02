@@ -31,6 +31,17 @@
 #define Size_Error -4 /**< Size error status code */
 #define CMD_Error -5 /**< Command error status code */
 
+static unsigned int hum[MAX_SIZE];
+static unsigned int co2[MAX_SIZE];
+static unsigned int temp[MAX_SIZE];
+static unsigned char RxBuffer[UART_RX_SIZE];
+static unsigned char TxBuffer[UART_TX_SIZE];
+static unsigned char RxBufferLen = 0;
+static unsigned char TxBufferLen = 0;
+static unsigned int tempIndex = 0;
+static unsigned int humIndex = 0;
+static unsigned int co2Index = 0;
+
 /**
  * @brief Process a received command.
  *
@@ -72,6 +83,7 @@ int rxChar(unsigned char character);
  */
 int txChar(unsigned char character);
 
+
 /**
  * @brief Reset the receive buffer.
  *
@@ -101,6 +113,42 @@ void ResetTxChar(void);
 int getTxBuf(unsigned char* buf, int len);
 
 /**
+ * @brief Get the transmit buffer lenght.
+ *
+ * This function return the transmit buffer lenght.
+ *
+ * @return Status code:
+ *         - TxBufferLen if successful.
+ *         - Size_Error if the transmit buffer length is bigger than UART_TX_SIZE.
+ */
+int getTxBufLen(void);
+
+/**
+ * @brief Get the receiver buffer.
+ *
+ * This function copies the receiver buffer contents to a specified buffer.
+ *
+ * @param buf Pointer to the buffer to store the receiver buffer contents.
+ * @param len Length of the buffer.
+ *
+ * @return Status code:
+ *         - END if successful.
+ *         - Len_Error if the receiver buffer is empty.
+ */
+int getRxBuf(unsigned char* buf, int len);
+
+/**
+ * @brief Get the receiver buffer lenght.
+ *
+ * This function return the receiver buffer lenght.
+ *
+ * @return Status code:
+ *         - RxBufferLen if successful.
+ *         - Size_Error if the transmit buffer length is bigger than UART_TX_SIZE.
+ */
+int getRxBufLen(void);
+
+/**
  * @brief Calculate the checksum of a string.
  *
  * This function calculates the checksum of a string.
@@ -123,13 +171,32 @@ unsigned int CheckSum(unsigned char* buf, int nbytes);
  */
 void addValue(int *arr, int *size, int value);
 
-extern unsigned int temp[];
-extern unsigned int hum[];
-extern unsigned int co2[];
-extern unsigned int tempIndex;
-extern unsigned int humIndex;
-extern unsigned int co2Index;
+/**
+ * @brief Get the instant temperature.
+ *
+ * This function retunrs the instant temperature.
+ *
+ * @return The instant temperature.
+ */
+int getInstantTemp(void);
 
+/**
+ * @brief Get the instant humidity.
+ *
+ * This function returns the instant humidity.
+ *
+ * @return The instant temperature.
+ */
+int getInstantHum(void);
+
+/**
+ * @brief Get the instant CO2.
+ *
+ * This function returns the instant CO2.
+ *
+ * @return The instant temperature.
+ */
+int getInstantCO2(void);
 
 
 #endif /* Uart_H_ */
