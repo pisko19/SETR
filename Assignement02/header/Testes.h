@@ -4,6 +4,10 @@
 /**
  * @file Testes.h
  * @brief Header file containing declarations of functions for testing the UART module.
+ * \author Pedro Afonso, 104206
+ * \author Carlos Teixeira 103187
+ * \date 01/04/2024
+ * \brief Functions and structures for testing UART communication.
  */
 
 /**
@@ -42,7 +46,7 @@ void Teste_Proc_CO2(void);
 void Teste_Proc_All(void);
 
 /**
- * @brief Utility function to convert a number to a character array.
+ * @brief Utility function to convert a number to a character array. This function was based on chatGPT.
  * 
  * @param num The number to be converted.
  * @param array Pointer to the character array where the result will be stored.

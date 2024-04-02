@@ -2,6 +2,16 @@
 #include <unistd.h>
 #include "../header/Testes.h"
 #include "../header/Uart.h"
+#include "unity.h"
+
+void setUp(void) {
+    // Initialize resources before each test case
+}
+
+// Test fixture teardown function (optional)
+void tearDown(void) {
+    // Clean up resources after each test case
+}
 
 void Teste_RxChar(void){
     int x;

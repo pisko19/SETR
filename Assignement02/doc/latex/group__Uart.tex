@@ -45,10 +45,22 @@ void \mbox{\hyperlink{group__Uart_gaaf799f6c05312f43107024da9378761a}{Reset\+Tx\
 \begin{DoxyCompactList}\small\item\em Reset the transmit buffer. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{group__Uart_ga041e482d7c9408e7dfaaafee90efd950}{get\+Tx\+Buf}} (unsigned char $\ast$buf, int len)
 \begin{DoxyCompactList}\small\item\em Get the transmit buffer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_ga213c0124a9aa231dcb94527f77c445e9}{get\+Tx\+Buf\+Len}} (void)
+\begin{DoxyCompactList}\small\item\em Get the transmit buffer lenght. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_gabe48c57f9125519dd9db20c761b825cf}{get\+Rx\+Buf}} (unsigned char $\ast$buf, int len)
+\begin{DoxyCompactList}\small\item\em Get the receiver buffer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_ga8cb22b6cd257b5236e7a43ed24d53889}{get\+Rx\+Buf\+Len}} (void)
+\begin{DoxyCompactList}\small\item\em Get the receiver buffer lenght. \end{DoxyCompactList}\item 
 unsigned int \mbox{\hyperlink{group__Uart_ga77e129fc98b3b9c3c28ae4eab0c88fe3}{Check\+Sum}} (unsigned char $\ast$buf, int nbytes)
 \begin{DoxyCompactList}\small\item\em Calculate the checksum of a string. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{group__Uart_ga776c25f8b6461c270e977f43606396c0}{add\+Value}} (int $\ast$arr, int $\ast$size, int value)
-\begin{DoxyCompactList}\small\item\em Add a value to an array with shifting. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Add a value to an array with shifting. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_ga331baff64d96016e56ce2f2dab0016ac}{get\+Instant\+Temp}} (void)
+\begin{DoxyCompactList}\small\item\em Get the instant temperature. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_ga8937ee329d1a8100955fb7181a52a7da}{get\+Instant\+Hum}} (void)
+\begin{DoxyCompactList}\small\item\em Get the instant humidity. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_gaae66e095303035cfcad38b5b197e0e98}{get\+Instant\+CO2}} (void)
+\begin{DoxyCompactList}\small\item\em Get the instant CO2. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -192,6 +204,96 @@ Status code\+:
 \item CMD\+\_\+\+Error if there is a command error. 
 \end{DoxyItemize}
 \end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_gaae66e095303035cfcad38b5b197e0e98}\label{group__Uart_gaae66e095303035cfcad38b5b197e0e98}} 
+\index{UART Communication@{UART Communication}!getInstantCO2@{getInstantCO2}}
+\index{getInstantCO2@{getInstantCO2}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{getInstantCO2()}{getInstantCO2()}}
+{\footnotesize\ttfamily int get\+Instant\+CO2 (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Get the instant CO2. 
+
+This function returns the instant CO2.
+
+\begin{DoxyReturn}{Returns}
+The instant temperature. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_ga8937ee329d1a8100955fb7181a52a7da}\label{group__Uart_ga8937ee329d1a8100955fb7181a52a7da}} 
+\index{UART Communication@{UART Communication}!getInstantHum@{getInstantHum}}
+\index{getInstantHum@{getInstantHum}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{getInstantHum()}{getInstantHum()}}
+{\footnotesize\ttfamily int get\+Instant\+Hum (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Get the instant humidity. 
+
+This function returns the instant humidity.
+
+\begin{DoxyReturn}{Returns}
+The instant temperature. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_ga331baff64d96016e56ce2f2dab0016ac}\label{group__Uart_ga331baff64d96016e56ce2f2dab0016ac}} 
+\index{UART Communication@{UART Communication}!getInstantTemp@{getInstantTemp}}
+\index{getInstantTemp@{getInstantTemp}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{getInstantTemp()}{getInstantTemp()}}
+{\footnotesize\ttfamily int get\+Instant\+Temp (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Get the instant temperature. 
+
+This function retunrs the instant temperature.
+
+\begin{DoxyReturn}{Returns}
+The instant temperature. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_gabe48c57f9125519dd9db20c761b825cf}\label{group__Uart_gabe48c57f9125519dd9db20c761b825cf}} 
+\index{UART Communication@{UART Communication}!getRxBuf@{getRxBuf}}
+\index{getRxBuf@{getRxBuf}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{getRxBuf()}{getRxBuf()}}
+{\footnotesize\ttfamily int get\+Rx\+Buf (\begin{DoxyParamCaption}\item[{unsigned char $\ast$}]{buf,  }\item[{int}]{len }\end{DoxyParamCaption})}
+
+
+
+Get the receiver buffer. 
+
+This function copies the receiver buffer contents to a specified buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & Pointer to the buffer to store the receiver buffer contents. \\
+\hline
+{\em len} & Length of the buffer.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code\+:
+\begin{DoxyItemize}
+\item END if successful.
+\item Len\+\_\+\+Error if the receiver buffer is empty. 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_ga8cb22b6cd257b5236e7a43ed24d53889}\label{group__Uart_ga8cb22b6cd257b5236e7a43ed24d53889}} 
+\index{UART Communication@{UART Communication}!getRxBufLen@{getRxBufLen}}
+\index{getRxBufLen@{getRxBufLen}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{getRxBufLen()}{getRxBufLen()}}
+{\footnotesize\ttfamily int get\+Rx\+Buf\+Len (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Get the receiver buffer lenght. 
+
+This function return the receiver buffer lenght.
+
+\begin{DoxyReturn}{Returns}
+Status code\+:
+\begin{DoxyItemize}
+\item Rx\+Buffer\+Len if successful.
+\item Size\+\_\+\+Error if the transmit buffer length is bigger than UART\+\_\+\+TX\+\_\+\+SIZE. 
+\end{DoxyItemize}
+\end{DoxyReturn}
 \mbox{\Hypertarget{group__Uart_ga041e482d7c9408e7dfaaafee90efd950}\label{group__Uart_ga041e482d7c9408e7dfaaafee90efd950}} 
 \index{UART Communication@{UART Communication}!getTxBuf@{getTxBuf}}
 \index{getTxBuf@{getTxBuf}!UART Communication@{UART Communication}}
@@ -216,6 +318,25 @@ Status code\+:
 \begin{DoxyItemize}
 \item END if successful.
 \item Len\+\_\+\+Error if the transmit buffer is empty. 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_ga213c0124a9aa231dcb94527f77c445e9}\label{group__Uart_ga213c0124a9aa231dcb94527f77c445e9}} 
+\index{UART Communication@{UART Communication}!getTxBufLen@{getTxBufLen}}
+\index{getTxBufLen@{getTxBufLen}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{getTxBufLen()}{getTxBufLen()}}
+{\footnotesize\ttfamily int get\+Tx\+Buf\+Len (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Get the transmit buffer lenght. 
+
+This function return the transmit buffer lenght.
+
+\begin{DoxyReturn}{Returns}
+Status code\+:
+\begin{DoxyItemize}
+\item Tx\+Buffer\+Len if successful.
+\item Size\+\_\+\+Error if the transmit buffer length is bigger than UART\+\_\+\+TX\+\_\+\+SIZE. 
 \end{DoxyItemize}
 \end{DoxyReturn}
 \mbox{\Hypertarget{group__Uart_ga9673956bc68b02d05c4957ab1b40724c}\label{group__Uart_ga9673956bc68b02d05c4957ab1b40724c}} 

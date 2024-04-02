@@ -109,15 +109,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Test
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Testes_8h.html#acd5a992dd6fa87988049138f7efdb7a7">Teste_Proc_All</a> (void)</td></tr>
 <tr class="memdesc:acd5a992dd6fa87988049138f7efdb7a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a test for the combined processing functionality. <br /></td></tr>
 <tr class="separator:acd5a992dd6fa87988049138f7efdb7a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69f892a85645643ac6f29f9a13c1aa9b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Testes_8h.html#a69f892a85645643ac6f29f9a13c1aa9b">numtoChar</a> (int num, unsigned char *array, int len)</td></tr>
-<tr class="memdesc:a69f892a85645643ac6f29f9a13c1aa9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility function to convert a number to a character array.  <a href="Testes_8h.html#a69f892a85645643ac6f29f9a13c1aa9b">More...</a><br /></td></tr>
-<tr class="separator:a69f892a85645643ac6f29f9a13c1aa9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25e423b364de0cfc1fc2a38ae529b1c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Testes_8h.html#a25e423b364de0cfc1fc2a38ae529b1c0">numtoChar</a> (int num, char array[], int len)</td></tr>
+<tr class="memdesc:a25e423b364de0cfc1fc2a38ae529b1c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utility function to convert a number to a character array. This function was based on chatGPT.  <a href="Testes_8h.html#a25e423b364de0cfc1fc2a38ae529b1c0">More...</a><br /></td></tr>
+<tr class="separator:a25e423b364de0cfc1fc2a38ae529b1c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header file containing declarations of functions for testing the UART module. </p>
+<dl class="section author"><dt>Author</dt><dd>Pedro Afonso, 104206 </dd>
+<dd>
+Carlos Teixeira 103187 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>01/04/2024</dd></dl>
+<p>Functions and structures for testing UART communication. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a69f892a85645643ac6f29f9a13c1aa9b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a69f892a85645643ac6f29f9a13c1aa9b">&#9670;&nbsp;</a></span>numtoChar()</h2>
+<a id="a25e423b364de0cfc1fc2a38ae529b1c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25e423b364de0cfc1fc2a38ae529b1c0">&#9670;&nbsp;</a></span>numtoChar()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -131,8 +136,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Test
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned char *&#160;</td>
-          <td class="paramname"><em>array</em>, </td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>array</em>[], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -148,7 +153,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Test
       </table>
 </div><div class="memdoc">
 
-<p>Utility function to convert a number to a character array. </p>
+<p>Utility function to convert a number to a character array. This function was based on chatGPT. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">num</td><td>The number to be converted. </td></tr>
