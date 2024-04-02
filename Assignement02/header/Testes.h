@@ -48,6 +48,6 @@ void Teste_Proc_All(void);
  * @param array Pointer to the character array where the result will be stored.
  * @param len Length of the character array.
  */
-void numtoChar(int num, unsigned char* array, int len);
+void numtoChar(int num, char array[], int len);
 
 #endif

@@ -3,33 +3,16 @@
 
 #include "../header/Uart.h"
 
-
-static unsigned char RxBuffer[UART_RX_SIZE];
-static unsigned char TxBuffer[UART_TX_SIZE];
-static unsigned char RxBufferLen = 0;
-static unsigned char TxBufferLen = 0;
-
-unsigned int temp[MAX_SIZE];
-unsigned int hum[MAX_SIZE];
-unsigned int co2[MAX_SIZE];
-unsigned int tempIndex = 0;
-unsigned int humIndex = 0;
-unsigned int co2Index = 0;
-
-
 int rxChar(unsigned char character){
-
   if(RxBufferLen < UART_RX_SIZE){
      RxBuffer[RxBufferLen] = character;
      RxBufferLen++;
      return END;
   }
   return Size_Error;
-
 }
 
 int txChar(unsigned char character){
-
   if(TxBufferLen < UART_TX_SIZE){
      TxBuffer[TxBufferLen] = character;
      TxBufferLen++;
@@ -38,35 +21,57 @@ int txChar(unsigned char character){
   return Size_Error;
 }
 
-void ResetRxChar(void){
-
-  memset(RxBuffer, 0, UART_RX_SIZE); // Reset RxBuffer
-  RxBufferLen = 0; // Reset RxBufferLen
+void ResetRxChar(){
+  memset(RxBuffer, 0, UART_RX_SIZE);
+  RxBufferLen = 0;
 }
 
 void ResetTxChar(void){
+  memset(TxBuffer, 0, UART_TX_SIZE);
+  TxBufferLen = 0;
+}
 
-  memset(TxBuffer, 0, UART_RX_SIZE); // Reset RxBuffer
-  TxBufferLen = 0; // Reset RxBufferLen
-
+int getTxBufLen(void){
+  if(TxBufferLen <= UART_TX_SIZE)
+     return TxBufferLen;
+  else
+     return Size_Error;
 }
 
 int getTxBuf(unsigned char *buf,int len){
-  if(TxBufferLen == 0){
-     return Len_Error; 
-  }
+  if(TxBufferLen == 0)
+     return Len_Error;
   
   if(len > 0){
      memcpy(buf,TxBuffer,len);
      buf[len] = '\0';
-     memmove(TxBuffer, TxBuffer+len, sizeof(TxBuffer)-len);
-     TxBuffer[sizeof(TxBuffer)-len] = '\0';
+     memmove(TxBuffer, TxBuffer+len, TxBufferLen-len);
+     TxBufferLen-=len;
+     TxBuffer[TxBufferLen] = '\0';
      return END;
   }
-  else{
+  else
      return Len_Error;
-  }
+}
+
+int getRxBufLen(void){
+  if(RxBufferLen <= UART_RX_SIZE)
+     return RxBufferLen;
+  else
+     return Size_Error;
+}
+
+int getRxBuf(unsigned char *buf,int len){
+  if(RxBufferLen == 0)
+     return Len_Error; 
   
+  if(len > 0){
+     memcpy(buf,RxBuffer,len);
+     buf[len] = '\0';
+     return END;
+  }
+  else
+     return Len_Error;
 }
 
 unsigned int CheckSum(unsigned char* buf, int nbytes){
@@ -82,14 +87,27 @@ unsigned int CheckSum(unsigned char* buf, int nbytes){
 }
 void addValue(unsigned int *arr, unsigned int *size, int value) {
     for(unsigned int i = *size; i > 0; i--) {
-        arr[i] = arr[i - 1];
+        arr[i] = arr[i-1];
     }
     arr[0] = (unsigned int)value;
    
-    if(*size < MAX_SIZE - 1) {
+    if(*size < MAX_SIZE-1) {
         (*size)++;
     }
 }
+
+int getInstantTemp(void){
+   return temp[0];
+}
+
+int getInstantHum(void){
+   return hum[0];
+}
+
+int getInstantCO2(void){
+   return co2[0];
+}
+
 
 int cmdProc(void){
 
@@ -97,15 +115,14 @@ int cmdProc(void){
   unsigned char* action;
   unsigned int check;
   
-  if(RxBufferLen == 0){
+  if(RxBufferLen == 0)
      return Len_Error;
-  }
   
   for(i=0; i<RxBufferLen; i++){
-     if(RxBuffer[i] == SOS){
+     if(RxBuffer[i] == SOS)
         break;
-     }
   }
+  
   if(i < RxBufferLen){
     switch(RxBuffer[i+1]){
           case 'P':
@@ -135,17 +152,18 @@ int cmdProc(void){
                  // Add the temperature to the temperature array
                  addValue(temp,&tempIndex,x);
                  
+                 
                  // Send the chars to the TxBuffer with the CheckSum byte
                  for(int i=0;i<RxBufferLen;i++){
                     if(i==RxBufferLen-1){  
-                    txChar((unsigned char)(check));
+                      txChar((unsigned char)(check));
                     }
                     else {
                       txChar((unsigned char)(RxBuffer[i]));
                     }
                  }
-                 
                  txChar((unsigned char)(RxBuffer[RxBufferLen-1]));
+                 
                  return END;
               }
               // Case Humidity
@@ -295,4 +313,7 @@ int cmdProc(void){
              return CMD_Error;
      }
   }
+  else
+     return Len_Error;
+  
 }
