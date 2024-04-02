@@ -19,6 +19,6 @@ Uart.o: ../source/Uart.c ../header/Uart.h
 Testes.o: ../source/Testes.c ../header/Testes.h 
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-unity.o: ../source/unity.c ../header/unity.h ../header/unity.h 
+unity.o: ../source/unity.c ../header/unity.h ../header/unity_internals.h 
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
