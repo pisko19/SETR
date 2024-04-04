@@ -3,7 +3,7 @@
 #include <string.h>
 #include "../header/Testes.h"
 #include "../header/Uart.h"
-//#include <unity.h>
+#include "../header/unity.h"
 
 void setUp(void) {
     // Initialize resources before each test case
