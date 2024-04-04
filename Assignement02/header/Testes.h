@@ -43,7 +43,7 @@ void Teste_Proc_CO2(void);
 /**
  * @brief Performs a test for the combined processing functionality.
  */
-void Teste_Proc_All(void);
+void Teste_Proc_A(void);
 
 /**
  * @brief Performs a test for returning the lastest 20 values of the combined processing functionality.

@@ -3,6 +3,30 @@
 
 #include "../header/Uart.h"
 
+static unsigned int hum[MAX_SIZE];
+static unsigned int co2[MAX_SIZE];
+static unsigned int temp[MAX_SIZE];
+static unsigned char RxBuffer[UART_RX_SIZE];
+static unsigned char TxBuffer[UART_TX_SIZE];
+static unsigned char RxBufferLen;
+static unsigned char TxBufferLen;
+static unsigned int tempIndex;
+static unsigned int humIndex;
+static unsigned int co2Index;
+
+void init(void){
+   tempIndex = 0;
+   humIndex = 0;
+   co2Index = 0;
+   ResetRxChar();
+   ResetTxChar();
+   for(int i = 0;i<MAX_SIZE;i++){
+      temp[i] = -100;
+      hum[i] = -1;
+      co2[i] = 0;
+   }
+}
+
 int rxChar(unsigned char character){
   if(RxBufferLen < UART_RX_SIZE){
      RxBuffer[RxBufferLen] = character;
@@ -75,6 +99,13 @@ int getRxBuf(unsigned char *buf,int len){
      return Len_Error;
 }
 
+void erraseRxBuf(int len){
+  memmove(RxBuffer, RxBuffer+len, RxBufferLen-len);
+  RxBufferLen-=len;
+  RxBuffer[RxBufferLen] = '\0';
+
+}
+
 unsigned int CheckSum(unsigned char* buf, int nbytes){
   unsigned int sum = 0;
   
@@ -139,6 +170,7 @@ int cmdProc(void){
   int i;
   unsigned char* action;
   unsigned int check;
+  unsigned char copy[RxBufferLen];
   
   if(RxBufferLen == 0)
      return Len_Error;
@@ -185,6 +217,8 @@ int cmdProc(void){
                  }
                  txChar((unsigned char)(RxBuffer[RxBufferLen-1]));
                  numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+                 
+                 erraseRxBuf(RxBufferLen);
                  return END;
               }
               
@@ -214,6 +248,8 @@ int cmdProc(void){
                  }
                  txChar((unsigned char)(RxBuffer[RxBufferLen-1]));
                  numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+                 
+                 erraseRxBuf(RxBufferLen);
                  return END;
               }
               
@@ -237,13 +273,14 @@ int cmdProc(void){
                        txChar('0');
                        txChar('0');
                     }
-                    else 
+                    else {
                       txChar((unsigned char)(RxBuffer[i]));
-                      
-                    
+                    }
                  }
                  txChar((unsigned char)(RxBuffer[RxBufferLen-1]));
                  numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+                 
+                 erraseRxBuf(RxBufferLen);
                  return END;
               }
               
@@ -300,27 +337,29 @@ int cmdProc(void){
                }
                check = CheckSum(&RxBuffer[i+1],15);
                for(int i=0;i<RxBufferLen;i++){
-                    if(i==RxBufferLen-1){  
-                      txChar('0');
-                      txChar('0');
-                      txChar('0');
+                    if(i==RxBufferLen-1){
+                       txChar('0');
+                       txChar('0');
+                       txChar('0');
                     }
                     else {
                       txChar((unsigned char)(RxBuffer[i]));
                     }
                  }
-               txChar((unsigned char)(RxBuffer[RxBufferLen-1]));
-               numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+                 txChar((unsigned char)(RxBuffer[RxBufferLen-1]));
+                 numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+                 
+                 erraseRxBuf(RxBufferLen);
                return END;
           
           
           case 'L':
              check = CheckSum(&RxBuffer[i+1],1);
              for(int i=0;i<RxBufferLen;i++){
-                    if(i==RxBufferLen-1){  
-                      txChar('0');
-                      txChar('0');
-                      txChar('0');
+                    if(i==RxBufferLen-1){
+                       txChar('0');
+                       txChar('0');
+                       txChar('0');
                     }
                     else {
                       txChar((unsigned char)(RxBuffer[i]));
@@ -328,8 +367,8 @@ int cmdProc(void){
                  }
              txChar((unsigned char)(RxBuffer[RxBufferLen-1]));
              numtoChar(&TxBuffer[TxBufferLen-2],check,3);
-             
-             return END;
+             erraseRxBuf(RxBufferLen);
+             return END_L;
              
              
           case 'R':  
@@ -343,18 +382,18 @@ int cmdProc(void){
               }
               check = CheckSum(&RxBuffer[i+1],1);
               for(int i=0;i<RxBufferLen;i++){
-                    if(i==RxBufferLen-1){  
-                      txChar('0');
-                      txChar('0');
-                      txChar('0');
+                    if(i==RxBufferLen-1){
+                       txChar('0');
+                       txChar('0');
+                       txChar('0');
                     }
                     else {
                       txChar((unsigned char)(RxBuffer[i]));
                     }
                  }
-             txChar((unsigned char)(RxBuffer[RxBufferLen-1]));
-             numtoChar(&TxBuffer[TxBufferLen-2],check,3);
-             
+               txChar((unsigned char)(RxBuffer[RxBufferLen-1]));
+               numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+               erraseRxBuf(RxBufferLen);
              return END;
              
           default :

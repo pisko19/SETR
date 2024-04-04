@@ -24,11 +24,8 @@ void Teste_RxChar(void){
        printf("%d ",x);
     }
     
-    printf("\nValues in RxBuffer: ");
     getRxBuf(y,getRxBufLen());
-    for(int i=0;i<UART_RX_SIZE+2;i++){
-       printf("%c ",y[i]);
-    }
+    printf("\nValues in RxBuffer: %s",y);
     
     printf("\nReceiver buffer length: %d",getRxBufLen());
     printf("\nResetRxChar");
@@ -48,11 +45,8 @@ void Teste_TxChar(void){
        printf("%d ",x);
     }
     
-    printf("\nValues in TxBuffer: ");
-    getTxBuf(y,getTxBufLen());
-    for(int i=0;i<UART_TX_SIZE+2;i++){
-       printf("%c ",y[i]);
-    }
+    getRxBuf(y,getRxBufLen());
+    printf("\nValues in RxBuffer: %s",y);
     
     printf("\nTransmisser buffer Length: %d ",getTxBufLen());
     printf("\nResetTxChar");
@@ -62,16 +56,15 @@ void Teste_TxChar(void){
 
 
 void Teste_Proc(void){
-    printf("\n\nTESTE cmdProc :\n");
-    ResetTxChar();
-    ResetRxChar();
+    printf("\n\nTESTE cmdProc :\n\n");
+    init();
     
     rxChar('#');
-    rxChar('L');
-    //rxChar('t');
-    //rxChar('-');
-    //rxChar('2');
-    //rxChar('0');
+    rxChar('P');
+    rxChar('t');
+    rxChar('-');
+    rxChar('2');
+    rxChar('0');
     //rxChar('0');
     //rxChar('0');
     rxChar('!');
@@ -81,15 +74,27 @@ void Teste_Proc(void){
     unsigned char yr[UART_RX_SIZE];
     unsigned char yt[UART_TX_SIZE];
     
-    printf("\nValues in RxBuffer: ");
-    getRxBuf(yr,UART_RX_SIZE);
-    for(int i=0;i<UART_RX_SIZE+2;i++){
-       printf("%c",yr[i]);
-    }
+    printf("Before cmdProc call:\n"
+           "Length Receiver Buffer : %d\n",getRxBufLen());
+           
+    y = getRxBuf(yr,getRxBufLen());
+    if(y==0)
+       printf("Values of RxBuffer : %s\n\n",yr);
+    else
+       printf("RxBuffer is empty !\n\n");
     
-    printf("\nReturn of cmdProc: ");
+    printf("Return of cmdProc: ");
     x=cmdProc();
     printf("%d\n\n",x);
+    
+    printf("After cmdProc call:\n"
+           "Length Receiver Buffer : %d\n",getRxBufLen());
+    y = getRxBuf(yr,getRxBufLen());
+    if(y==0)
+       printf("Values of TxBuffer (Second): %s\n\n",yr);
+    else
+       printf("RxBuffer is empty !\n\n");
+       
    
     printf("FIRST getTxBuf call:\n"
            "Length Transmisser Buffer (First): %d\n",getTxBufLen());
@@ -122,8 +127,7 @@ void Teste_Proc_Temp(void){
     while(1){
        memset(rx, '\0', UART_RX_SIZE);
        memset(tx, '\0', UART_TX_SIZE);
-       ResetTxChar();
-       ResetRxChar();
+       init();
        
        printf("\nWhat temperature you want to teste ?\n(Values accepted -99 to 99, Values correct -50 to 60, Else is exit values)\n");
        scanf("%d",&temperature);
@@ -144,7 +148,7 @@ void Teste_Proc_Temp(void){
        for(int i=0; i<sizeof(T); i++)
             rxChar(T[i]);
             
-       getRxBuf(rx,UART_RX_SIZE);
+       getRxBuf(rx,getRxBufLen());
        printf("\n------------------------------------------\n"
               "\nValues in RxBuffer : %s",rx);
     
@@ -173,10 +177,9 @@ void Teste_Proc_Hum(void){
     printf("\nTESTE HUMIDITY:\n");
     
     while(1){
-       ResetTxChar();
-       ResetRxChar();
        memset(rx, '\0', UART_RX_SIZE);
        memset(tx, '\0', UART_TX_SIZE);
+       init();
        
        printf("\nWhat humidity you want to teste ?\n(Values accepted 0 to 999, Values correct 0 to 100, Else is exit values)\n");
        scanf("%d",&humidity);
@@ -191,7 +194,7 @@ void Teste_Proc_Hum(void){
        for(int i=0; i<sizeof(T); i++)
             rxChar(T[i]);
             
-       getRxBuf(rx,UART_RX_SIZE);
+       getRxBuf(rx,getRxBufLen());
        printf("\n------------------------------------------\n"
               "\nValues in RxBuffer : %s",rx);
     
@@ -219,10 +222,9 @@ void Teste_Proc_CO2(void){
     printf("\nTESTE CO2:\n");
     
     while(1){
-       ResetTxChar();
-       ResetRxChar();
        memset(rx, '\0', UART_RX_SIZE);
        memset(tx, '\0', UART_TX_SIZE);
+       init();
        
        printf("\nWhat CO2 you want to teste ?\n(Values accepted 0 to 99999, Values correct 400 to 20000, Else is exit values)\n");
        scanf("%d",&co2);
@@ -236,7 +238,7 @@ void Teste_Proc_CO2(void){
        for(int i=0; i<sizeof(T); i++)
             rxChar(T[i]);
           
-       getRxBuf(rx,UART_RX_SIZE);
+       getRxBuf(rx,getRxBufLen());
        printf("\n------------------------------------------\n"
               "\nValues in RxBuffer : %s",rx);
     
@@ -253,7 +255,7 @@ void Teste_Proc_CO2(void){
     }
 }
 
-void Teste_Proc_All(void){
+void Teste_Proc_A(void){
 
     unsigned char T[6][17] = {{'#','A','t','+','0','0','h','0','0','0','c','0','0','0','0','0','!'},
                               {'#','A','t','+','0','0','c','0','0','0','0','0','h','0','0','0','!'},
@@ -274,10 +276,9 @@ void Teste_Proc_All(void){
     scanf("%d",&temperature);
        
     while(1){
-       ResetTxChar();
-       ResetRxChar();
        memset(rx, '\0', UART_RX_SIZE);
        memset(tx, '\0', UART_TX_SIZE);
+       init();
        
        do{
        printf("\nWhat format you want to teste ?\n"
@@ -320,7 +321,7 @@ void Teste_Proc_All(void){
            rxChar(T2[i]);
        }
     
-       getRxBuf(rx,UART_RX_SIZE);
+       getRxBuf(rx,getRxBufLen());
        printf("\n------------------------------------------\n"
               "\nValues in RxBuffer : %s",rx);
                  
@@ -349,35 +350,92 @@ void Teste_Proc_All(void){
 
 
 void Teste_Proc_L(void){
-    unsigned char T[3] = {'#','L','!'};
-    unsigned char T2[7] = {'#','P','t','+','0','0','!'};
+    unsigned char T1[7] = {'#','P','t','+','0','0','!'};
+    unsigned char T2[7] = {'#','P','h','0','0','0','!'};
+    unsigned char T3[9] = {'#','P','c','0','0','0','0','0','!'};
+    unsigned char T4[17] = {'#','A','t','+','0','0','h','0','0','0','c','0','0','0','0','0','!'};
+    unsigned char T5[3] = {'#','L','!'};
     unsigned char rx[UART_RX_SIZE];
     unsigned char tx[UART_TX_SIZE];
     unsigned int* temperature;
     unsigned int* humidity;
     unsigned int* co2;
+    int choice,temp,hum,CO2;
     
-    for(int i=0; i<3; i++) 
-            rxChar(T[i]);
-          
-    getRxBuf(rx,UART_RX_SIZE);
+    init();
     printf("\n------------------------------------------\n"
-           "\nValues in RxBuffer : %s",rx);
+           "\nWHAT DO YOU WANT TO DO ?"
+           "\n0) EXIT"
+           "\n1) Adding a temperature value"
+           "\n2) Adding a humidity value"
+           "\n3) Adding a CO2 value"
+           "\n4) Adding all values"
+           "\n5) Read the lastest 20 values of all type");
+    scanf("%d",&choice);
+    
+    while(choice!=0){
+    switch(choice){
+       case 1:
+          printf("\nWhat temperature you want to put ?");
+          scanf("%d",&temp);
+          if(temp>0)
+              numtoChar(&T1[5],temperature,2);
+          else{
+              T2[3] = '-';
+              numtoChar(&T1[5],-temperature,2);
+          }
+          for(int i=0; i<7; i++) 
+              rxChar(T1[i]);
+        case 2:
+          printf("\nWhat humidity you want to put ?");
+          scanf("%d",&hum);
+          numtoChar(&T2[5],hum,3);
+          for(int i=0; i<7; i++) 
+              rxChar(T2[i]);
+        case 3:
+          printf("\nWhat CO2 you want to put ?");
+          scanf("%d",&CO2);
+          numtoChar(&T3[15],CO2,5);
+          for(int i=0; i<17; i++) 
+              rxChar(T3[i]);
+        case 4:
+         
+        case 5:
+          for(int i=0; i<3; i++) 
+              rxChar(T5[i]);
+    }
+          
+    getRxBuf(rx,getRxBufLen());
+    printf("\nValues in RxBuffer : %s",rx);
     
     int x = cmdProc();
     getTxBuf(tx,getTxBufLen());
        
     printf("\nValues of TxBuffer : %s"
-           "\nReturn of cmdProc  : %d"
-          "\n------------------------------------------\n",tx,x);
-              
+           "\nReturn of cmdProc  : %d",tx,x);
+           
+    if(x==END_L){          
     temperature = getTemp();
     humidity = getHum();
     co2 = getCO2();
-       
-    printf("Size of int: %zu bytes\n", sizeof(int));
-    printf("%d %d",temperature+4,*(temperature+4));
-
+    
+    printf("\n\nLAST 20 TEMPERATURE VALUES\n");
+    for(unsigned int* i = temperature; i<(temperature+MAX_SIZE); i++){
+       printf("%d ",*i); 
+    }
+    printf("\n\nLAST 20 HUMIDITY VALUES\n");
+    for(unsigned int* i = humidity; i<(humidity+MAX_SIZE); i++){
+       printf("%d ",*i); 
+    }
+    printf("\n\nLAST 20 CO2 VALUES\n");
+    for(unsigned int* i = co2; i<(co2+MAX_SIZE); i++){
+       printf("%d ",*i); 
+    }
+    }
+    
+    printf("\n\n------------------------------------------\n");
+    
+    }
 
 }
 

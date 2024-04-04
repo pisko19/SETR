@@ -24,6 +24,7 @@
 #define SOS '#' /**< Start of Sentence symbol */
 #define EOS '!' /**< End of Sentence symbol */
 
+#define END_L 1 /**< End of L call status code */
 #define END 0 /**< End of function status code */
 #define ValueError -1 /**< Value error status code */
 #define EOS_Error -2 /**< End of Sentence error status code */
@@ -32,16 +33,10 @@
 #define Size_Error -5 /**< Size error status code */
 #define CMD_Error -6 /**< Command error status code */
 
-static unsigned int hum[MAX_SIZE];
-static unsigned int co2[MAX_SIZE];
-static unsigned int temp[MAX_SIZE];
-static unsigned char RxBuffer[UART_RX_SIZE];
-static unsigned char TxBuffer[UART_TX_SIZE];
-static unsigned char RxBufferLen = 0;
-static unsigned char TxBufferLen = 0;
-static unsigned int tempIndex = 0;
-static unsigned int humIndex = 0;
-static unsigned int co2Index = 0;
+/**
+ * @brief Initialize the buffers and all the values arrays.
+ */
+void init(void);
 
 /**
  * @brief Process a received command.
@@ -148,6 +143,15 @@ int getRxBuf(unsigned char* buf, int len);
  *         - Size_Error if the transmit buffer length is bigger than UART_TX_SIZE.
  */
 int getRxBufLen(void);
+
+/**
+ * @brief Errase the values read but a certain len.
+ *
+ * This function errase the values of the RxBuffer by a certain len.
+ *
+ * @param len Length of the buffer.
+ */
+void getRxBufLen(int len);
 
 /**
  * @brief Calculate the checksum of a string.

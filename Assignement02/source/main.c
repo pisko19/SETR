@@ -52,7 +52,7 @@ int main(void) {
         break;
       
       case(7):
-        Teste_Proc_All();
+        Teste_Proc_A();
         break;
         
       case(8):
