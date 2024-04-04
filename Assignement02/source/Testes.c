@@ -5,7 +5,7 @@
 #include "../header/Uart.h"
 #include "../header/unity.h" 
 
-#define CheckError 0 //Change this value if you want to make a checksum error
+#define CheckError 1 //Change this value if you want to make a checksum error
 
 void setUp(void) {
     // Initialize resources before each test case
@@ -386,7 +386,7 @@ void Teste_Proc_All(void){
               T1[3] = '-';
               numtoChar(&T1[5],-temp,2);
           }
-          numtoChar(&T1[8],(CheckSum(&T1[1],5)+CheckErro),3);
+          numtoChar(&T1[8],(CheckSum(&T1[1],5)+CheckError),3);
           
           for(int i=0; i<10; i++) 
               rxChar(T1[i]);
@@ -396,7 +396,7 @@ void Teste_Proc_All(void){
           printf("\nWhat humidity you want to put ? (0 to 100)\n");
           scanf("%d",&hum);
           numtoChar(&T2[5],hum,3);
-          numtoChar(&T2[8],(CheckSum(&T2[1],5)+CheckErro),3);
+          numtoChar(&T2[8],(CheckSum(&T2[1],5)+CheckError),3);
           for(int i=0; i<10; i++) 
               rxChar(T2[i]);
           break;
@@ -405,7 +405,7 @@ void Teste_Proc_All(void){
           printf("\nWhat CO2 you want to put ? (400 to 20000)\n");
           scanf("%d",&CO2);
           numtoChar(&T3[7],CO2,5);
-          numtoChar(&T3[10],(CheckSum(&T3[1],7)+CheckErro),3);
+          numtoChar(&T3[10],(CheckSum(&T3[1],7)+CheckError),3);
           for(int i=0; i<12; i++) 
               rxChar(T3[i]);
           break;
@@ -428,20 +428,20 @@ void Teste_Proc_All(void){
           scanf("%d",&CO2);
           numtoChar(&T4[15],CO2,5);
           
-          numtoChar(&T4[18],(CheckSum(&T4[1],15)+CheckErro),3);
+          numtoChar(&T4[18],(CheckSum(&T4[1],15)+CheckError),3);
           for(int i=0; i<20; i++) 
               rxChar(T4[i]);
               
           break;
           
         case 5:
-          numtoChar(&T5[4],(CheckSum(&T5[1],1)+CheckErro),3);
+          numtoChar(&T5[4],(CheckSum(&T5[1],1)+CheckError),3);
           for(int i=0; i<6; i++) 
               rxChar(T5[i]);
           break;
         
         case 6:
-          numtoChar(&T6[4],(CheckSum(&T6[1],1)+CheckErro),3);
+          numtoChar(&T6[4],(CheckSum(&T6[1],1)+CheckError),3);
           for(int i=0; i<6; i++) 
               rxChar(T6[i]);
           break;
@@ -479,13 +479,4 @@ void Teste_Proc_All(void){
     
     }
 
-}
-
-void TESTE (void){
-     unsigned char T[3] = {'5','1','5'};
-     
-     int x = CharToNum(&T[2],3);
-     
-     printf("\n\nTEste -> %d\n\n",x);
-
-}
+}S
