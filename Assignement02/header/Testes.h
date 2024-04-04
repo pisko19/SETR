@@ -46,12 +46,10 @@ void Teste_Proc_CO2(void);
 void Teste_Proc_All(void);
 
 /**
- * @brief Utility function to convert a number to a character array. This function was based on chatGPT.
- * 
- * @param num The number to be converted.
- * @param array Pointer to the character array where the result will be stored.
- * @param len Length of the character array.
+ * @brief Performs a test for returning the lastest 20 values of the combined processing functionality.
  */
-void numtoChar(int num, char array[], int len);
+void Teste_Proc_L(void);
+
+void TESTE(void);
 
 #endif

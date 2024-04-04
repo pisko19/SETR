@@ -21,15 +21,16 @@
 #define MAX_SIZE 20 /**< Maximum size of arrays */
 #define UART_RX_SIZE 30 /**< Size of the UART receive buffer */
 #define UART_TX_SIZE 30 /**< Size of the UART transmit buffer */
-#define SOS '#' /**< Start of Frame symbol */
-#define EOS '!' /**< End of Frame symbol */
+#define SOS '#' /**< Start of Sentence symbol */
+#define EOS '!' /**< End of Sentence symbol */
 
 #define END 0 /**< End of function status code */
 #define ValueError -1 /**< Value error status code */
-#define EOS_Error -2 /**< End of Frame error status code */
-#define Len_Error -3 /**< Length error status code */
-#define Size_Error -4 /**< Size error status code */
-#define CMD_Error -5 /**< Command error status code */
+#define EOS_Error -2 /**< End of Sentence error status code */
+#define SOS_Error -3 /**< Start of Sentence error status code */
+#define Len_Error -4 /**< Length error status code */
+#define Size_Error -5 /**< Size error status code */
+#define CMD_Error -6 /**< Command error status code */
 
 static unsigned int hum[MAX_SIZE];
 static unsigned int co2[MAX_SIZE];
@@ -174,11 +175,20 @@ void addValue(int *arr, int *size, int value);
 /**
  * @brief Get the instant temperature.
  *
- * This function retunrs the instant temperature.
+ * This function returns the instant temperature.
  *
  * @return The instant temperature.
  */
-int getInstantTemp(void);
+unsigned int getInstantTemp(void);
+
+/**
+ * @brief Get the temperature array.
+ *
+ * This function returns he pointer for the temperature array
+ *
+ * @return The pointer for the temperature array.
+ */
+unsigned int* getTemp(void);
 
 /**
  * @brief Get the instant humidity.
@@ -187,7 +197,16 @@ int getInstantTemp(void);
  *
  * @return The instant temperature.
  */
-int getInstantHum(void);
+unsigned int getInstantHum(void);
+
+/**
+ * @brief Get the humidity array.
+ *
+ * This function returns he pointer for the humidity array
+ *
+ * @return The pointer for the humidity array.
+ */
+unsigned int* getHum(void);
 
 /**
  * @brief Get the instant CO2.
@@ -196,8 +215,25 @@ int getInstantHum(void);
  *
  * @return The instant temperature.
  */
-int getInstantCO2(void);
+unsigned int getInstantCO2(void);
 
+/**
+ * @brief Get the CO2 array.
+ *
+ * This function returns he pointer for the CO2 array
+ *
+ * @return The pointer for the CO2 array.
+ */
+unsigned int* getCO2(void);
+
+/**
+ * @brief Utility function to convert a number to a character array. This function was based on chatGPT.
+ * 
+ * @param array Pointer to the character array where the result will be stored.
+ * @param num The number to be converted.
+ * @param len Length of the character array.
+ */
+void numtoChar(unsigned char array [], int num, int len);
 
 #endif /* Uart_H_ */
 

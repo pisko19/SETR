@@ -21,7 +21,7 @@ int txChar(unsigned char character){
   return Size_Error;
 }
 
-void ResetRxChar(){
+void ResetRxChar(void){
   memset(RxBuffer, 0, UART_RX_SIZE);
   RxBufferLen = 0;
 }
@@ -40,14 +40,15 @@ int getTxBufLen(void){
 
 int getTxBuf(unsigned char *buf,int len){
   if(TxBufferLen == 0)
-     return Len_Error;
-  
+     return Size_Error;
+     
   if(len > 0){
      memcpy(buf,TxBuffer,len);
      buf[len] = '\0';
      memmove(TxBuffer, TxBuffer+len, TxBufferLen-len);
      TxBufferLen-=len;
      TxBuffer[TxBufferLen] = '\0';
+    
      return END;
   }
   else
@@ -63,7 +64,7 @@ int getRxBufLen(void){
 
 int getRxBuf(unsigned char *buf,int len){
   if(RxBufferLen == 0)
-     return Len_Error; 
+     return Size_Error; 
   
   if(len > 0){
      memcpy(buf,RxBuffer,len);
@@ -82,32 +83,56 @@ unsigned int CheckSum(unsigned char* buf, int nbytes){
       //printf("\n%c %d",*i,(unsigned int)(*i));
   }
   
-  return sum;
+  return (sum%256);
 
 }
-void addValue(unsigned int *arr, unsigned int *size, int value) {
-    for(unsigned int i = *size; i > 0; i--) {
+void addValue(unsigned int *arr, unsigned int size, int value) {
+    for(unsigned int i = size; i > 0; i--) {
         arr[i] = arr[i-1];
     }
     arr[0] = (unsigned int)value;
    
-    if(*size < MAX_SIZE-1) {
-        (*size)++;
+    if(size < MAX_SIZE-1) {
+        size++;
     }
 }
 
-int getInstantTemp(void){
+unsigned int getInstantTemp(void){
    return temp[0];
 }
 
-int getInstantHum(void){
+unsigned int* getTemp(void){
+   return temp;
+}
+
+unsigned int getInstantHum(void){
    return hum[0];
 }
 
-int getInstantCO2(void){
+unsigned int* getHum(void){
+   return hum;
+}
+
+unsigned int getInstantCO2(void){
    return co2[0];
 }
 
+unsigned int* getCO2(void){
+   return co2;
+}
+
+void numtoChar(unsigned char *array, int num, int len) {
+    int index = 0;
+    //printf("\nTESTE -> %d\n",*array);
+    // Extract digits from num and store them in reverse order
+    while (index < len) {
+        *(array - index) = (num % 10) + '0';
+        //printf("\nTESTE -> %d \n",*(array - index));
+        num /= 10;
+        index++;
+    }
+   
+}
 
 int cmdProc(void){
 
@@ -121,6 +146,8 @@ int cmdProc(void){
   for(i=0; i<RxBufferLen; i++){
      if(RxBuffer[i] == SOS)
         break;
+     else
+        return SOS_Error;
   }
   
   if(i < RxBufferLen){
@@ -131,102 +158,92 @@ int cmdProc(void){
               
               // Case Temperature
               if (*action == 't'){
-                 // Calculate the CheckSum
                  check = CheckSum(&RxBuffer[i+1],5);
                  
-                 // Calculate the temperature
                  int x = 10*(RxBuffer[i+4] - '0') + RxBuffer[i+5] - '0';
                  
-                 // Verify if is negative
                  if(RxBuffer[i+3] == '-')
                     x = -x;
                  
-                 // Verify the value range
                  if(x > 60 || x < -50)
                     return ValueError;
-             
-                 // Verify the existence of the End of Sentence 
+                    
                  if(RxBuffer[i+6] != EOS)
                     return EOS_Error;
                  
-                 // Add the temperature to the temperature array
-                 addValue(temp,&tempIndex,x);
+                 addValue(temp,tempIndex,x);
                  
-                 
-                 // Send the chars to the TxBuffer with the CheckSum byte
                  for(int i=0;i<RxBufferLen;i++){
-                    if(i==RxBufferLen-1){  
-                      txChar((unsigned char)(check));
+                    if(i==RxBufferLen-1){
+                       txChar('0');
+                       txChar('0');
+                       txChar('0');
                     }
                     else {
                       txChar((unsigned char)(RxBuffer[i]));
                     }
                  }
                  txChar((unsigned char)(RxBuffer[RxBufferLen-1]));
-                 
+                 numtoChar(&TxBuffer[TxBufferLen-2],check,3);
                  return END;
               }
-              // Case Humidity
+              
+              // CASE HUMIDITY
               else if (*action == 'h'){
-                 // Calculate the CheckSum
                  check = CheckSum(&RxBuffer[i+1],5);
                  
-                 // Calculate the humidity
                  int x = 100*(RxBuffer[i+3] - '0') + 10*(RxBuffer[i+4] - '0') + RxBuffer[i+5] - '0';
                  
-                 // Verify the value range
                  if(x > 100 || x < 0)
                     return ValueError;
                  
-                 // Verify the existence of the End of Sentence
                  if(RxBuffer[i+6] != EOS)
                     return EOS_Error;
                  
-                 // Add the humidity to the humidity array
-                 addValue(hum,&humIndex,x);
+                 addValue(hum,humIndex,x);
                  
-                 // Send the chars to the TxBuffer with the CheckSum byte
                  for(int i=0;i<RxBufferLen;i++){
-                    if(i==RxBufferLen-1){  
-                    txChar((unsigned char)(check));
+                    if(i==RxBufferLen-1){
+                       txChar('0');
+                       txChar('0');
+                       txChar('0');
                     }
                     else {
                       txChar((unsigned char)(RxBuffer[i]));
                     }
                  }
                  txChar((unsigned char)(RxBuffer[RxBufferLen-1]));
+                 numtoChar(&TxBuffer[TxBufferLen-2],check,3);
                  return END;
               }
               
               // Case CO2
               else if (*action == 'c'){
-                 // Calculate the CheckSum
                  check = CheckSum(&RxBuffer[i+1],7);
                  
-                 // Calculate the CO2
                  int x = 10000*(RxBuffer[i+3] - '0') + 1000*(RxBuffer[i+4] - '0') + 100*(RxBuffer[i+5] - '0') + 10*(RxBuffer[i+6] - '0') + RxBuffer[i+7] - '0';
                  
-                 // Verify the value range
                  if(x > 20000 || x < 400)
                     return ValueError;
                  
-                 // Verify the existence of the End of Sentence
                  if(RxBuffer[i+8] != EOS)
                     return EOS_Error;
                  
-                 // Add the CO2 to the CO2 array
-                 addValue(co2,&co2Index,x);     
+                 addValue(co2,co2Index,x);  
                  
-                 // Send the chars to the TxBuffer with the CheckSum byte
                  for(int i=0;i<RxBufferLen;i++){
-                    if(i==RxBufferLen-1){  
-                    txChar((unsigned char)(check));
+                    if(i==RxBufferLen-1){
+                       txChar('0');
+                       txChar('0');
+                       txChar('0');
                     }
-                    else {
+                    else 
                       txChar((unsigned char)(RxBuffer[i]));
-                    }
+                      
+                    
                  }
                  txChar((unsigned char)(RxBuffer[RxBufferLen-1]));
+                 numtoChar(&TxBuffer[TxBufferLen-2],check,3);
                  return END;
               }
               
@@ -234,7 +251,6 @@ int cmdProc(void){
                  return CMD_Error;
               
           case 'A':
-              // Verify the existence of the End of Sentence
               if(RxBuffer[i+16] != EOS)
                  return EOS_Error;
                  
@@ -242,48 +258,38 @@ int cmdProc(void){
               while(*action != '!'){
                  if(*action == 't'){
                    
-                   // Calculate the temperature
                    int x = 10*(*(action+2) - '0') + *(action+3) - '0';
                  
-                   // Verify if is negative
                    if(*(action+1) == '-')
                       x = -x;
                  
-                   // Verify the value range
                  if(x > 60 || x < -50)
                     return ValueError;
                     
-                   // Add the temperature to the temperature array
-                   addValue(temp,&tempIndex,x);
+                   addValue(temp,tempIndex,x);
                  
                    action += 4;
                  }
                  else if(*action == 'h'){
                    
-                   // Calculate the humidity
                    int x = 100*(*(action+1) - '0') + 10*(*(action+2) - '0') + *(action+3) - '0';
                  
-                   // Verify the value range
                    if(x > 100 || x < 0)
                       return ValueError;
                    
-                   // Add the humidity to the humidity array
-                   addValue(hum,&humIndex,x);
+                   addValue(hum,humIndex,x);
                  
                    action += 4;
                     
                  }
                  else if(*action == 'c'){
                    
-                   // Calculate the CO2
                    int x = 10000*(*(action+1) - '0') + 1000*(*(action+2) - '0') + 100*(*(action+3) - '0') + 10*(*(action+4) - '0') + *(action+5) - '0';
                    
-                   // Verify the value range
                    if(x > 20000 || x < 400)
                       return ValueError;
                    
-                   // Add the CO2 to the CO2 array
-                   addValue(co2,&co2Index,x);  
+                   addValue(co2,co2Index,x);  
                  
                    action += 6;
                 
@@ -291,23 +297,66 @@ int cmdProc(void){
                  else
                    return CMD_Error;
               
-             }
-             check = CheckSum(&RxBuffer[i+1],15);
+               }
+               check = CheckSum(&RxBuffer[i+1],15);
+               for(int i=0;i<RxBufferLen;i++){
+                    if(i==RxBufferLen-1){  
+                      txChar('0');
+                      txChar('0');
+                      txChar('0');
+                    }
+                    else {
+                      txChar((unsigned char)(RxBuffer[i]));
+                    }
+                 }
+               txChar((unsigned char)(RxBuffer[RxBufferLen-1]));
+               numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+               return END;
+          
+          
+          case 'L':
+             check = CheckSum(&RxBuffer[i+1],1);
              for(int i=0;i<RxBufferLen;i++){
                     if(i==RxBufferLen-1){  
-                    txChar((unsigned char)(check));
+                      txChar('0');
+                      txChar('0');
+                      txChar('0');
                     }
                     else {
                       txChar((unsigned char)(RxBuffer[i]));
                     }
                  }
              txChar((unsigned char)(RxBuffer[RxBufferLen-1]));
+             numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+             
              return END;
-          
-          case 'L':
+             
              
           case 'R':  
-          
+              tempIndex = 0;
+              humIndex = 0;
+              co2Index = 0;
+              for(int i = 0;i<20;i++){
+                  temp[i] = -100;
+                  hum[i] = -1;
+                  co2[i] = 0;
+              }
+              check = CheckSum(&RxBuffer[i+1],1);
+              for(int i=0;i<RxBufferLen;i++){
+                    if(i==RxBufferLen-1){  
+                      txChar('0');
+                      txChar('0');
+                      txChar('0');
+                    }
+                    else {
+                      txChar((unsigned char)(RxBuffer[i]));
+                    }
+                 }
+             txChar((unsigned char)(RxBuffer[RxBufferLen-1]));
+             numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+             
+             return END;
+             
           default :
              // Add default behavior here if needed
              return CMD_Error;
