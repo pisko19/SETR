@@ -349,7 +349,7 @@ void Teste_Proc_All(void){
 
 
 void Teste_Proc_L(void){
-    unsigned char T[3] = {'#','R','!'};
+    unsigned char T[3] = {'#','L','!'};
     unsigned char T2[7] = {'#','P','t','+','0','0','!'};
     unsigned char rx[UART_RX_SIZE];
     unsigned char tx[UART_TX_SIZE];
