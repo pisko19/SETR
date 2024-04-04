@@ -5,19 +5,20 @@ int main(void) {
    int choice = -1;
    do{
    printf("\n"
-           "##################################################################################\n"
-           "#                        WHAT TEST YOU WANT TO MAKE ?                            #\n"
-           "#                                                                                #\n"
-           "#                        0) EXIT                                                 #\n"
-           "#                        1) Teste the RxChar                                     #\n"
-           "#                        2) Teste the TxChar                                     #\n"
-           "#                        3) Teste the cmdProc                                    #\n"
-           "#                        4) Teste the cmdProc with temperature data              #\n"
-           "#                        5) Teste the cmdProc with humidity data                 #\n"
-           "#                        6) Teste the cmdProc with CO2 data                      #\n"
-           "#                        7) Teste the cmdProc with all data                      #\n"
-           "#                        8) Teste the return of the last 20 values               #\n"
-           "##################################################################################\n");
+           "##########################################################################\n"
+           "#                WHAT TEST YOU WANT TO MAKE ?                            #\n"
+           "#                                                                        #\n"
+           "#                0) EXIT                                                 #\n"
+           "#                1) Test the RxChar                                      #\n"
+           "#                2) Test the TxChar                                      #\n"
+           "#                3) Test the cmdProc                                     #\n"
+           "#                4) Test the cmdProc with temperature data               #\n"
+           "#                5) Test the cmdProc with humidity data                  #\n"
+           "#                6) Test the cmdProc with CO2 data                       #\n"
+           "#                7) Test the cmdProc with all data                       #\n"
+           "#                8) Test the cmdProc with all functions                  #\n"
+           "#                                                                        #\n"
+           "##########################################################################\n");
            
    
    scanf("%d",&choice);
@@ -31,7 +32,7 @@ int main(void) {
         Teste_RxChar();
         break;
     	
-    	case(2):
+    	case(2): 
         Teste_TxChar();
         break;
     	
@@ -56,7 +57,7 @@ int main(void) {
         break;
         
       case(8):
-        Teste_Proc_L();
+        Teste_Proc_All();
         break;
    }
    }while(choice!=0);

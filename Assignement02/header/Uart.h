@@ -13,7 +13,7 @@
  * \defgroup Uart UART Communication
  * \brief Functions and structures for UART communication.
  * @{
- */
+ */ 
 
 #ifndef Uart_H_
 #define Uart_H_
@@ -32,11 +32,19 @@
 #define Len_Error -4 /**< Length error status code */
 #define Size_Error -5 /**< Size error status code */
 #define CMD_Error -6 /**< Command error status code */
+#define CheckSum_Error -7 /**< CheckSum error status code */
 
 /**
  * @brief Initialize the buffers and all the values arrays.
  */
 void init(void);
+
+/**
+ * @brief Print what type of error is if was one.
+ *
+ * @param x The return value of cmdProc function.
+ */
+void ErrorCode(int x);
 
 /**
  * @brief Process a received command.
@@ -231,13 +239,23 @@ unsigned int getInstantCO2(void);
 unsigned int* getCO2(void);
 
 /**
- * @brief Utility function to convert a number to a character array. This function was based on chatGPT.
+ * @brief Utility function to convert a number to a character array.
  * 
  * @param array Pointer to the character array where the result will be stored.
  * @param num The number to be converted.
  * @param len Length of the character array.
  */
 void numtoChar(unsigned char array [], int num, int len);
+
+/**
+ * @brief Utility function to convert a character array to a number.
+ * 
+ * @param array Pointer to the character array where the is the characters.
+ * @param len Length of the character array.
+ *
+ *@return The converted number.
+ */
+unsigned int CharToNum(unsigned char array [], int len);
 
 #endif /* Uart_H_ */
 

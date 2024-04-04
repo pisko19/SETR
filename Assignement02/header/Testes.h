@@ -9,7 +9,7 @@
  * \date 01/04/2024
  * \brief Functions and structures for testing UART communication.
  */
-
+ 
 /**
  * @brief Performs a test for the rxChar function.
  */
@@ -46,9 +46,9 @@ void Teste_Proc_CO2(void);
 void Teste_Proc_A(void);
 
 /**
- * @brief Performs a test for returning the lastest 20 values of the combined processing functionality.
+ * @brief Performs a test for all the functionality.
  */
-void Teste_Proc_L(void);
+void Teste_Proc_All(void);
 
 void TESTE(void);
 
