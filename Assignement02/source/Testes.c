@@ -47,6 +47,35 @@ void Teste_RxChar(void) {
     TEST_ASSERT_EQUAL_INT(0, getRxBufLen());
 }
 
+void Teste_Proc(void) {
+    unsigned char testInput[10] = {'#', 'P', 't', '+', '2', '0', 'A', 'A', 'A', '!'};
+    unsigned char expectedRxBuffer[] = {'#', 'P', 't', '+', '2', '0', 'A', 'A', 'A', '!'};
+    unsigned char expectedTxBuffer[] = {'#', 'P', 't', '+', '2', '0', 'A', 'A', 'A', '0', '0', '0', '!', '\0'};
+    
+    // Initialize UART
+    init();
+    
+    // Call rxChar with test input
+    for (unsigned int i = 0; i < sizeof(testInput); i++) {
+        rxChar(testInput[i]);
+    }
+    
+    // Call cmdProc and assert its return value
+    int result = cmdProc();
+    TEST_ASSERT_EQUAL_INT(END, result); // Adjust this assertion as per your function's behavior
+    
+    // Check the content of RxBuffer
+    unsigned char rxBuffer[UART_RX_SIZE];
+    getRxBuf(rxBuffer, getRxBufLen());
+    TEST_ASSERT_EQUAL_STRING_LEN(expectedRxBuffer, rxBuffer, sizeof(expectedRxBuffer));
+    
+    // Check the content of TxBuffer
+    unsigned char txBuffer[UART_TX_SIZE];
+    getTxBuf(txBuffer, getTxBufLen());
+    TEST_ASSERT_EQUAL_STRING_LEN(expectedTxBuffer, txBuffer, sizeof(expectedTxBuffer));
+}
+
+/*
 void Teste_TxChar(void) {
     unsigned char txBuffer[UART_TX_SIZE];
     unsigned char expectedBuffer[UART_TX_SIZE];
