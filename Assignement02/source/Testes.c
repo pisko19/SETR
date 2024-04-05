@@ -16,6 +16,96 @@ void tearDown(void) {
     // Clean up resources after each test case
 }
 
+
+void Teste_RxChar(void) {
+    unsigned char rxBuffer[UART_RX_SIZE];
+    unsigned char expectedBuffer[UART_RX_SIZE];
+    
+    // Simulate receiving characters
+    for (unsigned int i = 0; i < UART_RX_SIZE + 2; i++) {
+        // Call rxChar with a dummy character
+        int result = rxChar('5');
+        // Assert the result
+        if (i < UART_RX_SIZE) {
+            // Expecting END as long as buffer is not full
+            TEST_ASSERT_EQUAL_INT(END, result);
+            // Fill expectedBuffer with dummy character '5'
+            expectedBuffer[i] = '5';
+        } else {
+            // Expecting Size_Error when buffer is full
+            TEST_ASSERT_EQUAL_INT(Size_Error, result);
+        }
+    }
+    
+    // Check the content of the RxBuffer
+    getRxBuf(rxBuffer, getRxBufLen());
+    TEST_ASSERT_EQUAL_STRING_LEN(expectedBuffer, rxBuffer, UART_RX_SIZE);
+    
+    // Reset RxBuffer
+    ResetRxChar();
+    // Check if RxBuffer is empty after reset
+    TEST_ASSERT_EQUAL_INT(0, getRxBufLen());
+}
+
+void Teste_TxChar(void) {
+    unsigned char txBuffer[UART_TX_SIZE];
+    unsigned char expectedBuffer[UART_TX_SIZE];
+    
+    // Simulate transmitting characters
+    for (int i = 0; i < UART_TX_SIZE + 2; i++) {
+        // Call txChar with a dummy character
+        int result = txChar('4');
+        // Assert the result
+        if (i < UART_TX_SIZE) {
+            // Expecting END as long as buffer is not full
+            TEST_ASSERT_EQUAL_INT(END, result);
+            // Fill expectedBuffer with dummy character '4'
+            expectedBuffer[i] = '4';
+        } else {
+            // Expecting Size_Error when buffer is full
+            TEST_ASSERT_EQUAL_INT(Size_Error, result);
+        }
+    }
+    
+    // Check the content of the TxBuffer
+    getTxBuf(txBuffer, getTxBufLen());
+    TEST_ASSERT_EQUAL_STRING_LEN(expectedBuffer, txBuffer, UART_TX_SIZE);
+    
+    // Reset TxBuffer
+    ResetTxChar();
+    // Check if TxBuffer is empty after reset
+    TEST_ASSERT_EQUAL_INT(0, getTxBufLen());
+}
+
+void Teste_Proc(void) {
+    unsigned char testInput[10] = {'#', 'P', 't', '+', '2', '0', 'A', 'A', 'A', '!'};
+    unsigned char expectedRxBuffer[] = {'#', 'P', 't', '+', '2', '0', 'A', 'A', 'A', '!'};
+    unsigned char expectedTxBuffer[] = {'#', 'P', 't', '+', '2', '0', 'A', 'A', 'A', '0', '0', '0', '!', '\0'};
+    
+    // Initialize UART
+    init();
+    
+    // Call rxChar with test input
+    for (unsigned int i = 0; i < sizeof(testInput); i++) {
+        rxChar(testInput[i]);
+    }
+    
+    // Call cmdProc and assert its return value
+    int result = cmdProc();
+    TEST_ASSERT_EQUAL_INT(END, result); // Adjust this assertion as per your function's behavior
+    // Check the content of RxBuffer
+    unsigned char rxBuffer[UART_RX_SIZE];
+    getRxBuf(rxBuffer, getRxBufLen());
+    TEST_ASSERT_EQUAL_STRING_LEN(expectedRxBuffer, rxBuffer, sizeof(expectedRxBuffer));
+    
+    // Check the content of TxBuffer
+    unsigned char txBuffer[UART_TX_SIZE];
+    getTxBuf(txBuffer, getTxBufLen());
+    TEST_ASSERT_EQUAL_STRING_LEN(expectedTxBuffer, txBuffer, sizeof(expectedTxBuffer));
+    
+}  
+
+/*
 void Teste_RxChar(void){
     int x;
     unsigned char y[UART_TX_SIZE];
@@ -34,8 +124,8 @@ void Teste_RxChar(void){
     printf("\nReceiver buffer length: %d\n\n",getRxBufLen());
 
 }
-
-
+*/
+/*
 void Teste_TxChar(void){
     int x;
     unsigned char y[UART_TX_SIZE];
@@ -479,4 +569,6 @@ void Teste_Proc_All(void){
     
     }
 
-}S
+}
+
+*/

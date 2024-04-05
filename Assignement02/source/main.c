@@ -1,7 +1,19 @@
 #include <stdio.h>
 #include "../header/Testes.h"
+#include "../header/unity.h"
 
 int main(void) {
+
+  UNITY_BEGIN();
+  RUN_TEST(Teste_RxChar);
+  RUN_TEST(Teste_TxChar);
+  RUN_TEST(Teste_Proc);
+  return UNITY_END();
+
+
+
+
+  /*
    int choice = -1;
    do{
    printf("\n"
@@ -62,4 +74,5 @@ int main(void) {
    }
    }while(choice!=0);
     return 0;
+    */
 }
