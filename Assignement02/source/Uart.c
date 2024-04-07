@@ -234,7 +234,11 @@ int cmdProc(void){
                  
                  check = CheckSum(&RxBuffer[i+1],5);
                  
+<<<<<<< HEAD
+                 if(check != CharToNum(&RxBuffer[RxBufferLen-3],3))
+=======
                  if(check != CharToNum(&RxBuffer[RxBufferLen-2],3))
+>>>>>>> 50432ae3a1e50a0b2656ec02e584ceb7ad56ec6f
                     return CheckSum_Error;
                     
                  int x = CharToNum(&RxBuffer[i+5],2);
@@ -252,7 +256,11 @@ int cmdProc(void){
                  for(int i=0;i<RxBufferLen;i++)
                     txChar((unsigned char)(RxBuffer[i]));  
                  
+<<<<<<< HEAD
+                 numtoChar(&TxBuffer[TxBufferLen-3],check,3);
+=======
                  numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+>>>>>>> 50432ae3a1e50a0b2656ec02e584ceb7ad56ec6f
                  
                  erraseRxBuf(RxBufferLen);
                  return END;
@@ -267,7 +275,11 @@ int cmdProc(void){
                  
                  check = CheckSum(&RxBuffer[i+1],5);
                   
+<<<<<<< HEAD
+                 if(check != CharToNum(&RxBuffer[RxBufferLen-3],3))
+=======
                  if(check != CharToNum(&RxBuffer[RxBufferLen-2],3))
+>>>>>>> 50432ae3a1e50a0b2656ec02e584ceb7ad56ec6f
                     return CheckSum_Error;
                     
                  int x = CharToNum(&RxBuffer[i+5],3);
@@ -282,7 +294,11 @@ int cmdProc(void){
                  for(int i=0;i<RxBufferLen;i++)
                     txChar((unsigned char)(RxBuffer[i]));  
                  
+<<<<<<< HEAD
+                 numtoChar(&TxBuffer[TxBufferLen-3],check,3);
+=======
                  numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+>>>>>>> 50432ae3a1e50a0b2656ec02e584ceb7ad56ec6f
                  
                  erraseRxBuf(RxBufferLen);
                  return END;
@@ -296,7 +312,11 @@ int cmdProc(void){
                  }
                  check = CheckSum(&RxBuffer[i+1],7);
                  
+<<<<<<< HEAD
+                 if(check != CharToNum(&RxBuffer[RxBufferLen-3],3))
+=======
                  if(check != CharToNum(&RxBuffer[RxBufferLen-2],3))
+>>>>>>> 50432ae3a1e50a0b2656ec02e584ceb7ad56ec6f
                     return CheckSum_Error;
                     
                  int x = CharToNum(&RxBuffer[i+7],5);
@@ -311,7 +331,11 @@ int cmdProc(void){
                  for(int i=0;i<RxBufferLen;i++)
                     txChar((unsigned char)(RxBuffer[i]));  
                  
+<<<<<<< HEAD
+                 numtoChar(&TxBuffer[TxBufferLen-3],check,3);
+=======
                  numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+>>>>>>> 50432ae3a1e50a0b2656ec02e584ceb7ad56ec6f
                  
                  erraseRxBuf(RxBufferLen);
                  return END;
@@ -323,19 +347,38 @@ int cmdProc(void){
               }
               
           case 'A':
+<<<<<<< HEAD
+              int T,H,C;
+=======
+>>>>>>> 50432ae3a1e50a0b2656ec02e584ceb7ad56ec6f
               if(RxBuffer[i+19] != EOS){
                  erraseRxBuf(RxBufferLen);
                  return EOS_Error;
               }   
               
               check = CheckSum(&RxBuffer[i+1],15);
+<<<<<<< HEAD
+              if(check != CharToNum(&RxBuffer[RxBufferLen-3],3))
+=======
               if(check != CharToNum(&RxBuffer[RxBufferLen-2],3))
+>>>>>>> 50432ae3a1e50a0b2656ec02e584ceb7ad56ec6f
                  return CheckSum_Error;
                  
               action = &RxBuffer[i+2];
               while(*action != '!'){
                  if(*action == 't'){
                    
+<<<<<<< HEAD
+                   T = 10*(*(action+2) - '0') + *(action+3) - '0';
+                 
+                   if(*(action+1) == '-')
+                      T = -T;
+                 
+                   if(T > 60 || T < -50){
+                      erraseRxBuf(RxBufferLen);
+                      return ValueError;
+                   } 
+=======
                    int x = 10*(*(action+2) - '0') + *(action+3) - '0';
                  
                    if(*(action+1) == '-')
@@ -347,10 +390,19 @@ int cmdProc(void){
                    }   
                    addValue(temp,&tempIndex,x);
                  
+>>>>>>> 50432ae3a1e50a0b2656ec02e584ceb7ad56ec6f
                    action += 4;
                  }
                  else if(*action == 'h'){
                    
+<<<<<<< HEAD
+                   H = 100*(*(action+1) - '0') + 10*(*(action+2) - '0') + *(action+3) - '0';
+                 
+                   if(H > 100 || H < 0){
+                      erraseRxBuf(RxBufferLen);
+                      return ValueError;
+                   }
+=======
                    int x = 100*(*(action+1) - '0') + 10*(*(action+2) - '0') + *(action+3) - '0';
                  
                    if(x > 100 || x < 0){
@@ -359,11 +411,21 @@ int cmdProc(void){
                    }
                    addValue(hum,&humIndex,x);
                  
+>>>>>>> 50432ae3a1e50a0b2656ec02e584ceb7ad56ec6f
                    action += 4;
                     
                  }
                  else if(*action == 'c'){
                    
+<<<<<<< HEAD
+                   C = 10000*(*(action+1) - '0') + 1000*(*(action+2) - '0') + 100*(*(action+3) - '0') + 10*(*(action+4) - '0') + *(action+5) - '0';
+                   
+                   if(C > 20000 || C < 400){
+                      erraseRxBuf(RxBufferLen);
+                      return ValueError;
+                   }
+                   action += 6;
+=======
                    int x = 10000*(*(action+1) - '0') + 1000*(*(action+2) - '0') + 100*(*(action+3) - '0') + 10*(*(action+4) - '0') + *(action+5) - '0';
                    
                    if(x > 20000 || x < 400){
@@ -374,6 +436,7 @@ int cmdProc(void){
                  
                    action += 6;
                 
+>>>>>>> 50432ae3a1e50a0b2656ec02e584ceb7ad56ec6f
                  }
                  else{
                    action += 3;
@@ -381,10 +444,21 @@ int cmdProc(void){
                 }
                }
                
+<<<<<<< HEAD
+               addValue(temp,&tempIndex,T);
+               addValue(hum,&humIndex,H);
+               addValue(co2,&co2Index,C);  
+                
+               for(int i=0;i<RxBufferLen;i++)
+                    txChar((unsigned char)(RxBuffer[i]));  
+                 
+               numtoChar(&TxBuffer[TxBufferLen-3],check,3);
+=======
                for(int i=0;i<RxBufferLen;i++)
                     txChar((unsigned char)(RxBuffer[i]));  
                  
                numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+>>>>>>> 50432ae3a1e50a0b2656ec02e584ceb7ad56ec6f
                 
                erraseRxBuf(RxBufferLen);
                return END;
@@ -392,13 +466,21 @@ int cmdProc(void){
           
           case 'L':
                check = CheckSum(&RxBuffer[i+1],1);
+<<<<<<< HEAD
+               if(check != CharToNum(&RxBuffer[RxBufferLen-3],3))
+=======
                if(check != CharToNum(&RxBuffer[RxBufferLen-2],3))
+>>>>>>> 50432ae3a1e50a0b2656ec02e584ceb7ad56ec6f
                   return CheckSum_Error;
              
                for(int i=0;i<RxBufferLen;i++)
                    txChar((unsigned char)(RxBuffer[i]));  
                  
+<<<<<<< HEAD
+               numtoChar(&TxBuffer[TxBufferLen-3],check,3);
+=======
                numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+>>>>>>> 50432ae3a1e50a0b2656ec02e584ceb7ad56ec6f
                  
                erraseRxBuf(RxBufferLen);
                return END_L;
@@ -415,13 +497,21 @@ int cmdProc(void){
                    
                }
                check = CheckSum(&RxBuffer[i+1],1);
+<<<<<<< HEAD
+               if(check != CharToNum(&RxBuffer[RxBufferLen-3],3))
+=======
                if(check != CharToNum(&RxBuffer[RxBufferLen-2],3))
+>>>>>>> 50432ae3a1e50a0b2656ec02e584ceb7ad56ec6f
                   return CheckSum_Error;
               
                for(int i=0;i<RxBufferLen;i++)
                    txChar((unsigned char)(RxBuffer[i]));  
                  
+<<<<<<< HEAD
+               numtoChar(&TxBuffer[TxBufferLen-3],check,3);
+=======
                numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+>>>>>>> 50432ae3a1e50a0b2656ec02e584ceb7ad56ec6f
                erraseRxBuf(RxBufferLen);
                return END;
              

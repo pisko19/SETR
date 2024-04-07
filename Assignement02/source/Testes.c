@@ -5,7 +5,7 @@
 #include "../header/Uart.h"
 #include "../header/unity.h" 
 
-#define CheckError 1 //Change this value if you want to make a checksum error
+#define CheckError 0 //Change this value if you want to make a checksum error
 
 void setUp(void) {
     // Initialize resources before each test case
@@ -79,278 +79,299 @@ void Teste_TxChar(void) {
 }
 
 void Teste_Proc(void) {
-    unsigned char testInput[10] = {'#', 'P', 't', '+', '2', '0', 'A', 'A', 'A', '!'};
-    unsigned char expectedRxBuffer[] = {'#', 'P', 't', '+', '2', '0', 'A', 'A', 'A', '!'};
-    unsigned char expectedTxBuffer[] = {'#', 'P', 't', '+', '2', '0', 'A', 'A', 'A', '0', '0', '0', '!', '\0'};
+    unsigned char testInput[11] = {'#', 'P', 't', '+', '2', '0', 'A', 'A', 'A', '!','\0'};
+    unsigned char expectedRxBuffer[] = {'#', 'P', 't', '+', '2', '0', 'A', 'A', 'A', '!','\0'};
+    unsigned char expectedTxBuffer[] = {'#', 'P', 't', '+', '2', '0', 'A', 'A', 'A', '!','\0'};
+    int result;
     
     // Initialize UART
     init();
-    
+    numtoChar(&testInput[8],(CheckSum(&testInput[1],5)+CheckError),3);
+    numtoChar(&expectedRxBuffer[8],(CheckSum(&expectedRxBuffer[1],5)+CheckError),3);
+    numtoChar(&expectedTxBuffer[8],(CheckSum(&expectedTxBuffer[1],5)+CheckError),3);
+
     // Call rxChar with test input
     for (unsigned int i = 0; i < sizeof(testInput); i++) {
-        rxChar(testInput[i]);
+        result = rxChar(testInput[i]);
+        if (i < UART_TX_SIZE) {
+            // Expecting END as long as buffer is not full
+            TEST_ASSERT_EQUAL_INT(END, result);
+        } else {
+            // Expecting Size_Error when buffer is full
+            TEST_ASSERT_EQUAL_INT(Size_Error, result);
+        }
     }
     
-    // Call cmdProc and assert its return value
-    //int result = cmdProc();
-    //TEST_ASSERT_EQUAL_INT(END, result); // Adjust this assertion as per your function's behavior
     // Check the content of RxBuffer
     unsigned char rxBuffer[UART_RX_SIZE];
     getRxBuf(rxBuffer, getRxBufLen());
     TEST_ASSERT_EQUAL_STRING_LEN(expectedRxBuffer, rxBuffer, sizeof(expectedRxBuffer));
     
-    // Check the content of TxBuffer
+    // Call cmdProc and assert its return value
+    result = cmdProc();
+    TEST_ASSERT_EQUAL_INT(END, result);
+    
+    // Check the content of RxBuffer
     unsigned char txBuffer[UART_TX_SIZE];
     getTxBuf(txBuffer, getTxBufLen());
     TEST_ASSERT_EQUAL_STRING_LEN(expectedTxBuffer, txBuffer, sizeof(expectedTxBuffer));
     
 }  
 
-/*
-void Teste_RxChar(void){
-    int x;
-    unsigned char y[UART_TX_SIZE];
-    
-    printf("\nTESTE RxChar:\n\nReturn of rxChar:   ");
-    for(unsigned int i=0;i<UART_RX_SIZE+2;i++){
-       x = rxChar((unsigned char)('5'));
-       printf("%d",x);
-    }
-    
-    getRxBuf(y,getRxBufLen());
-    printf("\nValues in RxBuffer: %s",y);
-    printf("\nReceiver buffer length: %d",getRxBufLen());
-    printf("\nResetRxChar");
-    ResetRxChar();
-    printf("\nReceiver buffer length: %d\n\n",getRxBufLen());
-
-}
-*/
-/*
-void Teste_TxChar(void){
-    int x;
-    unsigned char y[UART_TX_SIZE];
-    
-    printf("\nTESTE TxChar:\n\nReturn of txChar:   ");
-    for(int i=0;i<UART_TX_SIZE+2;i++){
-       x = txChar('4');
-       printf("%d",x);
-    }
-    
-    getTxBuf(y,getTxBufLen());
-    printf("\nValues in TxBuffer: %s ",y);
-    printf("\nTransmisser buffer Length: %d\n\n",getTxBufLen());
-    
-}
-
-
-void Teste_Proc(void){
-    unsigned char T[10] = {'#','P','t','+','2','0','A','A','A','!'};
-    int y;
-    unsigned char yr[UART_RX_SIZE];
-    unsigned char yt[UART_TX_SIZE];
-    
-    printf("\n\nTESTE cmdProc :\n\n");
-    init();
-    
-    numtoChar(&T[8],(CheckSum(&T[1],5)+CheckError),3);
-    for(unsigned int i=0; i<sizeof(T); i++)
-            rxChar(T[i]);
-    
-    printf("Before cmdProc call:\n"
-           "Length Receiver Buffer : %d\n",getRxBufLen());
-           
-    y = getRxBuf(yr,getRxBufLen());
-    if(y==0)
-       printf("Values of RxBuffer : %s\n",yr);
-    else
-       printf("RxBuffer is empty !\n");
-    
-    ErrorCode(cmdProc());
-    
-    printf("\nAfter cmdProc call:\n"
-           "Length Receiver Buffer : %d\n",getRxBufLen());
-    y = getRxBuf(yr,getRxBufLen());
-    if(y==0)
-       printf("Values of TxBuffer (Second): %s\n\n",yr);
-    else
-       printf("RxBuffer is empty !\n\n");
-       
-   
-    printf("FIRST getTxBuf call:\n"
-           "Length Transmisser Buffer (First): %d\n",getTxBufLen());
-           
-    y = getTxBuf(yt,getTxBufLen());
-    if(y==0)
-       printf("Values of TxBuffer (Second): %s\n\n",yt);
-    else
-       printf("TxBuffer is empty !\n\n");
-       
-    printf("SECOND getTxBuf call:\n"
-           "Length Transmisser Buffer (First): %d\n",getTxBufLen());
-    y = getTxBuf(yt,getTxBufLen());
-    if(y==0)
-       printf("Values of TxBuffer (Second): %s\n\n",yt);
-    else
-       printf("TxBuffer is empty !\n\n");
-}
-
-
 void Teste_Proc_Temp(void){
 
-    unsigned char T[10] = {'#','P','t','+','7','0','A','A','A','!'};
-    unsigned char rx[UART_RX_SIZE];
-    unsigned char tx[UART_TX_SIZE];
-    int x,temperature;
+    unsigned char testInput[11] = {'#','P','t','+','0','0','A','A','A','!','\0'};
+    unsigned char expectedRxBuffer[] = {'#', 'P', 't', '+', '0', '0', 'A', 'A', 'A', '!','\0'};
+    unsigned char expectedTxBuffer[] = {'#', 'P', 't', '+', '0', '0', 'A', 'A', 'A', '!','\0'};
+    unsigned char rxBuffer[UART_RX_SIZE];
+    unsigned char txBuffer[UART_TX_SIZE];
+    int result,temperature;
     
     printf("\nTESTE TEMPERATURE:\n");
     
     while(1){
-       memset(rx, '\0', UART_RX_SIZE);
-       memset(tx, '\0', UART_TX_SIZE);
-       init();
+    memset(rxBuffer, '\0', UART_RX_SIZE);
+    memset(txBuffer, '\0', UART_TX_SIZE);
+    init();
        
-       printf("\nWhat temperature you want to teste ?\n(Values accepted -99 to 99, Values correct -50 to 60, Else is exit values)\n");
-       scanf("%d",&temperature);
-       
-       if(temperature >= 0 && temperature <100 ){
-          T[3] = '+';
-          numtoChar(&T[5],temperature,2);
-       }
-       else if (temperature <0 && temperature >-100){
-          T[3] = '-';
-          numtoChar(&T[5],-temperature,2);
-       }
-       else{
-          printf("\nEND\n");
-          return;
-      }
-      
-      numtoChar(&T[8],(CheckSum(&T[1],5)+CheckError),3);
-      for(unsigned int i=0; i<sizeof(T); i++)
-            rxChar(T[i]);
-            
-      getRxBuf(rx,getRxBufLen());
-      printf("\n------------------------------------------\n"
-             "\nValues in RxBuffer : %s",rx);
+    printf("\nWhat temperature you want to teste ? (100 to exit)\n");
+    scanf("%d",&temperature);
     
-      x = cmdProc();
-      ErrorCode(x);
-      getTxBuf(tx,getTxBufLen());
+    if(temperature == 100)
+       break;
        
-      printf("Values of TxBuffer : %s",tx);
-      if(x != END)
-         printf("\nThe value of the temperature is incorrect !\n");
-      else
-         printf("\nThe temperature is %d ºC \n",getInstantTemp());
+    if(temperature >= 0){
+       // Adding the humidity value to the arrays
+       testInput[3] = '+';
+       expectedRxBuffer[3] = '+';
+       expectedTxBuffer[3] = '+';
+       numtoChar(&testInput[5],temperature,2);
+       numtoChar(&expectedRxBuffer[5],temperature,2);
+       numtoChar(&expectedTxBuffer[5],temperature,2);
+    }
+    else{
+       // Adding the humidity value to the arrays
+       testInput[3] = '-';
+       expectedRxBuffer[3] = '-';
+       expectedTxBuffer[3] = '-';
+       numtoChar(&testInput[5],-temperature,2);
+       numtoChar(&expectedRxBuffer[5],-temperature,2);
+       numtoChar(&expectedTxBuffer[5],-temperature,2);
+    }
+      
+    // Adding the checksum to the arrays
+    numtoChar(&testInput[8],(CheckSum(&testInput[1],5)+CheckError),3);
+    numtoChar(&expectedRxBuffer[8],(CheckSum(&expectedRxBuffer[1],5)+CheckError),3);
+    numtoChar(&expectedTxBuffer[8],(CheckSum(&expectedTxBuffer[1],5)+CheckError),3);
+      
+    for (unsigned int i = 0; i < sizeof(testInput); i++) {
+      result = rxChar(testInput[i]);
+      if (i < UART_TX_SIZE) {
+          // Expecting END as long as buffer is not full
+          TEST_ASSERT_EQUAL_INT(END, result);
+      } else {
+          // Expecting Size_Error when buffer is full
+          TEST_ASSERT_EQUAL_INT(Size_Error, result);
+      }
+    }
+            
+    getRxBuf(rxBuffer, getRxBufLen());
+    TEST_ASSERT_EQUAL_STRING_LEN(expectedRxBuffer, rxBuffer, sizeof(expectedRxBuffer));
+    
+    result = cmdProc();
+    if(temperature >=-50 && temperature <=60){
+         TEST_ASSERT_EQUAL_INT(END, result);
+         getTxBuf(txBuffer, getTxBufLen());
+         TEST_ASSERT_EQUAL_STRING_LEN(expectedTxBuffer, txBuffer, sizeof(expectedTxBuffer));
+         TEST_ASSERT_EQUAL_INT(temperature,(int)getInstantTemp());
+    }   
+    else{ 
+         TEST_ASSERT_EQUAL_INT(ValueError, result);
+         getTxBuf(txBuffer, getTxBufLen());
+         TEST_ASSERT_EQUAL_STRING_LEN("", txBuffer, sizeof(expectedTxBuffer));
+         TEST_ASSERT_EQUAL_INT(-100,(int)getInstantTemp());
+    }
          
-      printf("\n------------------------------------------\n");
-   }  
+    printf("\n------------------------------------------\n"
+           "\nValues in RxBuffer : %s",rxBuffer);
+              
+    ErrorCode(result);
+    
+    printf("Values of TxBuffer : %s\n",txBuffer);
+    if(result != END)
+        printf("\nThe value of the temperature is incorrect !\n");
+    else
+        printf("\nThe temperature is %d ºC \n",getInstantTemp());
+         
+    printf("\n------------------------------------------\n");
+    }  
 }
-
 
 void Teste_Proc_Hum(void){
 
-    unsigned char T[10] = {'#','P','h','0','0','0','A','A','A','!'};
-    unsigned char rx[UART_RX_SIZE];
-    unsigned char tx[UART_TX_SIZE];
-    int x,humidity;
+    unsigned char testInput[11] = {'#','P','h','0','0','0','A','A','A','!','\0'};
+    unsigned char expectedRxBuffer[] = {'#', 'P', 'h', '0', '0', '0', 'A', 'A', 'A', '!','\0'};
+    unsigned char expectedTxBuffer[] = {'#', 'P', 'h', '0', '0', '0', 'A', 'A', 'A', '!','\0'};
+    unsigned char rxBuffer[UART_RX_SIZE];
+    unsigned char txBuffer[UART_TX_SIZE];
+    int result,humidity;
     
-    printf("\nTESTE HUMIDITY:\n");
+    printf("\n\nTESTE HUMIDITY:\n");
     
     while(1){
-       memset(rx, '\0', UART_RX_SIZE);
-       memset(tx, '\0', UART_TX_SIZE);
+       memset(rxBuffer, '\0', UART_RX_SIZE);
+       memset(txBuffer, '\0', UART_TX_SIZE);
        init();
        
-       printf("\nWhat humidity you want to teste ?\n(Values accepted 0 to 999, Values correct 0 to 100, Else is exit values)\n");
+       printf("\nWhat humidity you want to teste ? (-1 to exit)\n");
        scanf("%d",&humidity);
        
-       if(humidity < 0 || humidity > 999 ){
-          printf("\nEND\n");
-          break;
+       if(humidity == -1)
+       break;
+       
+       // Adding the humidity value to the arrays
+       numtoChar(&testInput[5],humidity,3);
+       numtoChar(&expectedRxBuffer[5],humidity,3);
+       numtoChar(&expectedTxBuffer[5],humidity,3);
+       
+       // Adding the checksum to the arrays
+       numtoChar(&testInput[8],(CheckSum(&testInput[1],5)+CheckError),3);
+       numtoChar(&expectedRxBuffer[8],(CheckSum(&expectedRxBuffer[1],5)+CheckError),3);
+       numtoChar(&expectedTxBuffer[8],(CheckSum(&expectedTxBuffer[1],5)+CheckError),3);
+        
+       for (unsigned int i = 0; i < sizeof(testInput); i++) {
+           result = rxChar(testInput[i]);
+           if (i < UART_TX_SIZE) {
+               // Expecting END as long as buffer is not full
+               TEST_ASSERT_EQUAL_INT(END, result);
+           } else {
+               // Expecting Size_Error when buffer is full
+               TEST_ASSERT_EQUAL_INT(Size_Error, result);
+           }
+       }
+            
+       getRxBuf(rxBuffer, getRxBufLen());
+       TEST_ASSERT_EQUAL_STRING_LEN(expectedRxBuffer, rxBuffer, sizeof(expectedRxBuffer));
+    
+       result = cmdProc();
+       
+       if(humidity >=0 && humidity <=100){
+           TEST_ASSERT_EQUAL_INT(END, result);
+           getTxBuf(txBuffer, getTxBufLen());
+           TEST_ASSERT_EQUAL_STRING_LEN(expectedTxBuffer, txBuffer, sizeof(expectedTxBuffer));
+           TEST_ASSERT_EQUAL_INT(humidity,(int)getInstantHum());
+       }   
+       else{ 
+           TEST_ASSERT_EQUAL_INT(ValueError, result);
+           getTxBuf(txBuffer, getTxBufLen());
+           TEST_ASSERT_EQUAL_STRING_LEN("", txBuffer, sizeof(expectedTxBuffer));
+           TEST_ASSERT_EQUAL_INT(-1,(int)getInstantHum());
        }
        
-       numtoChar(&T[5],humidity,3);
-       numtoChar(&T[8],(CheckSum(&T[1],5)+CheckError),3);
-       for(unsigned int i=0; i<sizeof(T); i++)
-            rxChar(T[i]);
-            
-       getRxBuf(rx,getRxBufLen());
        printf("\n------------------------------------------\n"
-              "\nValues in RxBuffer : %s",rx);
+              "\nValues in RxBuffer : %s",rxBuffer);
+              
+       ErrorCode(result);
     
-       x = cmdProc();
-       ErrorCode(x);
-       getTxBuf(tx,getTxBufLen());
-       
-       printf("Values of TxBuffer : %s",tx);
-       if(x != END)
+       printf("Values of TxBuffer : %s\n",txBuffer);
+       if(result != END)
           printf("\nThe value of the humidity is incorrect !\n");
        else
-          printf("\nThe humidity is %d %%\n",getInstantHum());
-       
+          printf("\nThe humidity is %d %% \n",getInstantHum());
+         
        printf("\n------------------------------------------\n");
-    }
+    }  
 }
-
 
 void Teste_Proc_CO2(void){
 
-    unsigned char T[12] = {'#','P','c','0','0','0','0','0','A','A','A','!'};
-    unsigned char rx[UART_RX_SIZE];
-    unsigned char tx[UART_TX_SIZE];
-    int x,co2;
+    unsigned char testInput[13] = {'#', 'P', 'c', '0', '0', '0', '0', '0', 'A', 'A', 'A', '!', '\0'};
+    unsigned char expectedRxBuffer[] = {'#', 'P', 'c', '0', '0', '0', '0', '0', 'A', 'A', 'A', '!', '\0'};
+    unsigned char expectedTxBuffer[] = {'#', 'P', 'c', '0', '0', '0', '0', '0', 'A', 'A', 'A', '!', '\0'};
+    unsigned char rxBuffer[UART_RX_SIZE];
+    unsigned char txBuffer[UART_TX_SIZE];
+    int result,co2;
     
-    printf("\nTESTE CO2:\n");
+    printf("\n\nTESTE CO2:\n");
     
     while(1){
-       memset(rx, '\0', UART_RX_SIZE);
-       memset(tx, '\0', UART_TX_SIZE);
+       memset(rxBuffer, '\0', UART_RX_SIZE);
+       memset(txBuffer, '\0', UART_TX_SIZE);
        init();
        
-       printf("\nWhat CO2 you want to teste ?\n(Values accepted 0 to 99999, Values correct 400 to 20000, Else is exit values)\n");
+       printf("\nWhat CO2 you want to teste ? (-1 to exit)\n");
        scanf("%d",&co2);
        
-       if(co2 < 0 || co2 > 99999 ){
-          printf("\nEND\n");
-          break;
-      }
-       numtoChar(&T[7],co2,5);
-       numtoChar(&T[10],(CheckSum(&T[1],7)+CheckError),3);
-       for(unsigned int i=0; i<sizeof(T); i++)
-            rxChar(T[i]);
-          
-       getRxBuf(rx,getRxBufLen());
-       printf("\n------------------------------------------\n"
-              "\nValues in RxBuffer : %s",rx);
-    
-       x = cmdProc();
-       ErrorCode(x);
-       getTxBuf(tx,getTxBufLen());
+       if(co2 == -1)
+       break;
        
-       printf("Values of TxBuffer : %s",tx);
-       if(x != END)
+       // Adding the CO2 value to the arrays
+       numtoChar(&testInput[7],co2,5);
+       numtoChar(&expectedRxBuffer[7],co2,5);
+       numtoChar(&expectedTxBuffer[7],co2,5);
+       
+       // Adding the checksum to the arrays
+       numtoChar(&testInput[10],(CheckSum(&testInput[1],7)+CheckError),3);
+       numtoChar(&expectedRxBuffer[10],(CheckSum(&expectedRxBuffer[1],7)+CheckError),3);
+       numtoChar(&expectedTxBuffer[10],(CheckSum(&expectedTxBuffer[1],7)+CheckError),3);
+        
+       for (unsigned int i = 0; i < sizeof(testInput); i++) {
+           result = rxChar(testInput[i]);
+           if (i < UART_TX_SIZE) {
+               // Expecting END as long as buffer is not full
+               TEST_ASSERT_EQUAL_INT(END, result);
+           } else {
+               // Expecting Size_Error when buffer is full
+               TEST_ASSERT_EQUAL_INT(Size_Error, result);
+           }
+       }
+            
+       getRxBuf(rxBuffer, getRxBufLen());
+       TEST_ASSERT_EQUAL_STRING_LEN(expectedRxBuffer, rxBuffer, sizeof(expectedRxBuffer));
+    
+       result = cmdProc();
+       
+       if(co2 >=400 && co2 <=20000){
+           TEST_ASSERT_EQUAL_INT(END, result);
+           getTxBuf(txBuffer, getTxBufLen());
+           TEST_ASSERT_EQUAL_STRING_LEN(expectedTxBuffer, txBuffer, sizeof(expectedTxBuffer));
+           TEST_ASSERT_EQUAL_INT(co2,(int)getInstantCO2());
+       }   
+       else{ 
+           TEST_ASSERT_EQUAL_INT(ValueError, result);
+           getTxBuf(txBuffer, getTxBufLen());
+           TEST_ASSERT_EQUAL_STRING_LEN("", txBuffer, sizeof(expectedTxBuffer));
+           TEST_ASSERT_EQUAL_INT(0,(int)getInstantCO2());
+       }
+       
+       printf("\n------------------------------------------\n"
+              "\nValues in RxBuffer : %s",rxBuffer);
+       ErrorCode(result);
+    
+       printf("Values of TxBuffer : %s\n",txBuffer);
+       if(result != END)
           printf("\nThe value of the CO2 is incorrect !\n");
        else
-          printf("\nThe CO2 is %d ppm\n",getInstantCO2());
-       
+          printf("\nThe CO2 is %d ppm \n",getInstantCO2());
+         
        printf("\n------------------------------------------\n");
-    }
+    }  
 }
 
 void Teste_Proc_A(void){
 
-    unsigned char T[6][20] = {{'#','A','t','+','0','0','h','0','0','0','c','0','0','0','0','0','A','A','A','!'},
-                              {'#','A','t','+','0','0','c','0','0','0','0','0','h','0','0','0','A','A','A','!'},
-                              {'#','A','h','0','0','0','c','0','0','0','0','0','t','+','0','0','A','A','A','!'},
-                              {'#','A','h','0','0','0','t','+','0','0','c','0','0','0','0','0','A','A','A','!'},
-                              {'#','A','c','0','0','0','0','0','t','+','0','0','h','0','0','0','A','A','A','!'},
-                              {'#','A','c','0','0','0','0','0','h','0','0','0','t','+','0','0','A','A','A','!'}};
-    unsigned char T2[20];
-    unsigned char rx[UART_RX_SIZE];
-    unsigned char tx[UART_TX_SIZE];
-    int temperature,humidity,co2,format;
+    unsigned char T[6][21] = {{'#','A','t','+','0','0','h','0','0','0','c','0','0','0','0','0','A','A','A','!','\0'},
+                              {'#','A','t','+','0','0','c','0','0','0','0','0','h','0','0','0','A','A','A','!','\0'},
+                              {'#','A','h','0','0','0','c','0','0','0','0','0','t','+','0','0','A','A','A','!','\0'},
+                              {'#','A','h','0','0','0','t','+','0','0','c','0','0','0','0','0','A','A','A','!','\0'},
+                              {'#','A','c','0','0','0','0','0','t','+','0','0','h','0','0','0','A','A','A','!','\0'},
+                              {'#','A','c','0','0','0','0','0','h','0','0','0','t','+','0','0','A','A','A','!','\0'}};
+    unsigned char testInput[21];
+    unsigned char expectedRxBuffer[21];
+    unsigned char expectedTxBuffer[21];
+    unsigned char rxBuffer[UART_RX_SIZE];
+    unsigned char txBuffer[UART_TX_SIZE];
+    int temperature,humidity,co2,format,result;
     
     printf("\nWhat CO2 you want to teste ? (between 400 and 20000)\n");
     scanf("%d",&co2);
@@ -359,9 +380,10 @@ void Teste_Proc_A(void){
     printf("\nWhat temperature you want to teste ? (between -50 and 60)\n");
     scanf("%d",&temperature);
        
+       
     while(1){
-       memset(rx, '\0', UART_RX_SIZE);
-       memset(tx, '\0', UART_TX_SIZE);
+       memset(rxBuffer, '\0', UART_RX_SIZE);
+       memset(txBuffer, '\0', UART_TX_SIZE);
        init();
        
        do{
@@ -382,50 +404,98 @@ void Teste_Proc_A(void){
        if(format==0)
           break;
           
-       for(int i=0;i<20;i++){
-           T2[i] = T[format-1][i];
+       for(unsigned int i=0;i<sizeof(testInput);i++){
+           testInput[i] = T[format-1][i];
+           expectedRxBuffer[i] = T[format-1][i];
+           expectedTxBuffer[i] = T[format-1][i];
        }
+       TEST_ASSERT_EQUAL_STRING_LEN(expectedRxBuffer, T[format-1], sizeof(expectedTxBuffer));
+       TEST_ASSERT_EQUAL_STRING_LEN(expectedTxBuffer, T[format-1], sizeof(expectedTxBuffer));
+       TEST_ASSERT_EQUAL_STRING_LEN(testInput, T[format-1], sizeof(expectedTxBuffer));
        
-       for(int i=0;i<17;i++){
-           if(T2[i] == 't'){
-              if(temperature>0)
-                 numtoChar(&T2[i+3],temperature,2);
+       for(int i=0;i<sizeof(testInput);i++){
+           if(testInput[i] == 't'){
+              if(temperature>0){
+                 numtoChar(&testInput[i+3],temperature,2);
+                 numtoChar(&expectedRxBuffer[i+3],temperature,2);
+                 numtoChar(&expectedTxBuffer[i+3],temperature,2);
+              }
               else{
-                 T2[i+1] = '-';
-                 numtoChar(&T2[i+3],-temperature,2);
+                 testInput[i+1] = '-';
+                 numtoChar(&testInput[i+3],-temperature,2);
+                 numtoChar(&expectedRxBuffer[i+3],-temperature,2);
+                 numtoChar(&expectedTxBuffer[i+3],-temperature,2);
               }
            }
-           else if(T2[i] == 'h')
-              numtoChar(&T2[i+3],humidity,3);
-           else if(T2[i] == 'c')
-              numtoChar(&T2[i+5],co2,5);
+           else if(testInput[i] == 'h'){
+              numtoChar(&testInput[i+3],humidity,3);
+              numtoChar(&expectedRxBuffer[i+3],humidity,3);
+              numtoChar(&expectedTxBuffer[i+3],humidity,3);
+           }  
+           else if(testInput[i] == 'c'){
+              numtoChar(&testInput[i+5],co2,5);
+              numtoChar(&expectedRxBuffer[i+5],co2,5);
+              numtoChar(&expectedTxBuffer[i+5],co2,5);
+           }
        }
        
-       numtoChar(&T2[18],(CheckSum(&T2[1],15)+CheckError),3);
-       for(int i=0; i<20; i++){
-           rxChar(T2[i]);
+       numtoChar(&testInput[18],(CheckSum(&testInput[1],15)+CheckError),3);
+       numtoChar(&expectedRxBuffer[18],(CheckSum(&expectedRxBuffer[1],15)+CheckError),3);
+       numtoChar(&expectedTxBuffer[18],(CheckSum(&expectedTxBuffer[1],15)+CheckError),3);
+       
+       for (unsigned int i = 0; i < sizeof(testInput); i++) {
+           result = rxChar(testInput[i]);
+           if (i < UART_TX_SIZE) {
+               // Expecting END as long as buffer is not full
+               TEST_ASSERT_EQUAL_INT(END, result);
+           } else {
+               // Expecting Size_Error when buffer is full
+               TEST_ASSERT_EQUAL_INT(Size_Error, result);
+           }
        }
-       getRxBuf(rx,getRxBufLen());
-       printf("\n------------------------------------------\n"
-              "\nValues in RxBuffer : %s",rx);
-                 
+       
+       getRxBuf(rxBuffer, getRxBufLen());
+       TEST_ASSERT_EQUAL_STRING_LEN(expectedRxBuffer, rxBuffer, sizeof(expectedRxBuffer));
     
-       int x = cmdProc();
-       ErrorCode(x);
-       getTxBuf(tx,getTxBufLen());
-      
-       printf("Values of TxBuffer : %s\n",tx);
+       result = cmdProc();
        
-       if(x != END){
+       getTxBuf(txBuffer,getTxBufLen());
+       
+       if(temperature >=-50 && temperature <= 60 && humidity >=0 && humidity <= 100 && co2 >=400 && co2 <=20000){
+           TEST_ASSERT_EQUAL_INT(END, result);
+           TEST_ASSERT_EQUAL_STRING_LEN(expectedTxBuffer, txBuffer, sizeof(expectedTxBuffer));
+           TEST_ASSERT_EQUAL_INT(co2,(int)getInstantCO2());
+           TEST_ASSERT_EQUAL_INT(humidity,(int)getInstantHum());
+           TEST_ASSERT_EQUAL_INT(temperature,(int)getInstantTemp());
+       }
+       else{
+           TEST_ASSERT_EQUAL_INT(ValueError, result);
+           TEST_ASSERT_EQUAL_STRING_LEN("", txBuffer, sizeof(expectedTxBuffer));
+           TEST_ASSERT_EQUAL_INT(0,(int)getInstantCO2());
+           TEST_ASSERT_EQUAL_INT(-1,(int)getInstantHum());
+           TEST_ASSERT_EQUAL_INT(-100,(int)getInstantTemp());
+       
+       }
+       
+       printf("\n------------------------------------------\n"
+              "\nValues in RxBuffer : %s",rxBuffer);
+                        
+       ErrorCode(result);
+      
+       printf("Values of TxBuffer : %s\n",txBuffer);
+       
+       if(result != END){
           printf("\nOne of these values are wrong\n");
        }
        else{
-       for(int i=0;i<17;i++){
-           if(T2[i] == 't')
+       for(int i=0;i<sizeof(testInput);i++){
+           if(testInput[i] == 't')
               printf("\nThe temperature is %d ºC",getInstantTemp());
-           else if(T2[i] == 'h')
+              
+           else if(testInput[i] == 'h')
               printf("\nThe humidity is %d %% ",getInstantHum());
-           else if(T2[i] == 'c')
+              
+           else if(testInput[i] == 'c')
               printf("\nThe CO2 is %d ppm",getInstantCO2());
        }
        }
@@ -433,7 +503,7 @@ void Teste_Proc_A(void){
     }
 }
 
-
+/*
 void Teste_Proc_All(void){
     unsigned char T1[10] = {'#','P','t','+','0','0','A','A','A','!'};
     unsigned char T2[10] = {'#','P','h','0','0','0','A','A','A','!'};

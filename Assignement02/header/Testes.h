@@ -11,22 +11,22 @@
  */
  
 /**
- * @brief Performs a test for the rxChar function.
+ * @brief Performs a test for the rxChar function using UNITY.
  */
 void Teste_RxChar(void);
 
 /**
- * @brief Performs a test for the txChar function.
+ * @brief Performs a test for the txChar function using UNITY.
  */
 void Teste_TxChar(void);
 
 /**
- * @brief Performs a test for the cmdProc function.
+ * @brief Performs a test for the cmdProc function using UNITY.
  */
 void Teste_Proc(void);
 
 /**
- * @brief Performs a test for the temperature processing functionality.
+ * @brief Performs a test for the temperature processing functionality using UNITY.
  */
 void Teste_Proc_Temp(void);
 

@@ -5,18 +5,20 @@
 int main(void) {
 
   UNITY_BEGIN();
-  RUN_TEST(Teste_RxChar);
-  RUN_TEST(Teste_TxChar);
-  RUN_TEST(Teste_Proc);
-  return UNITY_END();
+  //RUN_TEST(Teste_RxChar);
+  //RUN_TEST(Teste_TxChar);
+  //RUN_TEST(Teste_Proc);
+  //RUN_TEST(Teste_Proc_Temp);
+  //RUN_TEST(Teste_Proc_Hum);
+  //RUN_TEST(Teste_Proc_CO2);
 
 
 
 
-  /*
+  
    int choice = -1;
    do{
-   printf("\n"
+   printf("\n\n"
            "##########################################################################\n"
            "#                WHAT TEST YOU WANT TO MAKE ?                            #\n"
            "#                                                                        #\n"
@@ -41,38 +43,38 @@ int main(void) {
         break;
         
     	case(1):
-        Teste_RxChar();
+        RUN_TEST(Teste_RxChar);
         break;
     	
     	case(2): 
-        Teste_TxChar();
+        RUN_TEST(Teste_TxChar);
         break;
     	
     	case(3):
-        Teste_Proc();
+        RUN_TEST(Teste_Proc);
         break;
         
       case(4):
-        Teste_Proc_Temp();
+        RUN_TEST(Teste_Proc_Temp);
         break;
         
       case(5):
-        Teste_Proc_Hum();
+        RUN_TEST(Teste_Proc_Hum);
         break;
         
       case(6):
-        Teste_Proc_CO2();
+        RUN_TEST(Teste_Proc_CO2);
         break;
       
       case(7):
-        Teste_Proc_A();
+        RUN_TEST(Teste_Proc_A);
         break;
         
       case(8):
-        Teste_Proc_All();
+        //Teste_Proc_All();
         break;
    }
    }while(choice!=0);
-    return 0;
-    */
+    return UNITY_END();
+  
 }
