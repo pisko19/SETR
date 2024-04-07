@@ -31,17 +31,17 @@ void Teste_Proc(void);
 void Teste_Proc_Temp(void);
 
 /**
- * @brief Performs a test for the humidity processing functionality.
+ * @brief Performs a test for the humidity processing functionality using UNITY.
  */
 void Teste_Proc_Hum(void);
 
 /**
- * @brief Performs a test for the CO2 processing functionality.
+ * @brief Performs a test for the CO2 processing functionality using UNITY.
  */
 void Teste_Proc_CO2(void);
 
 /**
- * @brief Performs a test for the combined processing functionality.
+ * @brief Performs a test for the combined processing functionality using UNITY.
  */
 void Teste_Proc_A(void);
 
@@ -50,6 +50,5 @@ void Teste_Proc_A(void);
  */
 void Teste_Proc_All(void);
 
-void TESTE(void);
 
 #endif

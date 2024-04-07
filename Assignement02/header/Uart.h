@@ -183,7 +183,7 @@ unsigned int CheckSum(unsigned char* buf, int nbytes);
  * @param size Pointer to the size of the array.
  * @param value The value to be added.
  */
-void addValue(int *arr, int *size, int value);
+void addValue(int *arr, unsigned int *size, int value);
 
 /**
  * @brief Get the instant temperature.
@@ -192,7 +192,7 @@ void addValue(int *arr, int *size, int value);
  *
  * @return The instant temperature.
  */
-unsigned int getInstantTemp(void);
+int getInstantTemp(void);
 
 /**
  * @brief Get the temperature array.
@@ -201,7 +201,7 @@ unsigned int getInstantTemp(void);
  *
  * @return The pointer for the temperature array.
  */
-unsigned int* getTemp(void);
+int* getTemp(void);
 
 /**
  * @brief Get the instant humidity.
@@ -210,7 +210,7 @@ unsigned int* getTemp(void);
  *
  * @return The instant temperature.
  */
-unsigned int getInstantHum(void);
+int getInstantHum(void);
 
 /**
  * @brief Get the humidity array.
@@ -219,7 +219,7 @@ unsigned int getInstantHum(void);
  *
  * @return The pointer for the humidity array.
  */
-unsigned int* getHum(void);
+int* getHum(void);
 
 /**
  * @brief Get the instant CO2.
@@ -228,7 +228,7 @@ unsigned int* getHum(void);
  *
  * @return The instant temperature.
  */
-unsigned int getInstantCO2(void);
+int getInstantCO2(void);
 
 /**
  * @brief Get the CO2 array.
@@ -237,7 +237,7 @@ unsigned int getInstantCO2(void);
  *
  * @return The pointer for the CO2 array.
  */
-unsigned int* getCO2(void);
+int* getCO2(void);
 
 /**
  * @brief Utility function to convert a number to a character array.

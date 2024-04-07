@@ -71,7 +71,7 @@ int main(void) {
         break;
         
       case(8):
-        //Teste_Proc_All();
+        RUN_TEST(Teste_Proc_All);
         break;
    }
    }while(choice!=0);
