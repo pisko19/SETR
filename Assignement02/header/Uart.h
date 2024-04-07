@@ -34,6 +34,7 @@
 #define CMD_Error -6 /**< Command error status code */
 #define CheckSum_Error -7 /**< CheckSum error status code */
 
+
 /**
  * @brief Initialize the buffers and all the values arrays.
  */
