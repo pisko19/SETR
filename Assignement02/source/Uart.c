@@ -205,124 +205,232 @@ unsigned int CharToNum(unsigned char *array, int len){
   }
   return sum;
 }
-int cmdProc(void) {
-    int i;
-    unsigned char* action;
-    unsigned int check;
+int cmdProc(void){
 
-    if (RxBufferLen == 0)
-        return Size_Error;
-
-    for (i = 0; i < RxBufferLen; i++) {
-        if (RxBuffer[i] == SOS)
-            break;
-    }
-
-    if (i < RxBufferLen) {
-        // Calculate checksum
-        check = CheckSum(&RxBuffer[i + 1], 5); // Assuming checksum is calculated over the next 5 bytes
-
-        // Verify checksum
-        if (check != CharToNum(&RxBuffer[RxBufferLen - 2], 3))
-            return CheckSum_Error;
-
-        switch (RxBuffer[i + 1]) {
-            case 'P':
-                // See what is the category (temperature, humidity, CO2)
-                action = &RxBuffer[i + 2];
-
-                // Case Temperature
-                if (*action == 't') {
-                    if (RxBuffer[i + 9] != EOS) {
-                        erraseRxBuf(RxBufferLen);
-                        return EOS_Error;
-                    }
-
-                    int x = CharToNum(&RxBuffer[i + 5], 2);
-
-                    if (RxBuffer[i + 3] == '-') {
-                        x = -x;
-                    }
-
-                    if (x > 60 || x < -50) {
-                        erraseRxBuf(RxBufferLen);
-                        return ValueError;
-                    }
-
-                    addValue(temp, &tempIndex, x);
-
-                    for (int j = 0; j < RxBufferLen; j++) {
-                        txChar((unsigned char)(RxBuffer[j]));
-                    }
-
-                    numtoChar(&TxBuffer[TxBufferLen - 2], check, 3);
-
+  int i;
+  unsigned char* action;
+  unsigned int check;
+  
+  if(RxBufferLen == 0)
+     return Size_Error;
+  
+  for(i=0; i<=RxBufferLen; i++){
+     if(RxBuffer[i] == SOS)
+        break;
+  }
+  
+  if(i < RxBufferLen){
+    switch(RxBuffer[i+1]){
+          case 'P':
+              // See what is the category (temperature, humidity, CO2)
+              action = &RxBuffer[i+2];
+              
+              // Case Temperature
+              if (*action == 't'){
+                 if(RxBuffer[i+9] != EOS){
                     erraseRxBuf(RxBufferLen);
-                    return END;
-                }
-                // Case Humidity
-                else if (*action == 'h') {
-                    if (RxBuffer[i + 9] != EOS) {
-                        erraseRxBuf(RxBufferLen);
-                        return EOS_Error;
-                    }
-
-                    int x = CharToNum(&RxBuffer[i + 5], 3);
-
-                    if (x > 100 || x < 0) {
-                        erraseRxBuf(RxBufferLen);
-                        return ValueError;
-                    }
-
-                    addValue(hum, &humIndex, x);
-
-                    for (int j = 0; j < RxBufferLen; j++) {
-                        txChar((unsigned char)(RxBuffer[j]));
-                    }
-
-                    numtoChar(&TxBuffer[TxBufferLen - 2], check, 3);
-
+                    return EOS_Error;
+                 }
+                 
+                 check = CheckSum(&RxBuffer[i+1],5);
+                 
+                 if(check != CharToNum(&RxBuffer[RxBufferLen-2],3))
+                    return CheckSum_Error;
+                    
+                 int x = CharToNum(&RxBuffer[i+5],2);
+                 
+                 if(RxBuffer[i+3] == '-')
+                    x = -x;
+                 
+                 if(x > 60 || x < -50){
                     erraseRxBuf(RxBufferLen);
-                    return END;
-                }
-                // Case CO2
-                else if (*action == 'c') {
-                    if (RxBuffer[i + 11] != EOS) {
-                        erraseRxBuf(RxBufferLen);
-                        return EOS_Error;
-                    }
-
-                    int x = CharToNum(&RxBuffer[i + 7], 5);
-
-                    if (x > 20000 || x < 400) {
-                        erraseRxBuf(RxBufferLen);
-                        return ValueError;
-                    }
-
-                    addValue(co2, &co2Index, x);
-
-                    for (int j = 0; j < RxBufferLen; j++) {
-                        txChar((unsigned char)(RxBuffer[j]));
-                    }
-
-                    numtoChar(&TxBuffer[TxBufferLen - 2], check, 3);
-
+                    return ValueError;
+                 }  
+                 
+                 addValue(temp,&tempIndex,x);
+                 
+                 for(int i=0;i<RxBufferLen;i++)
+                    txChar((unsigned char)(RxBuffer[i]));  
+                 
+                 numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+                 
+                 erraseRxBuf(RxBufferLen);
+                 return END;
+              }
+              
+              // CASE HUMIDITY
+              else if (*action == 'h'){
+                 if(RxBuffer[i+9] != EOS){
                     erraseRxBuf(RxBufferLen);
-                    return END;
-                }
-                else {
+                    return EOS_Error;
+                 }
+                 
+                 check = CheckSum(&RxBuffer[i+1],5);
+                  
+                 if(check != CharToNum(&RxBuffer[RxBufferLen-2],3))
+                    return CheckSum_Error;
+                    
+                 int x = CharToNum(&RxBuffer[i+5],3);
+                 
+                 if(x > 100 || x < 0){
                     erraseRxBuf(RxBufferLen);
-                    return CMD_Error;
+                    return ValueError;
+                 }
+                 
+                 addValue(hum,&humIndex,x);
+                 
+                 for(int i=0;i<RxBufferLen;i++)
+                    txChar((unsigned char)(RxBuffer[i]));  
+                 
+                 numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+                 
+                 erraseRxBuf(RxBufferLen);
+                 return END;
+              }
+              
+              // Case CO2
+              else if (*action == 'c'){
+                 if(RxBuffer[i+11] != EOS){
+                    erraseRxBuf(RxBufferLen);
+                    return EOS_Error;
+                 }
+                 check = CheckSum(&RxBuffer[i+1],7);
+                 
+                 if(check != CharToNum(&RxBuffer[RxBufferLen-2],3))
+                    return CheckSum_Error;
+                    
+                 int x = CharToNum(&RxBuffer[i+7],5);
+                 
+                 if(x > 20000 || x < 400){
+                    erraseRxBuf(RxBufferLen);
+                    return ValueError;
+                 }
+                 
+                 addValue(co2,&co2Index,x);  
+                 
+                 for(int i=0;i<RxBufferLen;i++)
+                    txChar((unsigned char)(RxBuffer[i]));  
+                 
+                 numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+                 
+                 erraseRxBuf(RxBufferLen);
+                 return END;
+              }
+              
+              else{
+                 erraseRxBuf(RxBufferLen);
+                 return CMD_Error;
+              }
+              
+          case 'A':
+              if(RxBuffer[i+19] != EOS){
+                 erraseRxBuf(RxBufferLen);
+                 return EOS_Error;
+              }   
+              
+              check = CheckSum(&RxBuffer[i+1],15);
+              if(check != CharToNum(&RxBuffer[RxBufferLen-2],3))
+                 return CheckSum_Error;
+                 
+              action = &RxBuffer[i+2];
+              while(*action != '!'){
+                 if(*action == 't'){
+                   
+                   int x = 10*(*(action+2) - '0') + *(action+3) - '0';
+                 
+                   if(*(action+1) == '-')
+                      x = -x;
+                 
+                   if(x > 60 || x < -50){
+                      erraseRxBuf(RxBufferLen);
+                      return ValueError;
+                   }   
+                   addValue(temp,&tempIndex,x);
+                 
+                   action += 4;
+                 }
+                 else if(*action == 'h'){
+                   
+                   int x = 100*(*(action+1) - '0') + 10*(*(action+2) - '0') + *(action+3) - '0';
+                 
+                   if(x > 100 || x < 0){
+                      erraseRxBuf(RxBufferLen);
+                      return ValueError;
+                   }
+                   addValue(hum,&humIndex,x);
+                 
+                   action += 4;
+                    
+                 }
+                 else if(*action == 'c'){
+                   
+                   int x = 10000*(*(action+1) - '0') + 1000*(*(action+2) - '0') + 100*(*(action+3) - '0') + 10*(*(action+4) - '0') + *(action+5) - '0';
+                   
+                   if(x > 20000 || x < 400){
+                      erraseRxBuf(RxBufferLen);
+                      return ValueError;
+                   }
+                   addValue(co2,&co2Index,x);  
+                 
+                   action += 6;
+                
+                 }
+                 else{
+                   action += 3;
+                   //Acrescentar condição de erro
                 }
-
-            // The rest of your switch cases can follow the same pattern...
-
-            default:
-                erraseRxBuf(RxBufferLen);
-                return CMD_Error;
-        }
-    }
-    else {
-        return SOS_Error;
-    }
+               }
+               
+               for(int i=0;i<RxBufferLen;i++)
+                    txChar((unsigned char)(RxBuffer[i]));  
+                 
+               numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+                
+               erraseRxBuf(RxBufferLen);
+               return END;
+          
+          
+          case 'L':
+               check = CheckSum(&RxBuffer[i+1],1);
+               if(check != CharToNum(&RxBuffer[RxBufferLen-2],3))
+                  return CheckSum_Error;
+             
+               for(int i=0;i<RxBufferLen;i++)
+                   txChar((unsigned char)(RxBuffer[i]));  
+                 
+               numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+                 
+               erraseRxBuf(RxBufferLen);
+               return END_L;
+             
+             
+          case 'R':  
+               tempIndex = 0;
+               humIndex = 0;
+               co2Index = 0;
+               for(int i = 0;i<20;i++){
+                   temp[i] = -100;
+                   hum[i] = -1;
+                   co2[i] = 0;
+                   
+               }
+               check = CheckSum(&RxBuffer[i+1],1);
+               if(check != CharToNum(&RxBuffer[RxBufferLen-2],3))
+                  return CheckSum_Error;
+              
+               for(int i=0;i<RxBufferLen;i++)
+                   txChar((unsigned char)(RxBuffer[i]));  
+                 
+               numtoChar(&TxBuffer[TxBufferLen-2],check,3);
+               erraseRxBuf(RxBufferLen);
+               return END;
+             
+          default :
+               erraseRxBuf(RxBufferLen);
+               return CMD_Error; 
+     }
+  }
+  else
+     return SOS_Error;
+  
 }
