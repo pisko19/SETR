@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['size_5ferror_20',['Size_Error',['../group__Uart.html#ga0e91e847a955cfeca08d6f3a5a89210b',1,'Uart.h']]],
-  ['smart_20sensor_20uart_20module_21',['Smart Sensor UART Module',['../index.html',1,'']]],
-  ['sos_22',['SOS',['../group__Uart.html#gaaba783a919ec55e409334086e6d2a3bb',1,'Uart.h']]]
+  ['resetrxchar_25',['ResetRxChar',['../group__Uart.html#ga9673956bc68b02d05c4957ab1b40724c',1,'ResetRxChar(void):&#160;Uart.c'],['../group__Uart.html#ga9673956bc68b02d05c4957ab1b40724c',1,'ResetRxChar(void):&#160;Uart.c']]],
+  ['resettxchar_26',['ResetTxChar',['../group__Uart.html#gaaf799f6c05312f43107024da9378761a',1,'ResetTxChar(void):&#160;Uart.c'],['../group__Uart.html#gaaf799f6c05312f43107024da9378761a',1,'ResetTxChar(void):&#160;Uart.c']]],
+  ['rxchar_27',['rxChar',['../group__Uart.html#ga5bf655ec1590a14989ef53cbb2caf4a5',1,'rxChar(unsigned char character):&#160;Uart.c'],['../group__Uart.html#ga5bf655ec1590a14989ef53cbb2caf4a5',1,'rxChar(unsigned char character):&#160;Uart.c']]]
 ];

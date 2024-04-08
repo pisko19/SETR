@@ -18,21 +18,31 @@ Header file containing declarations of structures and functions for UART communi
 \item 
 \#define \mbox{\hyperlink{group__Uart_gaadbbc7b02d94a4c18646813ac8d7dec1}{EOS}}~\textquotesingle{}!\textquotesingle{}
 \item 
+\#define \mbox{\hyperlink{group__Uart_ga1ad4406383b5bfb01b9fe6b9dc8968ff}{END\+\_\+L}}~1
+\item 
 \#define \mbox{\hyperlink{group__Uart_ga29fd18bed01c4d836c7ebfe73a125c3f}{END}}~0
 \item 
 \#define \mbox{\hyperlink{group__Uart_gae0a8163e86e94d72f61e24571477c186}{Value\+Error}}~-\/1
 \item 
 \#define \mbox{\hyperlink{group__Uart_ga795fc5b1fc0aaba4598340abf7d2a1f8}{EOS\+\_\+\+Error}}~-\/2
 \item 
-\#define \mbox{\hyperlink{group__Uart_ga2d948821529a9c63940d32a4504185cb}{Len\+\_\+\+Error}}~-\/3
+\#define \mbox{\hyperlink{group__Uart_gabdb71014872b37b4c583b5ade7dc40e0}{SOS\+\_\+\+Error}}~-\/3
 \item 
-\#define \mbox{\hyperlink{group__Uart_ga0e91e847a955cfeca08d6f3a5a89210b}{Size\+\_\+\+Error}}~-\/4
+\#define \mbox{\hyperlink{group__Uart_ga2d948821529a9c63940d32a4504185cb}{Len\+\_\+\+Error}}~-\/4
 \item 
-\#define \mbox{\hyperlink{group__Uart_gae0055fb85175f413cc6a45b11719e32b}{CMD\+\_\+\+Error}}~-\/5
+\#define \mbox{\hyperlink{group__Uart_ga0e91e847a955cfeca08d6f3a5a89210b}{Size\+\_\+\+Error}}~-\/5
+\item 
+\#define \mbox{\hyperlink{group__Uart_gae0055fb85175f413cc6a45b11719e32b}{CMD\+\_\+\+Error}}~-\/6
+\item 
+\#define \mbox{\hyperlink{group__Uart_gafd8de7da9adea1fef56955aaac87f666}{Check\+Sum\+\_\+\+Error}}~-\/7
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
+void \mbox{\hyperlink{group__Uart_ga2858154e2009b0e6e616f313177762bc}{init}} (void)
+\begin{DoxyCompactList}\small\item\em Initialize the buffers and all the values arrays. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__Uart_gabfb788979febd838c4b4e3717b8719bd}{Error\+Code}} (int x)
+\begin{DoxyCompactList}\small\item\em Print what type of error is if was one. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{group__Uart_gaced3facd7540036687482d443d6aecde}{cmd\+Proc}} (void)
 \begin{DoxyCompactList}\small\item\em Process a received command. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{group__Uart_ga5bf655ec1590a14989ef53cbb2caf4a5}{rx\+Char}} (unsigned char character)
@@ -51,16 +61,28 @@ int \mbox{\hyperlink{group__Uart_gabe48c57f9125519dd9db20c761b825cf}{get\+Rx\+Bu
 \begin{DoxyCompactList}\small\item\em Get the receiver buffer. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{group__Uart_ga8cb22b6cd257b5236e7a43ed24d53889}{get\+Rx\+Buf\+Len}} (void)
 \begin{DoxyCompactList}\small\item\em Get the receiver buffer lenght. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__Uart_ga946332a1b83506835fa9ba6110d8a527}{get\+Rx\+Buf\+Len}} (int len)
+\begin{DoxyCompactList}\small\item\em Errase the values read but a certain len. \end{DoxyCompactList}\item 
 unsigned int \mbox{\hyperlink{group__Uart_ga77e129fc98b3b9c3c28ae4eab0c88fe3}{Check\+Sum}} (unsigned char $\ast$buf, int nbytes)
 \begin{DoxyCompactList}\small\item\em Calculate the checksum of a string. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{group__Uart_ga776c25f8b6461c270e977f43606396c0}{add\+Value}} (int $\ast$arr, int $\ast$size, int value)
+void \mbox{\hyperlink{group__Uart_ga677721301a610972af20b9e35a4a4581}{add\+Value}} (int $\ast$arr, unsigned int $\ast$size, int value)
 \begin{DoxyCompactList}\small\item\em Add a value to an array with shifting. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{group__Uart_ga331baff64d96016e56ce2f2dab0016ac}{get\+Instant\+Temp}} (void)
 \begin{DoxyCompactList}\small\item\em Get the instant temperature. \end{DoxyCompactList}\item 
+int $\ast$ \mbox{\hyperlink{group__Uart_gaa76f40ebfa354f046998a953f5b88707}{get\+Temp}} (void)
+\begin{DoxyCompactList}\small\item\em Get the temperature array. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{group__Uart_ga8937ee329d1a8100955fb7181a52a7da}{get\+Instant\+Hum}} (void)
 \begin{DoxyCompactList}\small\item\em Get the instant humidity. \end{DoxyCompactList}\item 
+int $\ast$ \mbox{\hyperlink{group__Uart_gad183b65e198cc25b53887d6458e46a89}{get\+Hum}} (void)
+\begin{DoxyCompactList}\small\item\em Get the humidity array. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{group__Uart_gaae66e095303035cfcad38b5b197e0e98}{get\+Instant\+CO2}} (void)
-\begin{DoxyCompactList}\small\item\em Get the instant CO2. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Get the instant CO2. \end{DoxyCompactList}\item 
+int $\ast$ \mbox{\hyperlink{group__Uart_ga8938695c21811433d3fcafe9f2aa6c12}{get\+CO2}} (void)
+\begin{DoxyCompactList}\small\item\em Get the CO2 array. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__Uart_ga7b0dcb4a8ab75d4dc9311f7259ea72a7}{numto\+Char}} (unsigned char array\mbox{[}$\,$\mbox{]}, int num, int len)
+\begin{DoxyCompactList}\small\item\em Utility function to convert a number to a character array. \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{group__Uart_ga3b002c29ede04682e5829a6cad39b9cc}{Char\+To\+Num}} (unsigned char array\mbox{[}$\,$\mbox{]}, int len)
+\begin{DoxyCompactList}\small\item\em Utility function to convert a character array to a number. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
