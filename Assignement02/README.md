@@ -18,6 +18,13 @@
    - P: Reads the real-time value of one of the sensors
    - L: Returns the last 20 samples of each variable
    - R: Resets the history
+   
+ - Furthermore, specific commands are used to select different sensors and transmit corresponding data. For instance:
+   - The command 't' selects the temperature sensor, followed by the signal + or -, and then the temperature value represented by two digits (e.g., #Pt+10080 for 10 degrees).
+   - The command 'h' selects the humidity sensor, with the humidity value represented by one to three digits (e.g., #Ph020074 for 20% humidity).
+   - The command 'c' selects the CO2 sensor, with the CO2 level represented from three to five digits (e.g., #Pc00500168 for a CO2 level of 500)
+ These framing specifications ensure standardized communication and facilitate accurate interpretation of data between the UART transmitter and receiver.
+   
  - <b>Sensor Emulation:</b>
    - Since no physical sensors are utilized, the sensor outputs are emulated. Random values alone are not suitable for emulation due to their lack of realism. Alternate strategies for emulating sensor data should be employed to provide more meaningful simulation.
  

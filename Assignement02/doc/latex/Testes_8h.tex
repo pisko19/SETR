@@ -5,13 +5,19 @@
 Header file containing declarations of functions for testing the UART module.  
 
 
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{Testes_8h_a9d865c30a57a524af4b98f6389c21dac}\label{Testes_8h_a9d865c30a57a524af4b98f6389c21dac}} 
+\#define {\bfseries Check\+Error}~0
+\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{Testes_8h_ae67b2a2125cc3951ee28d7aa094f6a69}{Teste\+\_\+\+Rx\+Char}} (void)
-\begin{DoxyCompactList}\small\item\em Performs a test for the rx\+Char function using UNITY. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{Testes_8h_a1a19c10259f84e157df409c3cb9de032}{Teste\+\_\+\+Tx\+Char}} (void)
 \begin{DoxyCompactList}\small\item\em Performs a test for the tx\+Char function using UNITY. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Testes_8h_ae67b2a2125cc3951ee28d7aa094f6a69}{Teste\+\_\+\+Rx\+Char}} (void)
+\begin{DoxyCompactList}\small\item\em Performs a test for the rx\+Char function using UNITY. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{Testes_8h_a35e0c89f713f005695ffa258d1fe59d6}{Teste\+\_\+\+Proc}} (void)
 \begin{DoxyCompactList}\small\item\em Performs a test for the cmd\+Proc function using UNITY. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{Testes_8h_a27b039428869c5fe9aab346119a9ba2a}{Teste\+\_\+\+Proc\+\_\+\+Temp}} (void)
@@ -23,7 +29,7 @@ void \mbox{\hyperlink{Testes_8h_a1f01e94d270f5e5e796e32ed3c166be8}{Teste\+\_\+\+
 void \mbox{\hyperlink{Testes_8h_a1e706fea3fc514abc380c6e0f8fa34ce}{Teste\+\_\+\+Proc\+\_\+A}} (void)
 \begin{DoxyCompactList}\small\item\em Performs a test for the combined processing functionality using UNITY. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{Testes_8h_acd5a992dd6fa87988049138f7efdb7a7}{Teste\+\_\+\+Proc\+\_\+\+All}} (void)
-\begin{DoxyCompactList}\small\item\em Performs a test for all the functionality. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Performs a test for all the functionality using UNITY. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -92,7 +98,7 @@ Ensure that the UART can handle mixed data inputs effectively, regardless of the
 
 
 
-Performs a test for all the functionality. 
+Performs a test for all the functionality using UNITY. 
 
 \begin{DoxyParagraph}{Test 8 – Comprehensive Testing}
 
@@ -182,17 +188,17 @@ Confirm that the UART can process temperature data accurately and provide correc
 
 Performs a test for the rx\+Char function using UNITY. 
 
-\begin{DoxyParagraph}{Test 1 – Data Transmission}
+\begin{DoxyParagraph}{Test 1 – Data Reception}
 
 \end{DoxyParagraph}
 \begin{DoxyParagraph}{Objective\+:}
-Verify the UART\textquotesingle{}s operational capability in transmitting data accurately to an external device. 
+Validate the UART\textquotesingle{}s proficiency in receiving data from an external device. 
 \end{DoxyParagraph}
 \begin{DoxyParagraph}{Method\+:}
-This test involves sending data through the UART interface and validating that the transmitted data aligns with the expected output. 
+Data from an external device is sent to the microcontroller through UART, and the received data is compared against the expected input. 
 \end{DoxyParagraph}
 \begin{DoxyParagraph}{Expected Outcome\+:}
-Ensure that data transmitted via the UART is precise and devoid of errors. 
+Confirm that the UART can accurately receive and process incoming data. 
 \end{DoxyParagraph}
 \mbox{\Hypertarget{Testes_8h_a1a19c10259f84e157df409c3cb9de032}\label{Testes_8h_a1a19c10259f84e157df409c3cb9de032}} 
 \index{Testes.h@{Testes.h}!Teste\_TxChar@{Teste\_TxChar}}
@@ -204,15 +210,15 @@ Ensure that data transmitted via the UART is precise and devoid of errors.
 
 Performs a test for the tx\+Char function using UNITY. 
 
-\begin{DoxyParagraph}{Test 2 – Data Reception}
+\begin{DoxyParagraph}{Test 2 – Data Transmission}
 
 \end{DoxyParagraph}
 \begin{DoxyParagraph}{Objective\+:}
-Validate the UART\textquotesingle{}s proficiency in receiving data from an external device. 
+Verify the UART\textquotesingle{}s operational capability in transmitting data accurately to an external device. 
 \end{DoxyParagraph}
 \begin{DoxyParagraph}{Method\+:}
-Data from an external device is sent to the microcontroller through UART, and the received data is compared against the expected input. 
+This test involves sending data through the UART interface and validating that the transmitted data aligns with the expected output. 
 \end{DoxyParagraph}
 \begin{DoxyParagraph}{Expected Outcome\+:}
-Confirm that the UART can accurately receive and process incoming data. 
+Ensure that data transmitted via the UART is precise and devoid of errors. 
 \end{DoxyParagraph}

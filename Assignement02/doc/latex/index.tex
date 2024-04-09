@@ -18,6 +18,12 @@ This module provides functionality for processing commands received via UART (Un
 \item L\+: Returns the last 20 samples of each variable
 \item R\+: Resets the history
 \end{DoxyItemize}
+\item Furthermore, specific commands are used to select different sensors and transmit corresponding data. For instance\+:
+\begin{DoxyItemize}
+\item The command \textquotesingle{}t\textquotesingle{} selects the temperature sensor, followed by the signal + or -\/, and then the temperature value represented by two digits (e.\+g., \#\+Pt+10080 for 10 degrees).
+\item The command \textquotesingle{}h\textquotesingle{} selects the humidity sensor, with the humidity value represented by one to three digits (e.\+g., \#\+Ph020074 for 20\% humidity).
+\item The command \textquotesingle{}c\textquotesingle{} selects the CO2 sensor, with the CO2 level represented from three to five digits (e.\+g., \#\+Pc00500168 for a CO2 level of 500) These framing specifications ensure standardized communication and facilitate accurate interpretation of data between the UART transmitter and receiver.
+\end{DoxyItemize}
 \item {\bfseries{Sensor Emulation\+:}}
 \begin{DoxyItemize}
 \item Since no physical sensors are utilized, the sensor outputs are emulated. Random values alone are not suitable for emulation due to their lack of realism. Alternate strategies for emulating sensor data should be employed to provide more meaningful simulation.

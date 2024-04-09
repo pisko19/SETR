@@ -14,8 +14,8 @@
  */
 
 /**
- * @brief Performs a test for the rxChar function using UNITY.
- * @par Test 1 – Data Transmission
+ * @brief Performs a test for the txChar function using UNITY.
+ * @par Test 2 – Data Transmission
  * @par Objective:
  * Verify the UART's operational capability in transmitting data accurately to an external device.
  * @par Method:
@@ -23,11 +23,11 @@
  * @par Expected Outcome:
  * Ensure that data transmitted via the UART is precise and devoid of errors.
  */
-void Teste_RxChar(void);
+void Teste_TxChar(void);
 
 /**
- * @brief Performs a test for the txChar function using UNITY.
- * @par Test 2 – Data Reception
+ * @brief Performs a test for the rxChar function using UNITY.
+ * @par Test 1 – Data Reception
  * @par Objective:
  * Validate the UART's proficiency in receiving data from an external device.
  * @par Method:
@@ -35,7 +35,8 @@ void Teste_RxChar(void);
  * @par Expected Outcome:
  * Confirm that the UART can accurately receive and process incoming data.
  */
-void Teste_TxChar(void);
+void Teste_RxChar(void);
+
 
 /**
  * @brief Performs a test for the cmdProc function using UNITY.

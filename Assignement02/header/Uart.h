@@ -197,7 +197,7 @@ int getInstantTemp(void);
 /**
  * @brief Get the temperature array.
  *
- * This function returns he pointer for the temperature array
+ * This function returns the pointer for the temperature array
  *
  * @return The pointer for the temperature array.
  */
@@ -215,7 +215,7 @@ int getInstantHum(void);
 /**
  * @brief Get the humidity array.
  *
- * This function returns he pointer for the humidity array
+ * This function returns the pointer for the humidity array
  *
  * @return The pointer for the humidity array.
  */
@@ -233,7 +233,7 @@ int getInstantCO2(void);
 /**
  * @brief Get the CO2 array.
  *
- * This function returns he pointer for the CO2 array
+ * This function returns the pointer for the CO2 array
  *
  * @return The pointer for the CO2 array.
  */

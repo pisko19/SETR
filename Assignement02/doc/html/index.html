@@ -85,6 +85,12 @@ $(function() {
 <li>R: Resets the history</li>
 </ul>
 </li>
+<li>Furthermore, specific commands are used to select different sensors and transmit corresponding data. For instance:<ul>
+<li>The command 't' selects the temperature sensor, followed by the signal + or -, and then the temperature value represented by two digits (e.g., #Pt+10080 for 10 degrees).</li>
+<li>The command 'h' selects the humidity sensor, with the humidity value represented by one to three digits (e.g., #Ph020074 for 20% humidity).</li>
+<li>The command 'c' selects the CO2 sensor, with the CO2 level represented from three to five digits (e.g., #Pc00500168 for a CO2 level of 500) These framing specifications ensure standardized communication and facilitate accurate interpretation of data between the UART transmitter and receiver.</li>
+</ul>
+</li>
 <li><b>Sensor Emulation:</b><ul>
 <li>Since no physical sensors are utilized, the sensor outputs are emulated. Random values alone are not suitable for emulation due to their lack of realism. Alternate strategies for emulating sensor data should be employed to provide more meaningful simulation.</li>
 </ul>
