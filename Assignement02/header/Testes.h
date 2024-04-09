@@ -1,6 +1,9 @@
 #ifndef Testes_H_
 #define Testes_H_
 
+
+#define CheckError 0 //Change this value if you want to make a checksum error
+
 /**
  * @file Testes.h
  * @brief Header file containing declarations of functions for testing the UART module.
@@ -95,7 +98,7 @@ void Teste_Proc_CO2(void);
 void Teste_Proc_A(void);
 
 /**
- * @brief Performs a test for all the functionality.
+ * @brief Performs a test for all the functionality using UNITY.
  * @par Test 8 – Comprehensive Testing
  * @par Objective:
  * Perform an extensive test covering all previous tests (1-7), along with additional evaluations of the UART's ability to retrieve the last 20 samples of each data type and reset them.

@@ -5,8 +5,6 @@
 #include "../header/Uart.h"
 #include "../header/unity.h" 
 
-#define CheckError 0 //Change this value if you want to make a checksum error
-
 void setUp(void) {
     // Initialize resources before each test case
 }
