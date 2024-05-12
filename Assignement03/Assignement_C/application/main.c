@@ -65,6 +65,7 @@ void Check_Function(){
 
 int main (){
    
+   Check_Function();
    // Initialize the led and the buttons
    // Use internal pull-up to avoid the need for an external resitor (button)
    ret = gpio_pin_configure_dt(&led0, GPIO_OUTPUT_ACTIVE);
