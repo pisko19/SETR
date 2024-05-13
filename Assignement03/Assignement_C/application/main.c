@@ -10,6 +10,7 @@
 #include <zephyr/drivers/gpio.h>    /* for GPIO api*/
 #include <zephyr/sys/printk.h>      /* for printk()*/
 
+#define ERR_ABORT -1
 /* Get led0 and button0 node IDs. Refer to the DTS file */
 #define LED0_NODE DT_ALIAS(led0)
 #define LED1_NODE DT_ALIAS(led1)
@@ -33,39 +34,37 @@ static struct gpio_callback button3_cb_data;
 
 static int ret = 0;
 
-void Check_Function(){
+int Check_Function(){
 
    // Verify the state of the leds and the buttons
    if (!device_is_ready(led0.port)) {
         printk("Error: led0 device %s is not ready\n", led0.port->name);
-   	return 0;
+   	return ERR_ABORT;
    }
    if (!device_is_ready(led1.port)) {
         printk("Error: led1 device %s is not ready\n", led1.port->name);
-   	return 0;
+   	return ERR_ABORT;
    }
    if (!device_is_ready(but0.port)) {
         printk("Error: but0 device %s is not ready\n", but0.port->name);
-   	return 0;
+   	return ERR_ABORT;
    }
    if (!device_is_ready(but1.port)) {
         printk("Error: but1 device %s is not ready\n", but1.port->name);
-   	return 0;
+   	return ERR_ABORT;
    }
    if (!device_is_ready(but2.port)) {
         printk("Error: but3 device %s is not ready\n", but2.port->name);
-   	return 0;
+   	return ERR_ABORT;
    }
    if (!device_is_ready(but3.port)) {
         printk("Error: but4 device %s is not ready\n", but3.port->name);
-   	return 0;
+   	return ERR_ABORT;
    }
+   return 0;
 }
 
-
-int main (){
-   
-   Check_Function();
+int Init_Function(){
    // Initialize the led and the buttons
    // Use internal pull-up to avoid the need for an external resitor (button)
    ret = gpio_pin_configure_dt(&led0, GPIO_OUTPUT_ACTIVE);
@@ -118,6 +117,22 @@ int main (){
    ret = gpio_pin_interrupt_configure_dt(&but3, GPIO_INT_EDGE_TO_ACTIVE);
    if (ret < 0) {
 	printk("Error: gpio_pin_interrupt_configure_dt failed for button3, error:%d", ret);
+	return ERR_ABORT;
+   }
+   
+   return 0;
+
+}
+
+int main (){
+   
+   ret = Check_Function();
+   if (ret < 0) {
+	return ERR_ABORT;
+   }
+   
+   ret = Init_Function();
+   if (ret < 0) {
 	return ERR_ABORT;
    }
    
