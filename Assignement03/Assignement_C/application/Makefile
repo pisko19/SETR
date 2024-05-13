@@ -1,35 +1,13 @@
-DEFAULT_TARGET = sm
-OBJECTS = ./Functions/Functions.o ./timers/timers.o ../src-gen/Statechart.o  ./main.o
+# SPDX-License-Identifier: Apache-2.0
 
-CFLAGS = -g -Wall -O3 
+cmake_minimum_required(VERSION 3.13.1)
+set(BOARD "your_board_name")
 
-# -pthread replaces -D_REENTRANT and -lpthreads
-# from gcc manual "sets flags for both the preprocessor and linker"
-CLFLAGS = -pthread
+find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 
-LDLIBS =
-CC = gcc
-
-INC = -I./timers -I./Functions -I./debug -I../src-gen -I../src
-
-.PHONY : clean
-.PHONY : run
-
-# Generate application
-$(DEFAULT_TARGET): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $(DEFAULT_TARGET) $(CLFLAGS)
-	
-# Generate object files
-%.o: %.c %.h
-	$(CC) $(CFLAGS) $(CLFLAGS) $(INC) -c $< -o $@ 
-
-# for  c files without .h
-%.o: %.c
-	$(CC) $(CFLAGS) $(CLFLAGS) $(INC) -c $< -o $@ 
-	
-clean:
-	rm -f *.o $(DEFAULT_TARGET)
-
-run: $(DEFAULT_TARGET)
-	./$(DEFAULT_TARGET)
+target_sources(app PRIVATE
+    src/main.c
+    ../src-gen/Statechart_required.h
+    ../src-gen/Statechart.h
+)
 
