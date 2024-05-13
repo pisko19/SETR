@@ -33,6 +33,7 @@ static struct gpio_callback button2_cb_data;
 static struct gpio_callback button3_cb_data;
 
 static int ret = 0;
+static Statchart StateMachine;
 
 int Check_Function(){
 
@@ -148,39 +149,100 @@ int main (){
    gpio_init_callback(&button3_cb_data, button3Pressed, BIT(but3.pin));
    gpio_add_callback(but3.port, &button3_cb_data);
    
+   statechart_init(&StateMachine);
+   statechart_enter(&StateMachine);
    
    return 0;
 }
 
 void button0Pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
-    /* Toggle led0 */
-   gpio_pin_toggle_dt(&led0);
+    /* Activate the 1 Euro button */
+   statechart_Button_raise_one_Euro(&StateMachine);
    
    return;  
 
 }
 void button1Pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
-    /* Toggle led1 */
-   gpio_pin_toggle_dt(&led1);
+    /* Activate the 2 Euros button */
+   statechart_Button_raise_two_Euro(&StateMachine);
    
    return;  
 
 }
 void button2Pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
-    /* Toggle led0 */
-   gpio_pin_toggle_dt(&led0);
+    /* Activate the select button */
+   statechart_Button_raise_select(&StateMachine);
    
    return;  
 
 }
 void button3Pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
-    /* Toggle led1 */
-   gpio_pin_toggle_dt(&led1);
+    /* Activate the enter button */
+   statechart_Button_raise_enter(&StateMachine);
    
    return;  
 
 }
+
+void statechart_display( Statechart* handle, const sc_integer Type){
+
+   switch(Type){
+   	case 0:
+   	    printk("\033[;H\n\r"
+                "############################################\n\r"
+                "#                                          #\n\r"
+                "#                  AMOUNT                  #\n\r"
+                "#                 --------                 #\n\r"
+                "#                   %3d €                  #\n\r"
+                "#                                          #\n\r"
+                "############################################\n",handle->internal.Cash);
+            break;
+        case 1:
+            printk("\033[;H\n\r"
+                "############################################\n\r"
+                "#                                          #\n\r"
+                "#             Product Selection            #\n\r"
+                "#                 --------                 #\n\r"
+                "#               Product ->%2d              #\n\r"
+                "#                Price ->%2d €             #\n\r"
+                "#                                          #\n\r"
+                "############################################\n",handle->internal.Product);
+            break;
+       case 2:
+            printk("\033[;H\n\r"
+                "############################################\n\r"
+                "#                                          #\n\r"
+                "#             Return the Credit            #\n\r"
+                "#                 --------                 #\n\r"
+                "#               Credit ->%3d €             #\n\r"
+                "#                                          #\n\r"
+                "############################################\n",handle->internal.Cash);
+            break;
+      case 3:
+            printk("\033[;H\n\r"
+                "############################################\n\r"
+                "#                                          #\n\r"
+                "#           Product Selectioned            #\n\r"
+                "#                 --------                 #\n\r"
+                "#               Product ->%2d              #\n\r"
+                "#                Price ->%2d €             #\n\r"
+                "#              New Amount ->%3d €          #\n\r"
+                "#                                          #\n\r"
+                "############################################\n",handle->internal.Product,handle->internal.Product,handle->internal.Cash);
+            break;
+      case 4:
+            printk("\033[;H\n\r"
+                "############################################\n\r"
+                "#                                          #\n\r"
+                "#     Not Enough Cash For The Product      #\n\r"
+                "#     Product->%2d    Cash->%2d            #\n\r"
+                "#                                          #\n\r"
+                "############################################\n",handle->internal.Product,handle->internal.Cash);
+            break;
+   }
+}
+
