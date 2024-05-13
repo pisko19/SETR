@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <pthread.h>
 #include "timers.h"
-#include "debugprint.h"
+#include "../debug/debugprint.h"
 
 static pthread_mutex_t lock; /* Lock for serialization of access to timers data */
 	

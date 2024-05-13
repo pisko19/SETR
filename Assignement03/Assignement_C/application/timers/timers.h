@@ -32,8 +32,8 @@
 #define TIMERS_H_
 
 #include <stdint.h>
-#include "Statechart.h"
-#include "Statechart_required.h"
+#include "../../src-gen/Statechart.h"
+#include "../../src-gen/Statechart_required.h"
 
 /* Some self-explanatory defines */
 #define TIMERS_OK 		0 		/* Success */

@@ -2,7 +2,7 @@
 #include "../src/sc_types.h"
 #include "../src-gen/Statechart_required.h"
 #include "../src-gen/Statechart.h"
-#include "timers.h"
+#include "timers/timers.h"
 /* Includes. Add according to the resources used  */
 #include <zephyr/kernel.h>          /* for k_msleep() */
 #include <zephyr/device.h>          /* for device_is_ready() and device structure */
@@ -33,7 +33,7 @@ static struct gpio_callback button2_cb_data;
 static struct gpio_callback button3_cb_data;
 
 static int ret = 0;
-static Statchart StateMachine;
+static Statechart StateMachine;
 
 int Check_Function(){
 
@@ -123,36 +123,6 @@ int Init_Function(){
    
    return 0;
 
-}
-
-int main (){
-   
-   ret = Check_Function();
-   if (ret < 0) {
-	return ERR_ABORT;
-   }
-   
-   ret = Init_Function();
-   if (ret < 0) {
-	return ERR_ABORT;
-   }
-   
-   gpio_init_callback(&button0_cb_data, button0Pressed, BIT(but0.pin));
-   gpio_add_callback(but0.port, &button0_cb_data);
-   
-   gpio_init_callback(&button1_cb_data, button1Pressed, BIT(but1.pin));
-   gpio_add_callback(but1.port, &button1_cb_data);
-   
-   gpio_init_callback(&button2_cb_data, button2Pressed, BIT(but2.pin));
-   gpio_add_callback(but2.port, &button2_cb_data);
-   
-   gpio_init_callback(&button3_cb_data, button3Pressed, BIT(but3.pin));
-   gpio_add_callback(but3.port, &button3_cb_data);
-   
-   statechart_init(&StateMachine);
-   statechart_enter(&StateMachine);
-   
-   return 0;
 }
 
 void button0Pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
@@ -245,4 +215,36 @@ void statechart_display( Statechart* handle, const sc_integer Type){
             break;
    }
 }
+
+
+int main (){
+   
+   ret = Check_Function();
+   if (ret < 0) {
+	return ERR_ABORT;
+   }
+   
+   ret = Init_Function();
+   if (ret < 0) {
+	return ERR_ABORT;
+   }
+   
+   gpio_init_callback(&button0_cb_data, button0Pressed, BIT(but0.pin));
+   gpio_add_callback(but0.port, &button0_cb_data);
+   
+   gpio_init_callback(&button1_cb_data, button1Pressed, BIT(but1.pin));
+   gpio_add_callback(but1.port, &button1_cb_data);
+   
+   gpio_init_callback(&button2_cb_data, button2Pressed, BIT(but2.pin));
+   gpio_add_callback(but2.port, &button2_cb_data);
+   
+   gpio_init_callback(&button3_cb_data, button3Pressed, BIT(but3.pin));
+   gpio_add_callback(but3.port, &button3_cb_data);
+   
+   statechart_init(&StateMachine);
+   statechart_enter(&StateMachine);
+   
+   return 0;
+}
+
 
