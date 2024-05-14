@@ -66,8 +66,14 @@ int Check_Function(){
 }
 
 int Init_Function(){
-   // Initialize the led and the buttons
+   // Initialize the led, the buttons and the timer
    // Use internal pull-up to avoid the need for an external resitor (button)
+   
+   ret = Timers_Init(100);
+   if (ret < 0) {
+	printk("Error: Timer initialization failed, error:%d", ret);
+	return ERR_ABORT;
+   }
    ret = gpio_pin_configure_dt(&led0, GPIO_OUTPUT_ACTIVE);
    if (ret < 0) {
 	printk("Error: gpio_pin_configure_dt failed for led0, error:%d", ret);
