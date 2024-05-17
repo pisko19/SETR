@@ -1,0 +1,7 @@
+{
+	"folders": [],
+	"settings": {
+		"nrf-connect.toolchain.path": "${nrf-connect.zephyrsdk:0.16.1}",
+		"nrf-connect.applications": []
+	}
+}

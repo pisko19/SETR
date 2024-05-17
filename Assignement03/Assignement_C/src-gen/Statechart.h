@@ -22,11 +22,6 @@ typedef struct StatechartIfaceButton StatechartIfaceButton;
 */
 typedef struct StatechartInternal StatechartInternal;
 
-/*!
-* Forward declaration of the data structure for the StatechartTimeEvents interface scope.
-*/
-typedef struct StatechartTimeEvents StatechartTimeEvents;
-
 #ifdef __cplusplus
 }
 #endif
@@ -56,8 +51,6 @@ Header of the state machine 'Statechart'.
 
 /*! Define dimension of the state configuration vector for orthogonal states. */
 #define STATECHART_MAX_ORTHOGONAL_STATES 1
-/*! Define maximum number of time events that can be active at once */
-#define STATECHART_MAX_PARALLEL_TIME_EVENTS 1
 
 /*! Define indices of states in the StateConfVector */
 #define SCVI_STATECHART_MAIN_REGION_MONEY 0
@@ -77,10 +70,7 @@ typedef enum  {
 	Statechart_Button_One_Euro,
 	Statechart_Button_Two_Euro,
 	Statechart_Button_Select,
-	Statechart_Button_Enter,
-	Statechart_Statechart_main_region_Return_Credit_time_event_0,
-	Statechart_Statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Error_time_event_0,
-	Statechart_Statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Normal_time_event_0
+	Statechart_Button_Enter
 } StatechartEventID;
 
 /*
@@ -137,16 +127,6 @@ struct StatechartInternal
 
 
 
-/*! Type declaration of the data structure for the StatechartTimeEvents interface scope. */
-struct StatechartTimeEvents
-{
-	sc_boolean statechart_main_region_Return_Credit_tev0_raised;
-	sc_boolean statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Error_tev0_raised;
-	sc_boolean statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Normal_tev0_raised;
-};
-
-
-
 
 
 
@@ -159,7 +139,8 @@ struct Statechart
 	StatechartStates stateConfVector[STATECHART_MAX_ORTHOGONAL_STATES];
 	StatechartIfaceButton ifaceButton;
 	StatechartInternal internal;
-	StatechartTimeEvents timeEvents;
+	sc_boolean completed;
+	sc_boolean doCompletion;
 	sc_boolean isExecuting;
 	statechart_eventqueue in_event_queue;
 	statechart_event in_buffer[STATECHART_IN_EVENTQUEUE_BUFFERSIZE];
@@ -183,8 +164,6 @@ Can be used by the client code to trigger a run to completion step without raisi
 extern void statechart_trigger_without_event(Statechart* handle);
 
 
-/*! Raises a time event. */
-extern void statechart_raise_time_event(Statechart* handle, sc_eventid evid);
 
 /*! Raises the in event 'One_Euro' that is defined in the interface scope 'Button'. */ 
 extern void statechart_Button_raise_one_Euro(Statechart* handle);

@@ -23,9 +23,6 @@ static void enact_main_region_Return_Credit(Statechart* handle);
 static void enact_main_region_Return_Product_Calculate_the_new_cash_value_Display_Error(Statechart* handle);
 static void enact_main_region_Return_Product_Calculate_the_new_cash_value_Display_Normal(Statechart* handle);
 static void exact_main_region_INIT(Statechart* handle);
-static void exact_main_region_Return_Credit(Statechart* handle);
-static void exact_main_region_Return_Product_Calculate_the_new_cash_value_Display_Error(Statechart* handle);
-static void exact_main_region_Return_Product_Calculate_the_new_cash_value_Display_Normal(Statechart* handle);
 static void enseq_main_region_Money_default(Statechart* handle);
 static void enseq_main_region_INIT_default(Statechart* handle);
 static void enseq_main_region_Selection_default(Statechart* handle);
@@ -49,7 +46,6 @@ static void react_main_region__choice_1(Statechart* handle);
 static void react_main_region_Return_Product_Calculate_the_new_cash_value__choice_0(Statechart* handle);
 static void react_main_region__entry_Default(Statechart* handle);
 static void react_main_region_Return_Product_Calculate_the_new_cash_value__entry_Default(Statechart* handle);
-static void react_main_region_Return_Product_Calculate_the_new_cash_value__exit_Default(Statechart* handle);
 
 /*! State machine reactions. */
 static sc_integer react(Statechart* handle, const sc_integer transitioned_before);
@@ -101,7 +97,6 @@ static void statechart_add_event_to_queue(statechart_eventqueue * eq, Statechart
 static sc_boolean statechart_dispatch_event(Statechart* handle, const statechart_event * event);
 static statechart_event statechart_get_next_event(Statechart* handle);
 static sc_boolean statechart_dispatch_next_event(Statechart* handle);
-static StatechartEventID statechart_get_timed_event_name(Statechart* handle, sc_eventid evid);
 
 
 void statechart_init(Statechart* handle)
@@ -135,6 +130,17 @@ void statechart_enter(Statechart* handle)
 	handle->isExecuting = bool_true;
 	/* Default enter sequence for statechart Statechart */
 	enseq_main_region_default(handle);
+	handle->doCompletion = bool_false;
+	do
+	{ 
+		if (handle->completed == bool_true)
+		{ 
+			handle->doCompletion = bool_true;
+		} 
+		handle->completed = bool_false;
+		micro_step(handle);
+		handle->doCompletion = bool_false;
+	} while (handle->completed == bool_true);
 	handle->isExecuting = bool_false;
 }
 
@@ -179,16 +185,6 @@ sc_boolean statechart_is_final(const Statechart* handle)
 {
 	SC_UNUSED(handle);
 	return bool_false;
-}
-
-void statechart_raise_time_event(Statechart* handle, sc_eventid evid)
-{
-	if ( ((sc_intptr_t)evid) >= ((sc_intptr_t)&(handle->timeEvents))
-		&&  ((sc_intptr_t)evid) < ((sc_intptr_t)&(handle->timeEvents)) + (unsigned)sizeof(StatechartTimeEvents))
-	{
-		statechart_add_event_to_queue(&(handle->in_event_queue), statechart_get_timed_event_name(handle, evid));
-		run_cycle(handle);
-	}
 }
 
 sc_boolean statechart_is_state_active(const Statechart* handle, StatechartStates state)
@@ -237,9 +233,6 @@ static void clear_in_events(Statechart* handle)
 	handle->ifaceButton.Two_Euro_raised = bool_false;
 	handle->ifaceButton.Select_raised = bool_false;
 	handle->ifaceButton.Enter_raised = bool_false;
-	handle->timeEvents.statechart_main_region_Return_Credit_tev0_raised = bool_false;
-	handle->timeEvents.statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Error_tev0_raised = bool_false;
-	handle->timeEvents.statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Normal_tev0_raised = bool_false;
 }
 
 static void micro_step(Statechart* handle)
@@ -293,7 +286,17 @@ static void run_cycle(Statechart* handle)
 	statechart_dispatch_next_event(handle);
 	do
 	{ 
-		micro_step(handle);
+		handle->doCompletion = bool_false;
+		do
+		{ 
+			if (handle->completed == bool_true)
+			{ 
+				handle->doCompletion = bool_true;
+			} 
+			handle->completed = bool_false;
+			micro_step(handle);
+			handle->doCompletion = bool_false;
+		} while (handle->completed == bool_true);
 		clear_in_events(handle);
 	} while (statechart_dispatch_next_event(handle) == bool_true);
 	handle->isExecuting = bool_false;
@@ -369,28 +372,25 @@ static void enact_main_region_Selection(Statechart* handle)
 	statechart_display(handle,1);
 }
 
-/* Entry action for state 'Return Credit'. */
 static void enact_main_region_Return_Credit(Statechart* handle)
 {
 	/* Entry action for state 'Return Credit'. */
-	statechart_set_timer(handle, (sc_eventid) &(handle->timeEvents.statechart_main_region_Return_Credit_tev0_raised) , (((sc_time) 2) * 1000), bool_false);
 	statechart_display(handle,2);
+	handle->completed = bool_true;
 }
 
-/* Entry action for state 'Display Error'. */
 static void enact_main_region_Return_Product_Calculate_the_new_cash_value_Display_Error(Statechart* handle)
 {
 	/* Entry action for state 'Display Error'. */
-	statechart_set_timer(handle, (sc_eventid) &(handle->timeEvents.statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Error_tev0_raised) , (((sc_time) 2) * 1000), bool_false);
 	statechart_display(handle,4);
+	handle->completed = bool_true;
 }
 
-/* Entry action for state 'Display Normal'. */
 static void enact_main_region_Return_Product_Calculate_the_new_cash_value_Display_Normal(Statechart* handle)
 {
 	/* Entry action for state 'Display Normal'. */
-	statechart_set_timer(handle, (sc_eventid) &(handle->timeEvents.statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Normal_tev0_raised) , (((sc_time) 2) * 1000), bool_false);
 	statechart_display(handle,3);
+	handle->completed = bool_true;
 }
 
 /* Exit action for state 'INIT'. */
@@ -398,27 +398,6 @@ static void exact_main_region_INIT(Statechart* handle)
 {
 	/* Exit action for state 'INIT'. */
 	statechart_display(handle,0);
-}
-
-/* Exit action for state 'Return Credit'. */
-static void exact_main_region_Return_Credit(Statechart* handle)
-{
-	/* Exit action for state 'Return Credit'. */
-	statechart_unset_timer(handle, (sc_eventid) &(handle->timeEvents.statechart_main_region_Return_Credit_tev0_raised) );		
-}
-
-/* Exit action for state 'Display Error'. */
-static void exact_main_region_Return_Product_Calculate_the_new_cash_value_Display_Error(Statechart* handle)
-{
-	/* Exit action for state 'Display Error'. */
-	statechart_unset_timer(handle, (sc_eventid) &(handle->timeEvents.statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Error_tev0_raised) );		
-}
-
-/* Exit action for state 'Display Normal'. */
-static void exact_main_region_Return_Product_Calculate_the_new_cash_value_Display_Normal(Statechart* handle)
-{
-	/* Exit action for state 'Display Normal'. */
-	statechart_unset_timer(handle, (sc_eventid) &(handle->timeEvents.statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Normal_tev0_raised) );		
 }
 
 /* 'default' enter sequence for state Money */
@@ -517,7 +496,6 @@ static void exseq_main_region_Return_Credit(Statechart* handle)
 {
 	/* Default exit sequence for state Return Credit */
 	handle->stateConfVector[0] = Statechart_last_state;
-	exact_main_region_Return_Credit(handle);
 }
 
 /* Default exit sequence for state Return Product */
@@ -532,7 +510,6 @@ static void exseq_main_region_Return_Product_Calculate_the_new_cash_value_Displa
 {
 	/* Default exit sequence for state Display Error */
 	handle->stateConfVector[0] = Statechart_last_state;
-	exact_main_region_Return_Product_Calculate_the_new_cash_value_Display_Error(handle);
 }
 
 /* Default exit sequence for state Display Normal */
@@ -540,7 +517,6 @@ static void exseq_main_region_Return_Product_Calculate_the_new_cash_value_Displa
 {
 	/* Default exit sequence for state Display Normal */
 	handle->stateConfVector[0] = Statechart_last_state;
-	exact_main_region_Return_Product_Calculate_the_new_cash_value_Display_Normal(handle);
 }
 
 /* Default exit sequence for region main region */
@@ -663,13 +639,6 @@ static void react_main_region_Return_Product_Calculate_the_new_cash_value__entry
 	react_main_region_Return_Product_Calculate_the_new_cash_value__choice_0(handle);
 }
 
-/* The reactions of exit default. */
-static void react_main_region_Return_Product_Calculate_the_new_cash_value__exit_Default(Statechart* handle)
-{
-	/* The reactions of exit default. */
-	effect_main_region_Return_Product_tr0(handle);
-}
-
 
 static sc_integer react(Statechart* handle, const sc_integer transitioned_before)
 {
@@ -682,106 +651,13 @@ static sc_integer main_region_Money_react(Statechart* handle, const sc_integer t
 {
 	/* The reactions of state Money. */
  			sc_integer transitioned_after = transitioned_before;
-	if ((transitioned_after) < (0))
+	if (handle->doCompletion == bool_false)
 	{ 
-		if (handle->ifaceButton.One_Euro_raised == bool_true)
+		if ((transitioned_after) < (0))
 		{ 
-			exseq_main_region_Money(handle);
-			statechart_internal_set_cash(handle, handle->internal.Cash + 1);
-			enseq_main_region_Money_default(handle);
-			react(handle,0);
-			transitioned_after = 0;
-		}  else
-		{
-			if (handle->ifaceButton.Two_Euro_raised == bool_true)
-			{ 
-				exseq_main_region_Money(handle);
-				statechart_internal_set_cash(handle, handle->internal.Cash + 2);
-				enseq_main_region_Money_default(handle);
-				react(handle,0);
-				transitioned_after = 0;
-			}  else
-			{
-				if (handle->ifaceButton.Select_raised == bool_true)
-				{ 
-					exseq_main_region_Money(handle);
-					enseq_main_region_Selection_default(handle);
-					react(handle,0);
-					transitioned_after = 0;
-				} 
-			}
-		}
-	} 
-	/* If no transition was taken */
-	if ((transitioned_after) == (transitioned_before))
-	{ 
-		/* then execute local reactions. */
-		transitioned_after = react(handle,transitioned_before);
-	} 
-	return transitioned_after;
-}
-
-static sc_integer main_region_INIT_react(Statechart* handle, const sc_integer transitioned_before)
-{
-	/* The reactions of state INIT. */
- 			sc_integer transitioned_after = transitioned_before;
-	if ((transitioned_after) < (0))
-	{ 
-		if (handle->ifaceButton.One_Euro_raised == bool_true)
-		{ 
-			exseq_main_region_INIT(handle);
-			statechart_internal_set_cash(handle, handle->internal.Cash + 1);
-			enseq_main_region_Money_default(handle);
-			react(handle,0);
-			transitioned_after = 0;
-		}  else
-		{
-			if (handle->ifaceButton.Two_Euro_raised == bool_true)
-			{ 
-				exseq_main_region_INIT(handle);
-				statechart_internal_set_cash(handle, handle->internal.Cash + 2);
-				enseq_main_region_Money_default(handle);
-				react(handle,0);
-				transitioned_after = 0;
-			}  else
-			{
-				if (handle->ifaceButton.Select_raised == bool_true)
-				{ 
-					exseq_main_region_INIT(handle);
-					enseq_main_region_Selection_default(handle);
-					react(handle,0);
-					transitioned_after = 0;
-				} 
-			}
-		}
-	} 
-	/* If no transition was taken */
-	if ((transitioned_after) == (transitioned_before))
-	{ 
-		/* then execute local reactions. */
-		transitioned_after = react(handle,transitioned_before);
-	} 
-	return transitioned_after;
-}
-
-static sc_integer main_region_Selection_react(Statechart* handle, const sc_integer transitioned_before)
-{
-	/* The reactions of state Selection. */
- 			sc_integer transitioned_after = transitioned_before;
-	if ((transitioned_after) < (0))
-	{ 
-		if (handle->ifaceButton.Select_raised == bool_true)
-		{ 
-			exseq_main_region_Selection(handle);
-			statechart_internal_set_product(handle, (((handle->internal.Product + 1)) % 4));
-			enseq_main_region_Selection_default(handle);
-			react(handle,0);
-			transitioned_after = 0;
-		}  else
-		{
 			if (handle->ifaceButton.One_Euro_raised == bool_true)
 			{ 
-				exseq_main_region_Selection(handle);
+				exseq_main_region_Money(handle);
 				statechart_internal_set_cash(handle, handle->internal.Cash + 1);
 				enseq_main_region_Money_default(handle);
 				react(handle,0);
@@ -790,53 +666,148 @@ static sc_integer main_region_Selection_react(Statechart* handle, const sc_integ
 			{
 				if (handle->ifaceButton.Two_Euro_raised == bool_true)
 				{ 
-					exseq_main_region_Selection(handle);
+					exseq_main_region_Money(handle);
 					statechart_internal_set_cash(handle, handle->internal.Cash + 2);
 					enseq_main_region_Money_default(handle);
 					react(handle,0);
 					transitioned_after = 0;
 				}  else
 				{
-					if (handle->ifaceButton.Enter_raised == bool_true)
+					if (handle->ifaceButton.Select_raised == bool_true)
 					{ 
-						exseq_main_region_Selection(handle);
-						react_main_region__choice_0(handle);
+						exseq_main_region_Money(handle);
+						enseq_main_region_Selection_default(handle);
+						react(handle,0);
 						transitioned_after = 0;
 					} 
 				}
 			}
-		}
-	} 
-	/* If no transition was taken */
-	if ((transitioned_after) == (transitioned_before))
+		} 
+		/* If no transition was taken */
+		if ((transitioned_after) == (transitioned_before))
+		{ 
+			/* then execute local reactions. */
+			transitioned_after = react(handle,transitioned_before);
+		} 
+	} return transitioned_after;
+}
+
+static sc_integer main_region_INIT_react(Statechart* handle, const sc_integer transitioned_before)
+{
+	/* The reactions of state INIT. */
+ 			sc_integer transitioned_after = transitioned_before;
+	if (handle->doCompletion == bool_false)
 	{ 
-		/* then execute local reactions. */
-		transitioned_after = react(handle,transitioned_before);
-	} 
-	return transitioned_after;
+		if ((transitioned_after) < (0))
+		{ 
+			if (handle->ifaceButton.One_Euro_raised == bool_true)
+			{ 
+				exseq_main_region_INIT(handle);
+				statechart_internal_set_cash(handle, handle->internal.Cash + 1);
+				enseq_main_region_Money_default(handle);
+				react(handle,0);
+				transitioned_after = 0;
+			}  else
+			{
+				if (handle->ifaceButton.Two_Euro_raised == bool_true)
+				{ 
+					exseq_main_region_INIT(handle);
+					statechart_internal_set_cash(handle, handle->internal.Cash + 2);
+					enseq_main_region_Money_default(handle);
+					react(handle,0);
+					transitioned_after = 0;
+				}  else
+				{
+					if (handle->ifaceButton.Select_raised == bool_true)
+					{ 
+						exseq_main_region_INIT(handle);
+						enseq_main_region_Selection_default(handle);
+						react(handle,0);
+						transitioned_after = 0;
+					} 
+				}
+			}
+		} 
+		/* If no transition was taken */
+		if ((transitioned_after) == (transitioned_before))
+		{ 
+			/* then execute local reactions. */
+			transitioned_after = react(handle,transitioned_before);
+		} 
+	} return transitioned_after;
+}
+
+static sc_integer main_region_Selection_react(Statechart* handle, const sc_integer transitioned_before)
+{
+	/* The reactions of state Selection. */
+ 			sc_integer transitioned_after = transitioned_before;
+	if (handle->doCompletion == bool_false)
+	{ 
+		if ((transitioned_after) < (0))
+		{ 
+			if (handle->ifaceButton.Select_raised == bool_true)
+			{ 
+				exseq_main_region_Selection(handle);
+				statechart_internal_set_product(handle, (((handle->internal.Product + 1)) % 4));
+				enseq_main_region_Selection_default(handle);
+				react(handle,0);
+				transitioned_after = 0;
+			}  else
+			{
+				if (handle->ifaceButton.One_Euro_raised == bool_true)
+				{ 
+					exseq_main_region_Selection(handle);
+					statechart_internal_set_cash(handle, handle->internal.Cash + 1);
+					enseq_main_region_Money_default(handle);
+					react(handle,0);
+					transitioned_after = 0;
+				}  else
+				{
+					if (handle->ifaceButton.Two_Euro_raised == bool_true)
+					{ 
+						exseq_main_region_Selection(handle);
+						statechart_internal_set_cash(handle, handle->internal.Cash + 2);
+						enseq_main_region_Money_default(handle);
+						react(handle,0);
+						transitioned_after = 0;
+					}  else
+					{
+						if (handle->ifaceButton.Enter_raised == bool_true)
+						{ 
+							exseq_main_region_Selection(handle);
+							react_main_region__choice_0(handle);
+							transitioned_after = 0;
+						} 
+					}
+				}
+			}
+		} 
+		/* If no transition was taken */
+		if ((transitioned_after) == (transitioned_before))
+		{ 
+			/* then execute local reactions. */
+			transitioned_after = react(handle,transitioned_before);
+		} 
+	} return transitioned_after;
 }
 
 static sc_integer main_region_Return_Credit_react(Statechart* handle, const sc_integer transitioned_before)
 {
 	/* The reactions of state Return Credit. */
  			sc_integer transitioned_after = transitioned_before;
-	if ((transitioned_after) < (0))
+	if (handle->doCompletion == bool_true)
 	{ 
-		if (handle->timeEvents.statechart_main_region_Return_Credit_tev0_raised == bool_true)
-		{ 
-			exseq_main_region_Return_Credit(handle);
-			handle->timeEvents.statechart_main_region_Return_Credit_tev0_raised = bool_false;
-			enseq_main_region_INIT_default(handle);
-			react(handle,0);
-			transitioned_after = 0;
-		} 
-	} 
-	/* If no transition was taken */
-	if ((transitioned_after) == (transitioned_before))
-	{ 
-		/* then execute local reactions. */
+		/* Default exit sequence for state Return Credit */
+		handle->stateConfVector[0] = Statechart_last_state;
+		/* 'default' enter sequence for state INIT */
+		enact_main_region_INIT(handle);
+		handle->stateConfVector[0] = Statechart_main_region_INIT;
+		react(handle,0);
+	}  else
+	{
+		/* Always execute local reactions. */
 		transitioned_after = react(handle,transitioned_before);
-	} 
+	}
 	return transitioned_after;
 }
 
@@ -844,31 +815,28 @@ static sc_integer main_region_Return_Product_react(Statechart* handle, const sc_
 {
 	/* The reactions of state Return Product. */
  			sc_integer transitioned_after = transitioned_before;
-	/* Always execute local reactions. */
-	transitioned_after = react(handle,transitioned_before);
-	return transitioned_after;
+	if (handle->doCompletion == bool_false)
+	{ 
+		/* Always execute local reactions. */
+		transitioned_after = react(handle,transitioned_before);
+	} return transitioned_after;
 }
 
 static sc_integer main_region_Return_Product_Calculate_the_new_cash_value_Display_Error_react(Statechart* handle, const sc_integer transitioned_before)
 {
 	/* The reactions of state Display Error. */
  			sc_integer transitioned_after = transitioned_before;
-	if ((transitioned_after) < (0))
+	if (handle->doCompletion == bool_true)
 	{ 
-		if (handle->timeEvents.statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Error_tev0_raised == bool_true)
-		{ 
-			exseq_main_region_Return_Product_Calculate_the_new_cash_value_Display_Error(handle);
-			handle->timeEvents.statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Error_tev0_raised = bool_false;
-			react_main_region_Return_Product_Calculate_the_new_cash_value__exit_Default(handle);
-			transitioned_after = 0;
-		} 
-	} 
-	/* If no transition was taken */
-	if ((transitioned_after) == (transitioned_before))
-	{ 
-		/* then execute local reactions. */
+		/* Default exit sequence for state Display Error */
+		handle->stateConfVector[0] = Statechart_last_state;
+		/* The reactions of exit default. */
+		effect_main_region_Return_Product_tr0(handle);
+	}  else
+	{
+		/* Always execute local reactions. */
 		transitioned_after = main_region_Return_Product_react(handle,transitioned_before);
-	} 
+	}
 	return transitioned_after;
 }
 
@@ -876,22 +844,17 @@ static sc_integer main_region_Return_Product_Calculate_the_new_cash_value_Displa
 {
 	/* The reactions of state Display Normal. */
  			sc_integer transitioned_after = transitioned_before;
-	if ((transitioned_after) < (0))
+	if (handle->doCompletion == bool_true)
 	{ 
-		if (handle->timeEvents.statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Normal_tev0_raised == bool_true)
-		{ 
-			exseq_main_region_Return_Product_Calculate_the_new_cash_value_Display_Normal(handle);
-			handle->timeEvents.statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Normal_tev0_raised = bool_false;
-			react_main_region_Return_Product_Calculate_the_new_cash_value__exit_Default(handle);
-			transitioned_after = 0;
-		} 
-	} 
-	/* If no transition was taken */
-	if ((transitioned_after) == (transitioned_before))
-	{ 
-		/* then execute local reactions. */
+		/* Default exit sequence for state Display Normal */
+		handle->stateConfVector[0] = Statechart_last_state;
+		/* The reactions of exit default. */
+		effect_main_region_Return_Product_tr0(handle);
+	}  else
+	{
+		/* Always execute local reactions. */
 		transitioned_after = main_region_Return_Product_react(handle,transitioned_before);
-	} 
+	}
 	return transitioned_after;
 }
 
@@ -984,21 +947,6 @@ static sc_boolean statechart_dispatch_event(Statechart* handle, const statechart
 			handle->ifaceButton.Enter_raised = bool_true;
 			return bool_true;
 		}
-		case Statechart_Statechart_main_region_Return_Credit_time_event_0:
-		{
-			handle->timeEvents.statechart_main_region_Return_Credit_tev0_raised = bool_true;
-			return bool_true;
-		}
-		case Statechart_Statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Error_time_event_0:
-		{
-			handle->timeEvents.statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Error_tev0_raised = bool_true;
-			return bool_true;
-		}
-		case Statechart_Statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Normal_time_event_0:
-		{
-			handle->timeEvents.statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Normal_tev0_raised = bool_true;
-			return bool_true;
-		}
 		default:
 			return bool_false;
 	}
@@ -1020,18 +968,3 @@ static sc_boolean statechart_dispatch_next_event(Statechart* handle)
 	nextEvent = statechart_get_next_event(handle);
 	return statechart_dispatch_event(handle, &nextEvent);
 }
-
-static StatechartEventID statechart_get_timed_event_name(Statechart* handle, sc_eventid evid)
-{
-	if(evid == &handle->timeEvents.statechart_main_region_Return_Credit_tev0_raised) {
-		return Statechart_Statechart_main_region_Return_Credit_time_event_0;
-	}
-	if(evid == &handle->timeEvents.statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Error_tev0_raised) {
-		return Statechart_Statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Error_time_event_0;
-	}
-	if(evid == &handle->timeEvents.statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Normal_tev0_raised) {
-		return Statechart_Statechart_main_region_Return_Product_Calculate_the_new_cash_value_Display_Normal_time_event_0;
-	}
-	return Statechart_invalid_event;
-}
-
