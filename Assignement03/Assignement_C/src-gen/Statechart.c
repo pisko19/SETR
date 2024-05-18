@@ -22,7 +22,6 @@ static void enact_main_region_Selection(Statechart* handle);
 static void enact_main_region_Return_Credit(Statechart* handle);
 static void enact_main_region_Return_Product_Calculate_the_new_cash_value_Display_Error(Statechart* handle);
 static void enact_main_region_Return_Product_Calculate_the_new_cash_value_Display_Normal(Statechart* handle);
-static void exact_main_region_INIT(Statechart* handle);
 static void enseq_main_region_Money_default(Statechart* handle);
 static void enseq_main_region_INIT_default(Statechart* handle);
 static void enseq_main_region_Selection_default(Statechart* handle);
@@ -355,6 +354,7 @@ static void enact_main_region_Money(Statechart* handle)
 {
 	/* Entry action for state 'Money'. */
 	statechart_display(handle,0);
+	statechart_setLeds(handle,0);
 }
 
 /* Entry action for state 'INIT'. */
@@ -363,6 +363,7 @@ static void enact_main_region_INIT(Statechart* handle)
 	/* Entry action for state 'INIT'. */
 	statechart_internal_set_cash(handle, 0);
 	statechart_internal_set_product(handle, 0);
+	statechart_display(handle,0);
 }
 
 /* Entry action for state 'Selection'. */
@@ -370,12 +371,14 @@ static void enact_main_region_Selection(Statechart* handle)
 {
 	/* Entry action for state 'Selection'. */
 	statechart_display(handle,1);
+	statechart_setLeds(handle,handle->internal.Product);
 }
 
 static void enact_main_region_Return_Credit(Statechart* handle)
 {
 	/* Entry action for state 'Return Credit'. */
 	statechart_display(handle,2);
+	statechart_setLeds(handle,4);
 	handle->completed = bool_true;
 }
 
@@ -390,14 +393,8 @@ static void enact_main_region_Return_Product_Calculate_the_new_cash_value_Displa
 {
 	/* Entry action for state 'Display Normal'. */
 	statechart_display(handle,3);
+	statechart_setLeds(handle,5);
 	handle->completed = bool_true;
-}
-
-/* Exit action for state 'INIT'. */
-static void exact_main_region_INIT(Statechart* handle)
-{
-	/* Exit action for state 'INIT'. */
-	statechart_display(handle,0);
 }
 
 /* 'default' enter sequence for state Money */
@@ -481,7 +478,6 @@ static void exseq_main_region_INIT(Statechart* handle)
 {
 	/* Default exit sequence for state INIT */
 	handle->stateConfVector[0] = Statechart_last_state;
-	exact_main_region_INIT(handle);
 }
 
 /* Default exit sequence for state Selection */

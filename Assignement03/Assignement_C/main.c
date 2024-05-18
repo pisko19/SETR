@@ -10,21 +10,30 @@
 #include <zephyr/sys/printk.h>      /* for printk()*/
 
 #define ERR_ABORT -1
-/* Get led0 and button0 node IDs. Refer to the DTS file */
+#define Num_Leds 4
+#define Num_Buts 4
+/* Get leds and buttons node IDs. Refer to the DTS file */
 #define LED0_NODE DT_ALIAS(led0)
 #define LED1_NODE DT_ALIAS(led1)
+#define LED2_NODE DT_ALIAS(led2)
+#define LED3_NODE DT_ALIAS(led3)
 #define BUT0_NODE DT_ALIAS(sw0)
 #define BUT1_NODE DT_ALIAS(sw1)
 #define BUT2_NODE DT_ALIAS(sw2)
 #define BUT3_NODE DT_ALIAS(sw3)
 
-/* Get the device pointer, pin number, and configuration flags for led0 and button 0. A build error on this line means your board is unsupported. */
+/* Get the device pointer, pin number, and configuration flags for leds and buttons. A build error on this line means your board is unsupported. */
 static const struct gpio_dt_spec led0 = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
 static const struct gpio_dt_spec led1 = GPIO_DT_SPEC_GET(LED1_NODE, gpios);
+static const struct gpio_dt_spec led2 = GPIO_DT_SPEC_GET(LED2_NODE, gpios);
+static const struct gpio_dt_spec led3 = GPIO_DT_SPEC_GET(LED3_NODE, gpios);
+static const struct gpio_dt_spec leds[Num_Leds] = {led0,led1,led2,led3};
+
 static const struct gpio_dt_spec but0 = GPIO_DT_SPEC_GET(BUT0_NODE, gpios);
 static const struct gpio_dt_spec but1 = GPIO_DT_SPEC_GET(BUT1_NODE, gpios);
 static const struct gpio_dt_spec but2 = GPIO_DT_SPEC_GET(BUT2_NODE, gpios);
 static const struct gpio_dt_spec but3 = GPIO_DT_SPEC_GET(BUT3_NODE, gpios);
+static const struct gpio_dt_spec buts[Num_Buts] = {but0,but1,but2,but3};
 
 static struct gpio_callback button0_cb_data;
 static struct gpio_callback button1_cb_data;
@@ -36,94 +45,168 @@ static Statechart StateMachine;
 
 int Check_Function(){
 
-   // Verify the state of the leds and the buttons
-   if (!device_is_ready(led0.port)) {
-        printk("Error: led0 device %s is not ready\n", led0.port->name);
-   	return ERR_ABORT;
+   for(int i=0; i<Num_Leds; i++){
+      // Verify the state of the leds
+      if (!device_is_ready(leds[i].port)) {
+          printk("Error: led%d device %s is not ready\n", i,leds[i].port->name);
+          return ERR_ABORT;
+      }
    }
-   if (!device_is_ready(led1.port)) {
-        printk("Error: led1 device %s is not ready\n", led1.port->name);
-   	return ERR_ABORT;
+   
+   for(int i=0; i<Num_Buts; i++){
+      // Verify the state of the leds
+      if (!device_is_ready(buts[i].port)) {
+          printk("Error: button%d device %s is not ready\n", i,buts[i].port->name);
+          return ERR_ABORT;
+      }
    }
-   if (!device_is_ready(but0.port)) {
-        printk("Error: but0 device %s is not ready\n", but0.port->name);
-   	return ERR_ABORT;
-   }
-   if (!device_is_ready(but1.port)) {
-        printk("Error: but1 device %s is not ready\n", but1.port->name);
-   	return ERR_ABORT;
-   }
-   if (!device_is_ready(but2.port)) {
-        printk("Error: but3 device %s is not ready\n", but2.port->name);
-   	return ERR_ABORT;
-   }
-   if (!device_is_ready(but3.port)) {
-        printk("Error: but4 device %s is not ready\n", but3.port->name);
-   	return ERR_ABORT;
-   }
+   
    return 0;
 }
 
 int Init_Function(){
-   // Initialize the led, the buttons and the timer
-   // Use internal pull-up to avoid the need for an external resitor (button)
 
-   ret = gpio_pin_configure_dt(&led0, GPIO_OUTPUT_ACTIVE);
-   if (ret < 0) {
-	printk("Error: gpio_pin_configure_dt failed for led0, error:%d", ret);
-	return ERR_ABORT;
-   }
-   ret = gpio_pin_configure_dt(&led1, GPIO_OUTPUT_ACTIVE);
-   if (ret < 0) {
-	printk("Error: gpio_pin_configure_dt failed for led1, error:%d", ret);
-	return ERR_ABORT;
-   }
-   ret = gpio_pin_configure_dt(&but0, GPIO_INPUT | GPIO_PULL_UP);
-   if (ret < 0) {
-	printk("Error: gpio_pin_configure_dt failed for button0, error:%d", ret);
-	return ERR_ABORT;
-   }
-   ret = gpio_pin_configure_dt(&but1, GPIO_INPUT | GPIO_PULL_UP);
-   if (ret < 0) {
-	printk("Error: gpio_pin_configure_dt failed for button1, error:%d", ret);
-	return ERR_ABORT;
-   }
-   ret = gpio_pin_configure_dt(&but2, GPIO_INPUT | GPIO_PULL_UP);
-   if (ret < 0) {
-	printk("Error: gpio_pin_configure_dt failed for button2, error:%d", ret);
-	return ERR_ABORT;
-   }
-   ret = gpio_pin_configure_dt(&but3, GPIO_INPUT | GPIO_PULL_UP);
-   if (ret < 0) {
-	printk("Error: gpio_pin_configure_dt failed for button3, error:%d", ret);
-	return ERR_ABORT;
+   for(int i=0; i<Num_Leds; i++){
+      // Initialize the led
+      ret = gpio_pin_configure_dt(&leds[i], GPIO_OUTPUT_ACTIVE);
+      if (ret < 0) {
+	  printk("Error: gpio_pin_configure_dt failed for led%d, error:%d", i,ret);
+	  return ERR_ABORT;
+      }
    }
    
-   /* Set Interrupts*/
-   ret = gpio_pin_interrupt_configure_dt(&but0, GPIO_INT_EDGE_TO_ACTIVE);
-   if (ret < 0) {
-	printk("Error: gpio_pin_interrupt_configure_dt failed for button0, error:%d", ret);
-	return ERR_ABORT;
-   }
-   ret = gpio_pin_interrupt_configure_dt(&but1, GPIO_INT_EDGE_TO_ACTIVE);
-   if (ret < 0) {
-	printk("Error: gpio_pin_interrupt_configure_dt failed for button1, error:%d", ret);
-	return ERR_ABORT;
-   }
-   ret = gpio_pin_interrupt_configure_dt(&but2, GPIO_INT_EDGE_TO_ACTIVE);
-   if (ret < 0) {
-	printk("Error: gpio_pin_interrupt_configure_dt failed for button2, error:%d", ret);
-	return ERR_ABORT;
-   }
-   ret = gpio_pin_interrupt_configure_dt(&but3, GPIO_INT_EDGE_TO_ACTIVE);
-   if (ret < 0) {
-	printk("Error: gpio_pin_interrupt_configure_dt failed for button3, error:%d", ret);
-	return ERR_ABORT;
+   for(int i=0; i<Num_Buts; i++){
+      /* Initialize the buttons 
+      Use internal pull-up to avoid the need for an external resitor (button)*/
+      ret = gpio_pin_configure_dt(&buts[i], GPIO_INPUT | GPIO_PULL_UP);
+      if (ret < 0) {
+	  printk("Error: gpio_pin_configure_dt failed for button%d, error:%d", i,ret);
+	  return ERR_ABORT;
+      }
+      
+      /* Set Interrupts*/
+      ret = gpio_pin_interrupt_configure_dt(&buts[i], GPIO_INT_EDGE_TO_ACTIVE);
+      if (ret < 0) {
+          printk("Error: gpio_pin_interrupt_configure_dt failed for button%d, error:%d", i,ret);
+	  return ERR_ABORT;
+      }
    }
    
    return 0;
 
 }
+
+void statechart_setLeds( Statechart* handle, const sc_integer Leds){
+   
+   switch(Leds){
+      case(0):
+         for(int i=0; i<Num_Leds; i++){
+             ret = gpio_pin_set_dt(&leds[i],0);
+             if (ret < 0) {
+                 printk("Error: gpio_pin_set_dt failed for led%d, error:%d", i,ret);
+	         return;
+            }
+         }
+         break;
+         
+      case(1):
+        for(int i=0; i<Num_Leds; i++){
+             if(i<2){
+                ret = gpio_pin_set_dt(&leds[i],1-i);
+                if (ret < 0) {
+                    printk("Error: gpio_pin_set_dt failed for led%d, error:%d", i,ret);
+	            return;
+                }
+             }
+             else{
+                ret = gpio_pin_set_dt(&leds[i],0);
+                if (ret < 0) {
+                    printk("Error: gpio_pin_set_dt failed for led%d, error:%d", i,ret);
+	            return;
+                }
+             }
+        }
+        break;
+        
+      case(2):
+        for(int i=0; i<Num_Leds; i++){
+             if(i<2){
+                ret = gpio_pin_set_dt(&leds[i],i);
+                if (ret < 0) {
+                    printk("Error: gpio_pin_set_dt failed for led%d, error:%d", i,ret);
+	            return;
+                }
+             }
+             else{
+                ret = gpio_pin_set_dt(&leds[i],0);
+                if (ret < 0) {
+                    printk("Error: gpio_pin_set_dt failed for led%d, error:%d", i,ret);
+	            return;
+                }
+             }
+        }
+        break;
+        
+      case(3):
+         for(int i=0; i<Num_Leds; i++){
+             if(i<2){
+                ret = gpio_pin_set_dt(&leds[i],1);
+                if (ret < 0) {
+                    printk("Error: gpio_pin_set_dt failed for led%d, error:%d", i,ret);
+	            return;
+                }
+             }
+             else{
+                ret = gpio_pin_set_dt(&leds[i],0);
+                if (ret < 0) {
+                    printk("Error: gpio_pin_set_dt failed for led%d, error:%d", i,ret);
+	            return;
+                }
+             }
+         }
+         break;
+      
+      case(4):
+         for(int i=0; i<Num_Leds; i++){
+             if(i<2){
+                ret = gpio_pin_set_dt(&leds[i],0);
+                if (ret < 0) {
+                    printk("Error: gpio_pin_set_dt failed for led%d, error:%d", i,ret);
+	            return;
+                }
+             }
+             else{
+                ret = gpio_pin_set_dt(&leds[i],i%2);
+                if (ret < 0) {
+                    printk("Error: gpio_pin_set_dt failed for led%d, error:%d", i,ret);
+	            return;
+                }
+             }
+         }
+         break;
+      
+      case(5):
+         for(int i=0; i<Num_Leds; i++){
+             if(i<2){
+                ret = gpio_pin_set_dt(&leds[i],0);
+                if (ret < 0) {
+                    printk("Error: gpio_pin_set_dt failed for led%d, error:%d", i,ret);
+	            return;
+                }
+             }
+             else{
+                ret = gpio_pin_set_dt(&leds[i],i%3);
+                if (ret < 0) {
+                    printk("Error: gpio_pin_set_dt failed for led%d, error:%d", i,ret);
+	            return;
+                }
+             }
+         }
+         break;
+   }
+
+}
+
 
 void button0Pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
@@ -167,7 +250,7 @@ void statechart_display( Statechart* handle, const sc_integer Type){
                 "#                                          #\n\r"
                 "#                  AMOUNT                  #\n\r"
                 "#                 --------                 #\n\r"
-                "#                   %3d €                  #\n\r"
+                "#                  %3d €                   #\n\r"
                 "#                                          #\n\r"
                 "############################################\n",handle->internal.Cash);
             break;
@@ -177,8 +260,8 @@ void statechart_display( Statechart* handle, const sc_integer Type){
                 "#                                          #\n\r"
                 "#             Product Selection            #\n\r"
                 "#                 --------                 #\n\r"
-                "#               Product ->%2d              #\n\r"
-                "#                Price ->%2d €             #\n\r"
+                "#               Product ->%3d              #\n\r"
+                "#                Price ->%3d €             #\n\r"
                 "#                                          #\n\r"
                 "############################################\n",handle->internal.Product,handle->internal.Product);
             break;
@@ -198,8 +281,8 @@ void statechart_display( Statechart* handle, const sc_integer Type){
                 "#                                          #\n\r"
                 "#           Product Selectioned            #\n\r"
                 "#                 --------                 #\n\r"
-                "#               Product ->%2d              #\n\r"
-                "#                Price ->%2d €             #\n\r"
+                "#               Product ->%3d              #\n\r"
+                "#                Price ->%3d €             #\n\r"
                 "#              New Amount ->%3d €          #\n\r"
                 "#                                          #\n\r"
                 "############################################\n",handle->internal.Product,handle->internal.Product,handle->internal.Cash);
@@ -209,12 +292,16 @@ void statechart_display( Statechart* handle, const sc_integer Type){
                 "############################################\n\r"
                 "#                                          #\n\r"
                 "#     Not Enough Cash For The Product      #\n\r"
-                "#     Product->%2d    Cash->%2d            #\n\r"
+                "#     Product->%3d    Cash->%3d            #\n\r"
                 "#                                          #\n\r"
                 "############################################\n",handle->internal.Product,handle->internal.Cash);
             break;
+      default:
+      	   return;
    }
+   return;
 }
+
 
 
 int main (){
@@ -244,6 +331,8 @@ int main (){
    statechart_init(&StateMachine);
    statechart_enter(&StateMachine);
    
+   
+   return 0;
 }
 
 
