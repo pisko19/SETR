@@ -1,0 +1,218 @@
+\hypertarget{Statechart_8c}{}\doxysection{/home/pedro/\+Documentos/\+SETR/\+Assignement03/\+Assignement\+\_\+\+C/src-\/gen/\+Statechart.c File Reference}
+\label{Statechart_8c}\index{/home/pedro/Documentos/SETR/Assignement03/Assignement\_C/src-\/gen/Statechart.c@{/home/pedro/Documentos/SETR/Assignement03/Assignement\_C/src-\/gen/Statechart.c}}
+{\ttfamily \#include \char`\"{}../src/sc\+\_\+types.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Statechart.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Statechart\+\_\+required.\+h\char`\"{}}\newline
+Include dependency graph for Statechart.\+c\+:
+% FIG 0
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{Statechart_8c_a575596fbdd0b116126835a7781fece54}\label{Statechart_8c_a575596fbdd0b116126835a7781fece54}} 
+\#define {\bfseries SC\+\_\+\+UNUSED}(P)~(void)(P)
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{Statechart_8c_aeee8fa56dcb659ea915d6961d173544a}{statechart\+\_\+init}} (\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$handle)
+\begin{DoxyCompactList}\small\item\em Initializes the \mbox{\hyperlink{structStatechart}{Statechart}} state machine data structures. Must be called before first usage. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Statechart_8c_ae9c3bc89358f0abafb0d73a4990d093b}{statechart\+\_\+enter}} (\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$handle)
+\begin{DoxyCompactList}\small\item\em Activates the state machine. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Statechart_8c_a75f92147986971489ee059f7a7aee32d}{statechart\+\_\+exit}} (\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$handle)
+\begin{DoxyCompactList}\small\item\em Deactivates the state machine. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Statechart_8c_aa915aa6d5202d4e2d14a2ed99ab88bb3}{statechart\+\_\+trigger\+\_\+without\+\_\+event}} (\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$handle)
+\begin{DoxyCompactList}\small\item\em Can be used by the client code to trigger a run to completion step without raising an event. \end{DoxyCompactList}\item 
+sc\+\_\+boolean \mbox{\hyperlink{Statechart_8c_aea88275fad10f729e6f343fdcd06d1fd}{statechart\+\_\+is\+\_\+active}} (const \mbox{\hyperlink{structStatechart}{Statechart}} $\ast$handle)
+\begin{DoxyCompactList}\small\item\em Checks whether the state machine is active. A state machine is active if it was entered. It is inactive if it has not been entered at all or if it has been exited. \end{DoxyCompactList}\item 
+sc\+\_\+boolean \mbox{\hyperlink{Statechart_8c_ad3f97da4a5ed868152b2bb042825b28b}{statechart\+\_\+is\+\_\+final}} (const \mbox{\hyperlink{structStatechart}{Statechart}} $\ast$handle)
+\begin{DoxyCompactList}\small\item\em Checks if all active states are final. If there are no active states then the state machine is considered being inactive. In this case this method returns false. \end{DoxyCompactList}\item 
+sc\+\_\+boolean \mbox{\hyperlink{Statechart_8c_aa455e89f5d3c0af2307bf81f7134f302}{statechart\+\_\+is\+\_\+state\+\_\+active}} (const \mbox{\hyperlink{structStatechart}{Statechart}} $\ast$handle, \mbox{\hyperlink{Statechart_8h_aa89cb0bdf0bba9dda241ef8a11f2a0cd}{Statechart\+States}} state)
+\begin{DoxyCompactList}\small\item\em Checks if the specified state is active. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Statechart_8c_aeb74f8c7e81fe1b286ebf995495daa08}{statechart\+\_\+\+Button\+\_\+raise\+\_\+one\+\_\+\+Euro}} (\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$handle)
+\begin{DoxyCompactList}\small\item\em Raises the in event \textquotesingle{}One\+\_\+\+Euro\textquotesingle{} that is defined in the interface scope \textquotesingle{}Button\textquotesingle{}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Statechart_8c_ac2b52c90650ce7bb0a244e825e3cbb3a}{statechart\+\_\+\+Button\+\_\+raise\+\_\+two\+\_\+\+Euro}} (\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$handle)
+\begin{DoxyCompactList}\small\item\em Raises the in event \textquotesingle{}Two\+\_\+\+Euro\textquotesingle{} that is defined in the interface scope \textquotesingle{}Button\textquotesingle{}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Statechart_8c_a0117251e1d378f589b0ee3e25f6ccc41}{statechart\+\_\+\+Button\+\_\+raise\+\_\+select}} (\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$handle)
+\begin{DoxyCompactList}\small\item\em Raises the in event \textquotesingle{}Select\textquotesingle{} that is defined in the interface scope \textquotesingle{}Button\textquotesingle{}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Statechart_8c_aa47470f7928fa1e5da46e86dc95ff9d1}{statechart\+\_\+\+Button\+\_\+raise\+\_\+enter}} (\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$handle)
+\begin{DoxyCompactList}\small\item\em Raises the in event \textquotesingle{}Enter\textquotesingle{} that is defined in the interface scope \textquotesingle{}Button\textquotesingle{}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Generated by itemis CREATE code generator.
+
+Implementation of the state machine \textquotesingle{}\mbox{\hyperlink{structStatechart}{Statechart}}\textquotesingle{} 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{Statechart_8c_aa47470f7928fa1e5da46e86dc95ff9d1}\label{Statechart_8c_aa47470f7928fa1e5da46e86dc95ff9d1}} 
+\index{Statechart.c@{Statechart.c}!statechart\_Button\_raise\_enter@{statechart\_Button\_raise\_enter}}
+\index{statechart\_Button\_raise\_enter@{statechart\_Button\_raise\_enter}!Statechart.c@{Statechart.c}}
+\doxysubsubsection{\texorpdfstring{statechart\_Button\_raise\_enter()}{statechart\_Button\_raise\_enter()}}
+{\footnotesize\ttfamily void statechart\+\_\+\+Button\+\_\+raise\+\_\+enter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$}]{handle }\end{DoxyParamCaption})}
+
+
+
+Raises the in event \textquotesingle{}Enter\textquotesingle{} that is defined in the interface scope \textquotesingle{}Button\textquotesingle{}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em handle} & Pointer to the statechart instance \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Statechart_8c_aeb74f8c7e81fe1b286ebf995495daa08}\label{Statechart_8c_aeb74f8c7e81fe1b286ebf995495daa08}} 
+\index{Statechart.c@{Statechart.c}!statechart\_Button\_raise\_one\_Euro@{statechart\_Button\_raise\_one\_Euro}}
+\index{statechart\_Button\_raise\_one\_Euro@{statechart\_Button\_raise\_one\_Euro}!Statechart.c@{Statechart.c}}
+\doxysubsubsection{\texorpdfstring{statechart\_Button\_raise\_one\_Euro()}{statechart\_Button\_raise\_one\_Euro()}}
+{\footnotesize\ttfamily void statechart\+\_\+\+Button\+\_\+raise\+\_\+one\+\_\+\+Euro (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$}]{handle }\end{DoxyParamCaption})}
+
+
+
+Raises the in event \textquotesingle{}One\+\_\+\+Euro\textquotesingle{} that is defined in the interface scope \textquotesingle{}Button\textquotesingle{}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em handle} & Pointer to the statechart instance \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Statechart_8c_a0117251e1d378f589b0ee3e25f6ccc41}\label{Statechart_8c_a0117251e1d378f589b0ee3e25f6ccc41}} 
+\index{Statechart.c@{Statechart.c}!statechart\_Button\_raise\_select@{statechart\_Button\_raise\_select}}
+\index{statechart\_Button\_raise\_select@{statechart\_Button\_raise\_select}!Statechart.c@{Statechart.c}}
+\doxysubsubsection{\texorpdfstring{statechart\_Button\_raise\_select()}{statechart\_Button\_raise\_select()}}
+{\footnotesize\ttfamily void statechart\+\_\+\+Button\+\_\+raise\+\_\+select (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$}]{handle }\end{DoxyParamCaption})}
+
+
+
+Raises the in event \textquotesingle{}Select\textquotesingle{} that is defined in the interface scope \textquotesingle{}Button\textquotesingle{}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em handle} & Pointer to the statechart instance \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Statechart_8c_ac2b52c90650ce7bb0a244e825e3cbb3a}\label{Statechart_8c_ac2b52c90650ce7bb0a244e825e3cbb3a}} 
+\index{Statechart.c@{Statechart.c}!statechart\_Button\_raise\_two\_Euro@{statechart\_Button\_raise\_two\_Euro}}
+\index{statechart\_Button\_raise\_two\_Euro@{statechart\_Button\_raise\_two\_Euro}!Statechart.c@{Statechart.c}}
+\doxysubsubsection{\texorpdfstring{statechart\_Button\_raise\_two\_Euro()}{statechart\_Button\_raise\_two\_Euro()}}
+{\footnotesize\ttfamily void statechart\+\_\+\+Button\+\_\+raise\+\_\+two\+\_\+\+Euro (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$}]{handle }\end{DoxyParamCaption})}
+
+
+
+Raises the in event \textquotesingle{}Two\+\_\+\+Euro\textquotesingle{} that is defined in the interface scope \textquotesingle{}Button\textquotesingle{}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em handle} & Pointer to the statechart instance \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Statechart_8c_ae9c3bc89358f0abafb0d73a4990d093b}\label{Statechart_8c_ae9c3bc89358f0abafb0d73a4990d093b}} 
+\index{Statechart.c@{Statechart.c}!statechart\_enter@{statechart\_enter}}
+\index{statechart\_enter@{statechart\_enter}!Statechart.c@{Statechart.c}}
+\doxysubsubsection{\texorpdfstring{statechart\_enter()}{statechart\_enter()}}
+{\footnotesize\ttfamily void statechart\+\_\+enter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$}]{handle }\end{DoxyParamCaption})}
+
+
+
+Activates the state machine. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em handle} & Pointer to the statechart instance \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Statechart_8c_a75f92147986971489ee059f7a7aee32d}\label{Statechart_8c_a75f92147986971489ee059f7a7aee32d}} 
+\index{Statechart.c@{Statechart.c}!statechart\_exit@{statechart\_exit}}
+\index{statechart\_exit@{statechart\_exit}!Statechart.c@{Statechart.c}}
+\doxysubsubsection{\texorpdfstring{statechart\_exit()}{statechart\_exit()}}
+{\footnotesize\ttfamily void statechart\+\_\+exit (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$}]{handle }\end{DoxyParamCaption})}
+
+
+
+Deactivates the state machine. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em handle} & Pointer to the statechart instance \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Statechart_8c_aeee8fa56dcb659ea915d6961d173544a}\label{Statechart_8c_aeee8fa56dcb659ea915d6961d173544a}} 
+\index{Statechart.c@{Statechart.c}!statechart\_init@{statechart\_init}}
+\index{statechart\_init@{statechart\_init}!Statechart.c@{Statechart.c}}
+\doxysubsubsection{\texorpdfstring{statechart\_init()}{statechart\_init()}}
+{\footnotesize\ttfamily void statechart\+\_\+init (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$}]{handle }\end{DoxyParamCaption})}
+
+
+
+Initializes the \mbox{\hyperlink{structStatechart}{Statechart}} state machine data structures. Must be called before first usage. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em handle} & Pointer to the statechart instance \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Statechart_8c_aea88275fad10f729e6f343fdcd06d1fd}\label{Statechart_8c_aea88275fad10f729e6f343fdcd06d1fd}} 
+\index{Statechart.c@{Statechart.c}!statechart\_is\_active@{statechart\_is\_active}}
+\index{statechart\_is\_active@{statechart\_is\_active}!Statechart.c@{Statechart.c}}
+\doxysubsubsection{\texorpdfstring{statechart\_is\_active()}{statechart\_is\_active()}}
+{\footnotesize\ttfamily sc\+\_\+boolean statechart\+\_\+is\+\_\+active (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structStatechart}{Statechart}} $\ast$}]{handle }\end{DoxyParamCaption})}
+
+
+
+Checks whether the state machine is active. A state machine is active if it was entered. It is inactive if it has not been entered at all or if it has been exited. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em handle} & Pointer to the statechart instance \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+sc\+\_\+boolean True if the state machine is active, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{Statechart_8c_ad3f97da4a5ed868152b2bb042825b28b}\label{Statechart_8c_ad3f97da4a5ed868152b2bb042825b28b}} 
+\index{Statechart.c@{Statechart.c}!statechart\_is\_final@{statechart\_is\_final}}
+\index{statechart\_is\_final@{statechart\_is\_final}!Statechart.c@{Statechart.c}}
+\doxysubsubsection{\texorpdfstring{statechart\_is\_final()}{statechart\_is\_final()}}
+{\footnotesize\ttfamily sc\+\_\+boolean statechart\+\_\+is\+\_\+final (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structStatechart}{Statechart}} $\ast$}]{handle }\end{DoxyParamCaption})}
+
+
+
+Checks if all active states are final. If there are no active states then the state machine is considered being inactive. In this case this method returns false. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em handle} & Pointer to the statechart instance \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+sc\+\_\+boolean True if all active states are final, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{Statechart_8c_aa455e89f5d3c0af2307bf81f7134f302}\label{Statechart_8c_aa455e89f5d3c0af2307bf81f7134f302}} 
+\index{Statechart.c@{Statechart.c}!statechart\_is\_state\_active@{statechart\_is\_state\_active}}
+\index{statechart\_is\_state\_active@{statechart\_is\_state\_active}!Statechart.c@{Statechart.c}}
+\doxysubsubsection{\texorpdfstring{statechart\_is\_state\_active()}{statechart\_is\_state\_active()}}
+{\footnotesize\ttfamily sc\+\_\+boolean statechart\+\_\+is\+\_\+state\+\_\+active (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structStatechart}{Statechart}} $\ast$}]{handle,  }\item[{\mbox{\hyperlink{Statechart_8h_aa89cb0bdf0bba9dda241ef8a11f2a0cd}{Statechart\+States}}}]{state }\end{DoxyParamCaption})}
+
+
+
+Checks if the specified state is active. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em handle} & Pointer to the statechart instance \\
+\hline
+{\em state} & State to check for activity \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+sc\+\_\+boolean True if the specified state is active, false otherwise. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{Statechart_8c_aa915aa6d5202d4e2d14a2ed99ab88bb3}\label{Statechart_8c_aa915aa6d5202d4e2d14a2ed99ab88bb3}} 
+\index{Statechart.c@{Statechart.c}!statechart\_trigger\_without\_event@{statechart\_trigger\_without\_event}}
+\index{statechart\_trigger\_without\_event@{statechart\_trigger\_without\_event}!Statechart.c@{Statechart.c}}
+\doxysubsubsection{\texorpdfstring{statechart\_trigger\_without\_event()}{statechart\_trigger\_without\_event()}}
+{\footnotesize\ttfamily void statechart\+\_\+trigger\+\_\+without\+\_\+event (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$}]{handle }\end{DoxyParamCaption})}
+
+
+
+Can be used by the client code to trigger a run to completion step without raising an event. 
+
+Can be used by the client code to trigger a run to completion step without raising an event. 

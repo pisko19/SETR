@@ -1,0 +1,262 @@
+\hypertarget{main_8c}{}\doxysection{/home/pedro/\+Documentos/\+SETR/\+Assignement03/\+Assignement\+\_\+\+C/main.c File Reference}
+\label{main_8c}\index{/home/pedro/Documentos/SETR/Assignement03/Assignement\_C/main.c@{/home/pedro/Documentos/SETR/Assignement03/Assignement\_C/main.c}}
+
+
+Vending Machine Emulator using n\+RF52840 Development Kit.  
+
+
+{\ttfamily \#include \char`\"{}../src/sc\+\_\+types.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../src-\/gen/\+Statechart\+\_\+required.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}../src-\/gen/\+Statechart.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$zephyr/kernel.\+h$>$}\newline
+{\ttfamily \#include $<$zephyr/device.\+h$>$}\newline
+{\ttfamily \#include $<$zephyr/devicetree.\+h$>$}\newline
+{\ttfamily \#include $<$zephyr/drivers/gpio.\+h$>$}\newline
+{\ttfamily \#include $<$zephyr/sys/printk.\+h$>$}\newline
+Include dependency graph for main.\+c\+:
+% FIG 0
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8c_a47daa78dd7c2be8f8cd026be9ce5c0a7}\label{main_8c_a47daa78dd7c2be8f8cd026be9ce5c0a7}} 
+\#define {\bfseries ERR\+\_\+\+ABORT}~-\/1
+\item 
+\mbox{\Hypertarget{main_8c_a7fb73b945b2bc0a00cc40b8176aff926}\label{main_8c_a7fb73b945b2bc0a00cc40b8176aff926}} 
+\#define {\bfseries Num\+\_\+\+Leds}~4
+\item 
+\mbox{\Hypertarget{main_8c_a37a7cc8b4f00dc4e03ece910ebf23715}\label{main_8c_a37a7cc8b4f00dc4e03ece910ebf23715}} 
+\#define {\bfseries Num\+\_\+\+Buts}~4
+\item 
+\mbox{\Hypertarget{main_8c_a661852bec8ab9683d43ad02881c2f2b5}\label{main_8c_a661852bec8ab9683d43ad02881c2f2b5}} 
+\#define {\bfseries LED0\+\_\+\+NODE}~DT\+\_\+\+ALIAS(led0)
+\item 
+\mbox{\Hypertarget{main_8c_ac8b7bbb65d5065e43a35775d9fc3e322}\label{main_8c_ac8b7bbb65d5065e43a35775d9fc3e322}} 
+\#define {\bfseries LED1\+\_\+\+NODE}~DT\+\_\+\+ALIAS(led1)
+\item 
+\mbox{\Hypertarget{main_8c_a9014b2cb02041c926b50b6411232ee82}\label{main_8c_a9014b2cb02041c926b50b6411232ee82}} 
+\#define {\bfseries LED2\+\_\+\+NODE}~DT\+\_\+\+ALIAS(led2)
+\item 
+\mbox{\Hypertarget{main_8c_ad5246f73682d98292ef7d7b038582700}\label{main_8c_ad5246f73682d98292ef7d7b038582700}} 
+\#define {\bfseries LED3\+\_\+\+NODE}~DT\+\_\+\+ALIAS(led3)
+\item 
+\mbox{\Hypertarget{main_8c_aae95411f1701c6da6aee1d9cfd974513}\label{main_8c_aae95411f1701c6da6aee1d9cfd974513}} 
+\#define {\bfseries BUT0\+\_\+\+NODE}~DT\+\_\+\+ALIAS(sw0)
+\item 
+\mbox{\Hypertarget{main_8c_ad4ede373699c5e72c9bfb39773deb391}\label{main_8c_ad4ede373699c5e72c9bfb39773deb391}} 
+\#define {\bfseries BUT1\+\_\+\+NODE}~DT\+\_\+\+ALIAS(sw1)
+\item 
+\mbox{\Hypertarget{main_8c_a8c2121bb4a318cb9ed0a125e0400fe49}\label{main_8c_a8c2121bb4a318cb9ed0a125e0400fe49}} 
+\#define {\bfseries BUT2\+\_\+\+NODE}~DT\+\_\+\+ALIAS(sw2)
+\item 
+\mbox{\Hypertarget{main_8c_ad88fe5b9d4ddf47b3530bc588d86ce70}\label{main_8c_ad88fe5b9d4ddf47b3530bc588d86ce70}} 
+\#define {\bfseries BUT3\+\_\+\+NODE}~DT\+\_\+\+ALIAS(sw3)
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{main_8c_af3b8102f7097d9a5cc886e3f25d7c6e0}{Check\+\_\+\+Function}} ()
+\begin{DoxyCompactList}\small\item\em Check the readiness of LEDs and buttons. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{main_8c_a7bd5887fbe5bb978f1f889d0582dbd67}{Init\+\_\+\+Function}} ()
+\begin{DoxyCompactList}\small\item\em Initialize the LEDs and buttons. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_a3dba785bb21f88109db12f5a89354272}{statechart\+\_\+set\+Leds}} (\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$handle, const sc\+\_\+integer Leds)
+\begin{DoxyCompactList}\small\item\em Set the LED states based on the input value. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_a94d374a89de1e23aff25ad72dee2e27f}{button0\+Pressed}} (const struct device $\ast$dev, struct gpio\+\_\+callback $\ast$cb, uint32\+\_\+t pins)
+\begin{DoxyCompactList}\small\item\em Button 0 callback function. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_a5871b13dc1e97294b0fdfdf31e5ee0f8}{button1\+Pressed}} (const struct device $\ast$dev, struct gpio\+\_\+callback $\ast$cb, uint32\+\_\+t pins)
+\begin{DoxyCompactList}\small\item\em Button 1 callback function. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_ad725e1619c823d4f0aa713e6ef0b45cd}{button2\+Pressed}} (const struct device $\ast$dev, struct gpio\+\_\+callback $\ast$cb, uint32\+\_\+t pins)
+\begin{DoxyCompactList}\small\item\em Button 2 callback function. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_adfb0e9b020349c487db2f7d7c6896c9e}{button3\+Pressed}} (const struct device $\ast$dev, struct gpio\+\_\+callback $\ast$cb, uint32\+\_\+t pins)
+\begin{DoxyCompactList}\small\item\em Button 3 callback function. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_a6333cdad183398b0ef87d39abfdda5c3}{statechart\+\_\+display}} (\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$handle, const sc\+\_\+integer Type)
+\begin{DoxyCompactList}\small\item\em Display the statechart information on the terminal. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{main_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}} ()
+\begin{DoxyCompactList}\small\item\em Main function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Vending Machine Emulator using n\+RF52840 Development Kit. 
+
+This file contains the main program logic for emulating a vending machine. The emulator supports coin insertion, product selection, and credit return functionalities using four push-\/buttons for input and four LEDs for output. UART is used to communicate debug and status messages to a PC terminal.
+
+The vending machine supports three products with different prices. Users can insert coins to accumulate credit, browse through the available products, and make purchases if they have enough credit. The system also allows users to return any remaining credit.
+
+\begin{DoxyAuthor}{Author}
+
+\begin{DoxyItemize}
+\item Pedro Afonso (104206)
+\item Carlos Teixeira (103187)
+\end{DoxyItemize}
+\end{DoxyAuthor}
+\begin{DoxyRefDesc}{Bug}
+\item[\mbox{\hyperlink{bug__bug000001}{Bug}}]If you encounter any issues while using this emulator, please report them \href{https://github.com/pisko19/SETR/issues}{\texttt{ here}}. \end{DoxyRefDesc}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{main_8c_a94d374a89de1e23aff25ad72dee2e27f}\label{main_8c_a94d374a89de1e23aff25ad72dee2e27f}} 
+\index{main.c@{main.c}!button0Pressed@{button0Pressed}}
+\index{button0Pressed@{button0Pressed}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{button0Pressed()}{button0Pressed()}}
+{\footnotesize\ttfamily void button0\+Pressed (\begin{DoxyParamCaption}\item[{const struct device $\ast$}]{dev,  }\item[{struct gpio\+\_\+callback $\ast$}]{cb,  }\item[{uint32\+\_\+t}]{pins }\end{DoxyParamCaption})}
+
+
+
+Button 0 callback function. 
+
+This function is called when button 0 is pressed. It raises the one Euro event in the statechart.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dev} & Pointer to the device structure \\
+\hline
+{\em cb} & Pointer to the callback structure \\
+\hline
+{\em pins} & Pin mask of the triggered interrupt \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8c_a5871b13dc1e97294b0fdfdf31e5ee0f8}\label{main_8c_a5871b13dc1e97294b0fdfdf31e5ee0f8}} 
+\index{main.c@{main.c}!button1Pressed@{button1Pressed}}
+\index{button1Pressed@{button1Pressed}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{button1Pressed()}{button1Pressed()}}
+{\footnotesize\ttfamily void button1\+Pressed (\begin{DoxyParamCaption}\item[{const struct device $\ast$}]{dev,  }\item[{struct gpio\+\_\+callback $\ast$}]{cb,  }\item[{uint32\+\_\+t}]{pins }\end{DoxyParamCaption})}
+
+
+
+Button 1 callback function. 
+
+This function is called when button 1 is pressed. It raises the two Euro event in the statechart.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dev} & Pointer to the device structure \\
+\hline
+{\em cb} & Pointer to the callback structure \\
+\hline
+{\em pins} & Pin mask of the triggered interrupt \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8c_ad725e1619c823d4f0aa713e6ef0b45cd}\label{main_8c_ad725e1619c823d4f0aa713e6ef0b45cd}} 
+\index{main.c@{main.c}!button2Pressed@{button2Pressed}}
+\index{button2Pressed@{button2Pressed}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{button2Pressed()}{button2Pressed()}}
+{\footnotesize\ttfamily void button2\+Pressed (\begin{DoxyParamCaption}\item[{const struct device $\ast$}]{dev,  }\item[{struct gpio\+\_\+callback $\ast$}]{cb,  }\item[{uint32\+\_\+t}]{pins }\end{DoxyParamCaption})}
+
+
+
+Button 2 callback function. 
+
+This function is called when button 2 is pressed. It raises the select event in the statechart.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dev} & Pointer to the device structure \\
+\hline
+{\em cb} & Pointer to the callback structure \\
+\hline
+{\em pins} & Pin mask of the triggered interrupt \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8c_adfb0e9b020349c487db2f7d7c6896c9e}\label{main_8c_adfb0e9b020349c487db2f7d7c6896c9e}} 
+\index{main.c@{main.c}!button3Pressed@{button3Pressed}}
+\index{button3Pressed@{button3Pressed}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{button3Pressed()}{button3Pressed()}}
+{\footnotesize\ttfamily void button3\+Pressed (\begin{DoxyParamCaption}\item[{const struct device $\ast$}]{dev,  }\item[{struct gpio\+\_\+callback $\ast$}]{cb,  }\item[{uint32\+\_\+t}]{pins }\end{DoxyParamCaption})}
+
+
+
+Button 3 callback function. 
+
+This function is called when button 3 is pressed. It raises the enter event in the statechart.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dev} & Pointer to the device structure \\
+\hline
+{\em cb} & Pointer to the callback structure \\
+\hline
+{\em pins} & Pin mask of the triggered interrupt \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8c_af3b8102f7097d9a5cc886e3f25d7c6e0}\label{main_8c_af3b8102f7097d9a5cc886e3f25d7c6e0}} 
+\index{main.c@{main.c}!Check\_Function@{Check\_Function}}
+\index{Check\_Function@{Check\_Function}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{Check\_Function()}{Check\_Function()}}
+{\footnotesize\ttfamily int Check\+\_\+\+Function (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Check the readiness of LEDs and buttons. 
+
+This function verifies that all LED and button devices are ready for use.
+
+\begin{DoxyReturn}{Returns}
+int 0 if all devices are ready, ERR\+\_\+\+ABORT otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8c_a7bd5887fbe5bb978f1f889d0582dbd67}\label{main_8c_a7bd5887fbe5bb978f1f889d0582dbd67}} 
+\index{main.c@{main.c}!Init\_Function@{Init\_Function}}
+\index{Init\_Function@{Init\_Function}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{Init\_Function()}{Init\_Function()}}
+{\footnotesize\ttfamily int Init\+\_\+\+Function (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initialize the LEDs and buttons. 
+
+This function configures the LEDs as output and the buttons as input with pull-\/up resistors. It also sets up interrupts for the buttons.
+
+\begin{DoxyReturn}{Returns}
+int 0 if initialization is successful, ERR\+\_\+\+ABORT otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{main_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
+\index{main.c@{main.c}!main@{main}}
+\index{main@{main}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Main function. 
+
+This function initializes the LEDs and buttons, sets up the callbacks for the buttons, and starts the statechart. It checks the readiness of the devices and configures them accordingly.
+
+\begin{DoxyReturn}{Returns}
+int 0 if the program executes successfully, ERR\+\_\+\+ABORT otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8c_a6333cdad183398b0ef87d39abfdda5c3}\label{main_8c_a6333cdad183398b0ef87d39abfdda5c3}} 
+\index{main.c@{main.c}!statechart\_display@{statechart\_display}}
+\index{statechart\_display@{statechart\_display}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{statechart\_display()}{statechart\_display()}}
+{\footnotesize\ttfamily void statechart\+\_\+display (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$}]{handle,  }\item[{const sc\+\_\+integer}]{Type }\end{DoxyParamCaption})}
+
+
+
+Display the statechart information on the terminal. 
+
+This function displays various information related to the statechart on the terminal based on the input type. It can display the current amount, product selection, credit return, and other messages.
+
+
+\begin{DoxyParams}{Parameters}
+{\em handle} & Pointer to the statechart handle \\
+\hline
+{\em Type} & Integer value representing the type of information to display \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8c_a3dba785bb21f88109db12f5a89354272}\label{main_8c_a3dba785bb21f88109db12f5a89354272}} 
+\index{main.c@{main.c}!statechart\_setLeds@{statechart\_setLeds}}
+\index{statechart\_setLeds@{statechart\_setLeds}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{statechart\_setLeds()}{statechart\_setLeds()}}
+{\footnotesize\ttfamily void statechart\+\_\+set\+Leds (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$}]{handle,  }\item[{const sc\+\_\+integer}]{Leds }\end{DoxyParamCaption})}
+
+
+
+Set the LED states based on the input value. 
+
+This function sets the state of the LEDs based on the value passed to it. The value corresponds to different states of the vending machine.
+
+
+\begin{DoxyParams}{Parameters}
+{\em handle} & Pointer to the statechart handle \\
+\hline
+{\em Leds} & Integer value representing the LED state \\
+\hline
+\end{DoxyParams}

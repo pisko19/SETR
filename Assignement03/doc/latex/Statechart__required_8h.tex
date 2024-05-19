@@ -1,0 +1,89 @@
+\hypertarget{Statechart__required_8h}{}\doxysection{/home/pedro/\+Documentos/\+SETR/\+Assignement03/\+Assignement\+\_\+\+C/src-\/gen/\+Statechart\+\_\+required.h File Reference}
+\label{Statechart__required_8h}\index{/home/pedro/Documentos/SETR/Assignement03/Assignement\_C/src-\/gen/Statechart\_required.h@{/home/pedro/Documentos/SETR/Assignement03/Assignement\_C/src-\/gen/Statechart\_required.h}}
+{\ttfamily \#include \char`\"{}../src/sc\+\_\+types.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Statechart.\+h\char`\"{}}\newline
+Include dependency graph for Statechart\+\_\+required.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{Statechart__required_8h_a6333cdad183398b0ef87d39abfdda5c3}{statechart\+\_\+display}} (\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$handle, const sc\+\_\+integer Type)
+\begin{DoxyCompactList}\small\item\em Display the statechart information on the terminal. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Statechart__required_8h_a3dba785bb21f88109db12f5a89354272}{statechart\+\_\+set\+Leds}} (\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$handle, const sc\+\_\+integer Leds)
+\begin{DoxyCompactList}\small\item\em Set the LED states based on the input value. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This header file defines prototypes for all functions that are required by the state machine implementation.
+
+This state machine makes use of operations declared in the state machine\textquotesingle{}s interface or internal scopes. Thus, the function prototypes\+:
+\begin{DoxyItemize}
+\item statechart\+\_\+display
+\item statechart\+\_\+set\+Leds are defined here.
+\end{DoxyItemize}
+
+These functions will be called during a \textquotesingle{}run to completion step\textquotesingle{} (run\+Cycle) of the statechart. There are some constraints that have to be considered for the implementation of these functions\+:
+\begin{DoxyItemize}
+\item never call the statechart API functions from within these functions.
+\item make sure that the execution time is as short as possible. 
+\end{DoxyItemize}
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{Statechart__required_8h_a6333cdad183398b0ef87d39abfdda5c3}\label{Statechart__required_8h_a6333cdad183398b0ef87d39abfdda5c3}} 
+\index{Statechart\_required.h@{Statechart\_required.h}!statechart\_display@{statechart\_display}}
+\index{statechart\_display@{statechart\_display}!Statechart\_required.h@{Statechart\_required.h}}
+\doxysubsubsection{\texorpdfstring{statechart\_display()}{statechart\_display()}}
+{\footnotesize\ttfamily void statechart\+\_\+display (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$}]{handle,  }\item[{const sc\+\_\+integer}]{Type }\end{DoxyParamCaption})}
+
+
+
+Display the statechart information on the terminal. 
+
+Displays information on the statechart based on the provided type.
+
+
+\begin{DoxyParams}{Parameters}
+{\em handle} & Pointer to the \mbox{\hyperlink{structStatechart}{Statechart}} instance. \\
+\hline
+{\em Type} & Type of information to be displayed.\\
+\hline
+\end{DoxyParams}
+This function displays various information related to the statechart on the terminal based on the input type. It can display the current amount, product selection, credit return, and other messages.
+
+
+\begin{DoxyParams}{Parameters}
+{\em handle} & Pointer to the statechart handle \\
+\hline
+{\em Type} & Integer value representing the type of information to display \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{Statechart__required_8h_a3dba785bb21f88109db12f5a89354272}\label{Statechart__required_8h_a3dba785bb21f88109db12f5a89354272}} 
+\index{Statechart\_required.h@{Statechart\_required.h}!statechart\_setLeds@{statechart\_setLeds}}
+\index{statechart\_setLeds@{statechart\_setLeds}!Statechart\_required.h@{Statechart\_required.h}}
+\doxysubsubsection{\texorpdfstring{statechart\_setLeds()}{statechart\_setLeds()}}
+{\footnotesize\ttfamily void statechart\+\_\+set\+Leds (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structStatechart}{Statechart}} $\ast$}]{handle,  }\item[{const sc\+\_\+integer}]{Leds }\end{DoxyParamCaption})}
+
+
+
+Set the LED states based on the input value. 
+
+Sets the LEDs of the statechart based on the provided LED configuration.
+
+
+\begin{DoxyParams}{Parameters}
+{\em handle} & Pointer to the \mbox{\hyperlink{structStatechart}{Statechart}} instance. \\
+\hline
+{\em Leds} & Configuration of LEDs.\\
+\hline
+\end{DoxyParams}
+This function sets the state of the LEDs based on the value passed to it. The value corresponds to different states of the vending machine.
+
+
+\begin{DoxyParams}{Parameters}
+{\em handle} & Pointer to the statechart handle \\
+\hline
+{\em Leds} & Integer value representing the LED state \\
+\hline
+\end{DoxyParams}

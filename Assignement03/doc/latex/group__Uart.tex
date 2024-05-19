@@ -1,0 +1,566 @@
+\hypertarget{group__Uart}{}\doxysection{UART Communication}
+\label{group__Uart}\index{UART Communication@{UART Communication}}
+
+
+Functions and structures for UART communication.  
+
+
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{group__Uart_ga0592dba56693fad79136250c11e5a7fe}{MAX\+\_\+\+SIZE}}~20
+\item 
+\#define \mbox{\hyperlink{group__Uart_ga7e4912ef6d5612f8ebca463ff206d9ce}{UART\+\_\+\+RX\+\_\+\+SIZE}}~30
+\item 
+\#define \mbox{\hyperlink{group__Uart_ga7bd31e3844f5461db2cbe6d906ca4040}{UART\+\_\+\+TX\+\_\+\+SIZE}}~30
+\item 
+\#define \mbox{\hyperlink{group__Uart_gaaba783a919ec55e409334086e6d2a3bb}{SOS}}~\textquotesingle{}\#\textquotesingle{}
+\item 
+\#define \mbox{\hyperlink{group__Uart_gaadbbc7b02d94a4c18646813ac8d7dec1}{EOS}}~\textquotesingle{}!\textquotesingle{}
+\item 
+\#define \mbox{\hyperlink{group__Uart_ga1ad4406383b5bfb01b9fe6b9dc8968ff}{END\+\_\+L}}~1
+\item 
+\#define \mbox{\hyperlink{group__Uart_ga29fd18bed01c4d836c7ebfe73a125c3f}{END}}~0
+\item 
+\#define \mbox{\hyperlink{group__Uart_gae0a8163e86e94d72f61e24571477c186}{Value\+Error}}~-\/1
+\item 
+\#define \mbox{\hyperlink{group__Uart_ga795fc5b1fc0aaba4598340abf7d2a1f8}{EOS\+\_\+\+Error}}~-\/2
+\item 
+\#define \mbox{\hyperlink{group__Uart_gabdb71014872b37b4c583b5ade7dc40e0}{SOS\+\_\+\+Error}}~-\/3
+\item 
+\#define \mbox{\hyperlink{group__Uart_ga2d948821529a9c63940d32a4504185cb}{Len\+\_\+\+Error}}~-\/4
+\item 
+\#define \mbox{\hyperlink{group__Uart_ga0e91e847a955cfeca08d6f3a5a89210b}{Size\+\_\+\+Error}}~-\/5
+\item 
+\#define \mbox{\hyperlink{group__Uart_gae0055fb85175f413cc6a45b11719e32b}{CMD\+\_\+\+Error}}~-\/6
+\item 
+\#define \mbox{\hyperlink{group__Uart_gafd8de7da9adea1fef56955aaac87f666}{Check\+Sum\+\_\+\+Error}}~-\/7
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{group__Uart_ga2858154e2009b0e6e616f313177762bc}\label{group__Uart_ga2858154e2009b0e6e616f313177762bc}} 
+void \mbox{\hyperlink{group__Uart_ga2858154e2009b0e6e616f313177762bc}{init}} (void)
+\begin{DoxyCompactList}\small\item\em Initialize the buffers and all the values arrays. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__Uart_gabfb788979febd838c4b4e3717b8719bd}{Error\+Code}} (int x)
+\begin{DoxyCompactList}\small\item\em Print what type of error is if was one. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_gaced3facd7540036687482d443d6aecde}{cmd\+Proc}} (void)
+\begin{DoxyCompactList}\small\item\em Process a received command. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_ga5bf655ec1590a14989ef53cbb2caf4a5}{rx\+Char}} (unsigned char character)
+\begin{DoxyCompactList}\small\item\em Add a character to the receive buffer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_ga7280049d3ddbcc04fcbf4da25f46998d}{tx\+Char}} (unsigned char character)
+\begin{DoxyCompactList}\small\item\em Add a character to the transmit buffer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__Uart_ga9673956bc68b02d05c4957ab1b40724c}{Reset\+Rx\+Char}} (void)
+\begin{DoxyCompactList}\small\item\em Reset the receive buffer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__Uart_gaaf799f6c05312f43107024da9378761a}{Reset\+Tx\+Char}} (void)
+\begin{DoxyCompactList}\small\item\em Reset the transmit buffer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_ga041e482d7c9408e7dfaaafee90efd950}{get\+Tx\+Buf}} (unsigned char $\ast$buf, int len)
+\begin{DoxyCompactList}\small\item\em Get the transmit buffer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_ga213c0124a9aa231dcb94527f77c445e9}{get\+Tx\+Buf\+Len}} (void)
+\begin{DoxyCompactList}\small\item\em Get the transmit buffer lenght. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_gabe48c57f9125519dd9db20c761b825cf}{get\+Rx\+Buf}} (unsigned char $\ast$buf, int len)
+\begin{DoxyCompactList}\small\item\em Get the receiver buffer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_ga8cb22b6cd257b5236e7a43ed24d53889}{get\+Rx\+Buf\+Len}} (void)
+\begin{DoxyCompactList}\small\item\em Get the receiver buffer lenght. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__Uart_ga946332a1b83506835fa9ba6110d8a527}{get\+Rx\+Buf\+Len}} (int len)
+\begin{DoxyCompactList}\small\item\em Errase the values read but a certain len. \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{group__Uart_ga77e129fc98b3b9c3c28ae4eab0c88fe3}{Check\+Sum}} (unsigned char $\ast$buf, int nbytes)
+\begin{DoxyCompactList}\small\item\em Calculate the checksum of a string. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__Uart_ga677721301a610972af20b9e35a4a4581}{add\+Value}} (int $\ast$arr, unsigned int $\ast$size, int value)
+\begin{DoxyCompactList}\small\item\em Add a value to an array with shifting. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_ga331baff64d96016e56ce2f2dab0016ac}{get\+Instant\+Temp}} (void)
+\begin{DoxyCompactList}\small\item\em Get the instant temperature. \end{DoxyCompactList}\item 
+int $\ast$ \mbox{\hyperlink{group__Uart_gaa76f40ebfa354f046998a953f5b88707}{get\+Temp}} (void)
+\begin{DoxyCompactList}\small\item\em Get the temperature array. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_ga8937ee329d1a8100955fb7181a52a7da}{get\+Instant\+Hum}} (void)
+\begin{DoxyCompactList}\small\item\em Get the instant humidity. \end{DoxyCompactList}\item 
+int $\ast$ \mbox{\hyperlink{group__Uart_gad183b65e198cc25b53887d6458e46a89}{get\+Hum}} (void)
+\begin{DoxyCompactList}\small\item\em Get the humidity array. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{group__Uart_gaae66e095303035cfcad38b5b197e0e98}{get\+Instant\+CO2}} (void)
+\begin{DoxyCompactList}\small\item\em Get the instant CO2. \end{DoxyCompactList}\item 
+int $\ast$ \mbox{\hyperlink{group__Uart_ga8938695c21811433d3fcafe9f2aa6c12}{get\+CO2}} (void)
+\begin{DoxyCompactList}\small\item\em Get the CO2 array. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{group__Uart_ga7b0dcb4a8ab75d4dc9311f7259ea72a7}{numto\+Char}} (unsigned char array\mbox{[}$\,$\mbox{]}, int num, int len)
+\begin{DoxyCompactList}\small\item\em Utility function to convert a number to a character array. \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{group__Uart_ga3b002c29ede04682e5829a6cad39b9cc}{Char\+To\+Num}} (unsigned char array\mbox{[}$\,$\mbox{]}, int len)
+\begin{DoxyCompactList}\small\item\em Utility function to convert a character array to a number. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Functions and structures for UART communication. 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{group__Uart_gafd8de7da9adea1fef56955aaac87f666}\label{group__Uart_gafd8de7da9adea1fef56955aaac87f666}} 
+\index{UART Communication@{UART Communication}!CheckSum\_Error@{CheckSum\_Error}}
+\index{CheckSum\_Error@{CheckSum\_Error}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{CheckSum\_Error}{CheckSum\_Error}}
+{\footnotesize\ttfamily \#define Check\+Sum\+\_\+\+Error~-\/7}
+
+Check\+Sum error status code \mbox{\Hypertarget{group__Uart_gae0055fb85175f413cc6a45b11719e32b}\label{group__Uart_gae0055fb85175f413cc6a45b11719e32b}} 
+\index{UART Communication@{UART Communication}!CMD\_Error@{CMD\_Error}}
+\index{CMD\_Error@{CMD\_Error}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{CMD\_Error}{CMD\_Error}}
+{\footnotesize\ttfamily \#define CMD\+\_\+\+Error~-\/6}
+
+Command error status code \mbox{\Hypertarget{group__Uart_ga29fd18bed01c4d836c7ebfe73a125c3f}\label{group__Uart_ga29fd18bed01c4d836c7ebfe73a125c3f}} 
+\index{UART Communication@{UART Communication}!END@{END}}
+\index{END@{END}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{END}{END}}
+{\footnotesize\ttfamily \#define END~0}
+
+End of function status code \mbox{\Hypertarget{group__Uart_ga1ad4406383b5bfb01b9fe6b9dc8968ff}\label{group__Uart_ga1ad4406383b5bfb01b9fe6b9dc8968ff}} 
+\index{UART Communication@{UART Communication}!END\_L@{END\_L}}
+\index{END\_L@{END\_L}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{END\_L}{END\_L}}
+{\footnotesize\ttfamily \#define END\+\_\+L~1}
+
+End of L call status code \mbox{\Hypertarget{group__Uart_gaadbbc7b02d94a4c18646813ac8d7dec1}\label{group__Uart_gaadbbc7b02d94a4c18646813ac8d7dec1}} 
+\index{UART Communication@{UART Communication}!EOS@{EOS}}
+\index{EOS@{EOS}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{EOS}{EOS}}
+{\footnotesize\ttfamily \#define EOS~\textquotesingle{}!\textquotesingle{}}
+
+End of Sentence symbol \mbox{\Hypertarget{group__Uart_ga795fc5b1fc0aaba4598340abf7d2a1f8}\label{group__Uart_ga795fc5b1fc0aaba4598340abf7d2a1f8}} 
+\index{UART Communication@{UART Communication}!EOS\_Error@{EOS\_Error}}
+\index{EOS\_Error@{EOS\_Error}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{EOS\_Error}{EOS\_Error}}
+{\footnotesize\ttfamily \#define EOS\+\_\+\+Error~-\/2}
+
+End of Sentence error status code \mbox{\Hypertarget{group__Uart_ga2d948821529a9c63940d32a4504185cb}\label{group__Uart_ga2d948821529a9c63940d32a4504185cb}} 
+\index{UART Communication@{UART Communication}!Len\_Error@{Len\_Error}}
+\index{Len\_Error@{Len\_Error}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{Len\_Error}{Len\_Error}}
+{\footnotesize\ttfamily \#define Len\+\_\+\+Error~-\/4}
+
+Length error status code \mbox{\Hypertarget{group__Uart_ga0592dba56693fad79136250c11e5a7fe}\label{group__Uart_ga0592dba56693fad79136250c11e5a7fe}} 
+\index{UART Communication@{UART Communication}!MAX\_SIZE@{MAX\_SIZE}}
+\index{MAX\_SIZE@{MAX\_SIZE}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{MAX\_SIZE}{MAX\_SIZE}}
+{\footnotesize\ttfamily \#define MAX\+\_\+\+SIZE~20}
+
+Maximum size of arrays \mbox{\Hypertarget{group__Uart_ga0e91e847a955cfeca08d6f3a5a89210b}\label{group__Uart_ga0e91e847a955cfeca08d6f3a5a89210b}} 
+\index{UART Communication@{UART Communication}!Size\_Error@{Size\_Error}}
+\index{Size\_Error@{Size\_Error}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{Size\_Error}{Size\_Error}}
+{\footnotesize\ttfamily \#define Size\+\_\+\+Error~-\/5}
+
+Size error status code \mbox{\Hypertarget{group__Uart_gaaba783a919ec55e409334086e6d2a3bb}\label{group__Uart_gaaba783a919ec55e409334086e6d2a3bb}} 
+\index{UART Communication@{UART Communication}!SOS@{SOS}}
+\index{SOS@{SOS}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{SOS}{SOS}}
+{\footnotesize\ttfamily \#define SOS~\textquotesingle{}\#\textquotesingle{}}
+
+Start of Sentence symbol \mbox{\Hypertarget{group__Uart_gabdb71014872b37b4c583b5ade7dc40e0}\label{group__Uart_gabdb71014872b37b4c583b5ade7dc40e0}} 
+\index{UART Communication@{UART Communication}!SOS\_Error@{SOS\_Error}}
+\index{SOS\_Error@{SOS\_Error}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{SOS\_Error}{SOS\_Error}}
+{\footnotesize\ttfamily \#define SOS\+\_\+\+Error~-\/3}
+
+Start of Sentence error status code \mbox{\Hypertarget{group__Uart_ga7e4912ef6d5612f8ebca463ff206d9ce}\label{group__Uart_ga7e4912ef6d5612f8ebca463ff206d9ce}} 
+\index{UART Communication@{UART Communication}!UART\_RX\_SIZE@{UART\_RX\_SIZE}}
+\index{UART\_RX\_SIZE@{UART\_RX\_SIZE}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{UART\_RX\_SIZE}{UART\_RX\_SIZE}}
+{\footnotesize\ttfamily \#define UART\+\_\+\+RX\+\_\+\+SIZE~30}
+
+Size of the UART receive buffer \mbox{\Hypertarget{group__Uart_ga7bd31e3844f5461db2cbe6d906ca4040}\label{group__Uart_ga7bd31e3844f5461db2cbe6d906ca4040}} 
+\index{UART Communication@{UART Communication}!UART\_TX\_SIZE@{UART\_TX\_SIZE}}
+\index{UART\_TX\_SIZE@{UART\_TX\_SIZE}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{UART\_TX\_SIZE}{UART\_TX\_SIZE}}
+{\footnotesize\ttfamily \#define UART\+\_\+\+TX\+\_\+\+SIZE~30}
+
+Size of the UART transmit buffer \mbox{\Hypertarget{group__Uart_gae0a8163e86e94d72f61e24571477c186}\label{group__Uart_gae0a8163e86e94d72f61e24571477c186}} 
+\index{UART Communication@{UART Communication}!ValueError@{ValueError}}
+\index{ValueError@{ValueError}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{ValueError}{ValueError}}
+{\footnotesize\ttfamily \#define Value\+Error~-\/1}
+
+Value error status code 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{group__Uart_ga677721301a610972af20b9e35a4a4581}\label{group__Uart_ga677721301a610972af20b9e35a4a4581}} 
+\index{UART Communication@{UART Communication}!addValue@{addValue}}
+\index{addValue@{addValue}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{addValue()}{addValue()}}
+{\footnotesize\ttfamily void add\+Value (\begin{DoxyParamCaption}\item[{int $\ast$}]{arr,  }\item[{unsigned int $\ast$}]{size,  }\item[{int}]{value }\end{DoxyParamCaption})}
+
+
+
+Add a value to an array with shifting. 
+
+This function adds a value to an array with shifting.
+
+
+\begin{DoxyParams}{Parameters}
+{\em arr} & Pointer to the array. \\
+\hline
+{\em size} & Pointer to the size of the array. \\
+\hline
+{\em value} & The value to be added. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group__Uart_ga3b002c29ede04682e5829a6cad39b9cc}\label{group__Uart_ga3b002c29ede04682e5829a6cad39b9cc}} 
+\index{UART Communication@{UART Communication}!CharToNum@{CharToNum}}
+\index{CharToNum@{CharToNum}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{CharToNum()}{CharToNum()}}
+{\footnotesize\ttfamily unsigned int Char\+To\+Num (\begin{DoxyParamCaption}\item[{unsigned char}]{array\mbox{[}$\,$\mbox{]},  }\item[{int}]{len }\end{DoxyParamCaption})}
+
+
+
+Utility function to convert a character array to a number. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em array} & Pointer to the character array where the is the characters. \\
+\hline
+{\em len} & Length of the character array.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The converted number. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_ga77e129fc98b3b9c3c28ae4eab0c88fe3}\label{group__Uart_ga77e129fc98b3b9c3c28ae4eab0c88fe3}} 
+\index{UART Communication@{UART Communication}!CheckSum@{CheckSum}}
+\index{CheckSum@{CheckSum}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{CheckSum()}{CheckSum()}}
+{\footnotesize\ttfamily unsigned int Check\+Sum (\begin{DoxyParamCaption}\item[{unsigned char $\ast$}]{buf,  }\item[{int}]{nbytes }\end{DoxyParamCaption})}
+
+
+
+Calculate the checksum of a string. 
+
+This function calculates the checksum of a string.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & Pointer to the string. \\
+\hline
+{\em nbytes} & Number of bytes in the string.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The checksum value. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_gaced3facd7540036687482d443d6aecde}\label{group__Uart_gaced3facd7540036687482d443d6aecde}} 
+\index{UART Communication@{UART Communication}!cmdProc@{cmdProc}}
+\index{cmdProc@{cmdProc}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{cmdProc()}{cmdProc()}}
+{\footnotesize\ttfamily int cmd\+Proc (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Process a received command. 
+
+This function processes a command received via UART, one character at a time.
+
+\begin{DoxyReturn}{Returns}
+Status code\+:
+\begin{DoxyItemize}
+\item END if successful.
+\item Value\+Error if there is a value error.
+\item EOS\+\_\+\+Error if there is an End of Frame symbol error.
+\item Len\+\_\+\+Error if there is a length error.
+\item Size\+\_\+\+Error if there is a size error.
+\item CMD\+\_\+\+Error if there is a command error. 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_gabfb788979febd838c4b4e3717b8719bd}\label{group__Uart_gabfb788979febd838c4b4e3717b8719bd}} 
+\index{UART Communication@{UART Communication}!ErrorCode@{ErrorCode}}
+\index{ErrorCode@{ErrorCode}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{ErrorCode()}{ErrorCode()}}
+{\footnotesize\ttfamily void Error\+Code (\begin{DoxyParamCaption}\item[{int}]{x }\end{DoxyParamCaption})}
+
+
+
+Print what type of error is if was one. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & The return value of cmd\+Proc function. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group__Uart_ga8938695c21811433d3fcafe9f2aa6c12}\label{group__Uart_ga8938695c21811433d3fcafe9f2aa6c12}} 
+\index{UART Communication@{UART Communication}!getCO2@{getCO2}}
+\index{getCO2@{getCO2}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{getCO2()}{getCO2()}}
+{\footnotesize\ttfamily int$\ast$ get\+CO2 (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Get the CO2 array. 
+
+This function returns the pointer for the CO2 array
+
+\begin{DoxyReturn}{Returns}
+The pointer for the CO2 array. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_gad183b65e198cc25b53887d6458e46a89}\label{group__Uart_gad183b65e198cc25b53887d6458e46a89}} 
+\index{UART Communication@{UART Communication}!getHum@{getHum}}
+\index{getHum@{getHum}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{getHum()}{getHum()}}
+{\footnotesize\ttfamily int$\ast$ get\+Hum (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Get the humidity array. 
+
+This function returns the pointer for the humidity array
+
+\begin{DoxyReturn}{Returns}
+The pointer for the humidity array. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_gaae66e095303035cfcad38b5b197e0e98}\label{group__Uart_gaae66e095303035cfcad38b5b197e0e98}} 
+\index{UART Communication@{UART Communication}!getInstantCO2@{getInstantCO2}}
+\index{getInstantCO2@{getInstantCO2}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{getInstantCO2()}{getInstantCO2()}}
+{\footnotesize\ttfamily int get\+Instant\+CO2 (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Get the instant CO2. 
+
+This function returns the instant CO2.
+
+\begin{DoxyReturn}{Returns}
+The instant temperature. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_ga8937ee329d1a8100955fb7181a52a7da}\label{group__Uart_ga8937ee329d1a8100955fb7181a52a7da}} 
+\index{UART Communication@{UART Communication}!getInstantHum@{getInstantHum}}
+\index{getInstantHum@{getInstantHum}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{getInstantHum()}{getInstantHum()}}
+{\footnotesize\ttfamily int get\+Instant\+Hum (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Get the instant humidity. 
+
+This function returns the instant humidity.
+
+\begin{DoxyReturn}{Returns}
+The instant temperature. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_ga331baff64d96016e56ce2f2dab0016ac}\label{group__Uart_ga331baff64d96016e56ce2f2dab0016ac}} 
+\index{UART Communication@{UART Communication}!getInstantTemp@{getInstantTemp}}
+\index{getInstantTemp@{getInstantTemp}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{getInstantTemp()}{getInstantTemp()}}
+{\footnotesize\ttfamily int get\+Instant\+Temp (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Get the instant temperature. 
+
+This function returns the instant temperature.
+
+\begin{DoxyReturn}{Returns}
+The instant temperature. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_gabe48c57f9125519dd9db20c761b825cf}\label{group__Uart_gabe48c57f9125519dd9db20c761b825cf}} 
+\index{UART Communication@{UART Communication}!getRxBuf@{getRxBuf}}
+\index{getRxBuf@{getRxBuf}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{getRxBuf()}{getRxBuf()}}
+{\footnotesize\ttfamily int get\+Rx\+Buf (\begin{DoxyParamCaption}\item[{unsigned char $\ast$}]{buf,  }\item[{int}]{len }\end{DoxyParamCaption})}
+
+
+
+Get the receiver buffer. 
+
+This function copies the receiver buffer contents to a specified buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & Pointer to the buffer to store the receiver buffer contents. \\
+\hline
+{\em len} & Length of the buffer.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code\+:
+\begin{DoxyItemize}
+\item END if successful.
+\item Len\+\_\+\+Error if the receiver buffer is empty. 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_ga946332a1b83506835fa9ba6110d8a527}\label{group__Uart_ga946332a1b83506835fa9ba6110d8a527}} 
+\index{UART Communication@{UART Communication}!getRxBufLen@{getRxBufLen}}
+\index{getRxBufLen@{getRxBufLen}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{getRxBufLen()}{getRxBufLen()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void get\+Rx\+Buf\+Len (\begin{DoxyParamCaption}\item[{int}]{len }\end{DoxyParamCaption})}
+
+
+
+Errase the values read but a certain len. 
+
+This function errase the values of the Rx\+Buffer by a certain len.
+
+
+\begin{DoxyParams}{Parameters}
+{\em len} & Length of the buffer. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group__Uart_ga8cb22b6cd257b5236e7a43ed24d53889}\label{group__Uart_ga8cb22b6cd257b5236e7a43ed24d53889}} 
+\index{UART Communication@{UART Communication}!getRxBufLen@{getRxBufLen}}
+\index{getRxBufLen@{getRxBufLen}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{getRxBufLen()}{getRxBufLen()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily int get\+Rx\+Buf\+Len (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Get the receiver buffer lenght. 
+
+This function return the receiver buffer lenght.
+
+\begin{DoxyReturn}{Returns}
+Status code\+:
+\begin{DoxyItemize}
+\item Rx\+Buffer\+Len if successful.
+\item Size\+\_\+\+Error if the transmit buffer length is bigger than UART\+\_\+\+TX\+\_\+\+SIZE. 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_gaa76f40ebfa354f046998a953f5b88707}\label{group__Uart_gaa76f40ebfa354f046998a953f5b88707}} 
+\index{UART Communication@{UART Communication}!getTemp@{getTemp}}
+\index{getTemp@{getTemp}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{getTemp()}{getTemp()}}
+{\footnotesize\ttfamily int$\ast$ get\+Temp (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Get the temperature array. 
+
+This function returns the pointer for the temperature array
+
+\begin{DoxyReturn}{Returns}
+The pointer for the temperature array. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_ga041e482d7c9408e7dfaaafee90efd950}\label{group__Uart_ga041e482d7c9408e7dfaaafee90efd950}} 
+\index{UART Communication@{UART Communication}!getTxBuf@{getTxBuf}}
+\index{getTxBuf@{getTxBuf}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{getTxBuf()}{getTxBuf()}}
+{\footnotesize\ttfamily int get\+Tx\+Buf (\begin{DoxyParamCaption}\item[{unsigned char $\ast$}]{buf,  }\item[{int}]{len }\end{DoxyParamCaption})}
+
+
+
+Get the transmit buffer. 
+
+This function copies the transmit buffer contents to a specified buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buf} & Pointer to the buffer to store the transmit buffer contents. \\
+\hline
+{\em len} & Length of the buffer.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code\+:
+\begin{DoxyItemize}
+\item END if successful.
+\item Len\+\_\+\+Error if the transmit buffer is empty. 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_ga213c0124a9aa231dcb94527f77c445e9}\label{group__Uart_ga213c0124a9aa231dcb94527f77c445e9}} 
+\index{UART Communication@{UART Communication}!getTxBufLen@{getTxBufLen}}
+\index{getTxBufLen@{getTxBufLen}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{getTxBufLen()}{getTxBufLen()}}
+{\footnotesize\ttfamily int get\+Tx\+Buf\+Len (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Get the transmit buffer lenght. 
+
+This function return the transmit buffer lenght.
+
+\begin{DoxyReturn}{Returns}
+Status code\+:
+\begin{DoxyItemize}
+\item Tx\+Buffer\+Len if successful.
+\item Size\+\_\+\+Error if the transmit buffer length is bigger than UART\+\_\+\+TX\+\_\+\+SIZE. 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_ga7b0dcb4a8ab75d4dc9311f7259ea72a7}\label{group__Uart_ga7b0dcb4a8ab75d4dc9311f7259ea72a7}} 
+\index{UART Communication@{UART Communication}!numtoChar@{numtoChar}}
+\index{numtoChar@{numtoChar}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{numtoChar()}{numtoChar()}}
+{\footnotesize\ttfamily void numto\+Char (\begin{DoxyParamCaption}\item[{unsigned char}]{array\mbox{[}$\,$\mbox{]},  }\item[{int}]{num,  }\item[{int}]{len }\end{DoxyParamCaption})}
+
+
+
+Utility function to convert a number to a character array. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em array} & Pointer to the character array where the result will be stored. \\
+\hline
+{\em num} & The number to be converted. \\
+\hline
+{\em len} & Length of the character array. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group__Uart_ga9673956bc68b02d05c4957ab1b40724c}\label{group__Uart_ga9673956bc68b02d05c4957ab1b40724c}} 
+\index{UART Communication@{UART Communication}!ResetRxChar@{ResetRxChar}}
+\index{ResetRxChar@{ResetRxChar}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{ResetRxChar()}{ResetRxChar()}}
+{\footnotesize\ttfamily void Reset\+Rx\+Char (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Reset the receive buffer. 
+
+This function resets the receive buffer. \mbox{\Hypertarget{group__Uart_gaaf799f6c05312f43107024da9378761a}\label{group__Uart_gaaf799f6c05312f43107024da9378761a}} 
+\index{UART Communication@{UART Communication}!ResetTxChar@{ResetTxChar}}
+\index{ResetTxChar@{ResetTxChar}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{ResetTxChar()}{ResetTxChar()}}
+{\footnotesize\ttfamily void Reset\+Tx\+Char (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Reset the transmit buffer. 
+
+This function resets the transmit buffer. \mbox{\Hypertarget{group__Uart_ga5bf655ec1590a14989ef53cbb2caf4a5}\label{group__Uart_ga5bf655ec1590a14989ef53cbb2caf4a5}} 
+\index{UART Communication@{UART Communication}!rxChar@{rxChar}}
+\index{rxChar@{rxChar}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{rxChar()}{rxChar()}}
+{\footnotesize\ttfamily int rx\+Char (\begin{DoxyParamCaption}\item[{unsigned char}]{character }\end{DoxyParamCaption})}
+
+
+
+Add a character to the receive buffer. 
+
+This function adds a character to the receive buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em character} & The character to be added to the receive buffer.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code\+:
+\begin{DoxyItemize}
+\item END if successful.
+\item Size\+\_\+\+Error if the receive buffer is full. 
+\end{DoxyItemize}
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Uart_ga7280049d3ddbcc04fcbf4da25f46998d}\label{group__Uart_ga7280049d3ddbcc04fcbf4da25f46998d}} 
+\index{UART Communication@{UART Communication}!txChar@{txChar}}
+\index{txChar@{txChar}!UART Communication@{UART Communication}}
+\doxysubsubsection{\texorpdfstring{txChar()}{txChar()}}
+{\footnotesize\ttfamily int tx\+Char (\begin{DoxyParamCaption}\item[{unsigned char}]{character }\end{DoxyParamCaption})}
+
+
+
+Add a character to the transmit buffer. 
+
+This function adds a character to the transmit buffer.
+
+
+\begin{DoxyParams}{Parameters}
+{\em character} & The character to be added to the transmit buffer.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Status code\+:
+\begin{DoxyItemize}
+\item END if successful.
+\item Size\+\_\+\+Error if the transmit buffer is full. 
+\end{DoxyItemize}
+\end{DoxyReturn}

@@ -1,0 +1,224 @@
+\hypertarget{Testes_8h}{}\doxysection{/home/pedro/\+Documentos/\+SETR/\+Assignement02/header/\+Testes.h File Reference}
+\label{Testes_8h}\index{/home/pedro/Documentos/SETR/Assignement02/header/Testes.h@{/home/pedro/Documentos/SETR/Assignement02/header/Testes.h}}
+
+
+Header file containing declarations of functions for testing the UART module.  
+
+
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{Testes_8h_a9d865c30a57a524af4b98f6389c21dac}\label{Testes_8h_a9d865c30a57a524af4b98f6389c21dac}} 
+\#define {\bfseries Check\+Error}~0
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{Testes_8h_a1a19c10259f84e157df409c3cb9de032}{Teste\+\_\+\+Tx\+Char}} (void)
+\begin{DoxyCompactList}\small\item\em Performs a test for the tx\+Char function using UNITY. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Testes_8h_ae67b2a2125cc3951ee28d7aa094f6a69}{Teste\+\_\+\+Rx\+Char}} (void)
+\begin{DoxyCompactList}\small\item\em Performs a test for the rx\+Char function using UNITY. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Testes_8h_a35e0c89f713f005695ffa258d1fe59d6}{Teste\+\_\+\+Proc}} (void)
+\begin{DoxyCompactList}\small\item\em Performs a test for the cmd\+Proc function using UNITY. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Testes_8h_a27b039428869c5fe9aab346119a9ba2a}{Teste\+\_\+\+Proc\+\_\+\+Temp}} (void)
+\begin{DoxyCompactList}\small\item\em Performs a test for the temperature processing functionality using UNITY. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Testes_8h_a624924ff43374614af48eb05602c0acb}{Teste\+\_\+\+Proc\+\_\+\+Hum}} (void)
+\begin{DoxyCompactList}\small\item\em Performs a test for the humidity processing functionality using UNITY. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Testes_8h_a1f01e94d270f5e5e796e32ed3c166be8}{Teste\+\_\+\+Proc\+\_\+\+CO2}} (void)
+\begin{DoxyCompactList}\small\item\em Performs a test for the CO2 processing functionality using UNITY. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Testes_8h_a1e706fea3fc514abc380c6e0f8fa34ce}{Teste\+\_\+\+Proc\+\_\+A}} (void)
+\begin{DoxyCompactList}\small\item\em Performs a test for the combined processing functionality using UNITY. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{Testes_8h_acd5a992dd6fa87988049138f7efdb7a7}{Teste\+\_\+\+Proc\+\_\+\+All}} (void)
+\begin{DoxyCompactList}\small\item\em Performs a test for all the functionality using UNITY. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header file containing declarations of functions for testing the UART module. 
+
+\begin{DoxyAuthor}{Author}
+Pedro Afonso, 104206 
+
+Carlos Teixeira 103187 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+01/04/2024
+\end{DoxyDate}
+Functions and structures for testing UART communication. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{Testes_8h_a35e0c89f713f005695ffa258d1fe59d6}\label{Testes_8h_a35e0c89f713f005695ffa258d1fe59d6}} 
+\index{Testes.h@{Testes.h}!Teste\_Proc@{Teste\_Proc}}
+\index{Teste\_Proc@{Teste\_Proc}!Testes.h@{Testes.h}}
+\doxysubsubsection{\texorpdfstring{Teste\_Proc()}{Teste\_Proc()}}
+{\footnotesize\ttfamily void Teste\+\_\+\+Proc (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Performs a test for the cmd\+Proc function using UNITY. 
+
+\begin{DoxyParagraph}{Test 3 – Data Processing Accuracy}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Objective\+:}
+Determine whether the UART correctly processes received data. 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Method\+:}
+Intentional errors are introduced into transmitted data, and the UART\textquotesingle{}s ability to detect and handle these errors is evaluated. 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Expected Outcome\+:}
+Ensure that the UART can effectively identify and manage error conditions without compromising data integrity. 
+\end{DoxyParagraph}
+\mbox{\Hypertarget{Testes_8h_a1e706fea3fc514abc380c6e0f8fa34ce}\label{Testes_8h_a1e706fea3fc514abc380c6e0f8fa34ce}} 
+\index{Testes.h@{Testes.h}!Teste\_Proc\_A@{Teste\_Proc\_A}}
+\index{Teste\_Proc\_A@{Teste\_Proc\_A}!Testes.h@{Testes.h}}
+\doxysubsubsection{\texorpdfstring{Teste\_Proc\_A()}{Teste\_Proc\_A()}}
+{\footnotesize\ttfamily void Teste\+\_\+\+Proc\+\_\+A (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Performs a test for the combined processing functionality using UNITY. 
+
+\begin{DoxyParagraph}{Test 7 – Mixed Data Handling}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Objective\+:}
+Evaluate the UART\textquotesingle{}s functionality in handling all three types of data (temperature, humidity, CO2) regardless of the order they are received. 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Method\+:}
+Send mixed data (temperature, humidity, CO2) to the UART in varying sequences and verify its ability to interpret and process each type correctly. 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Expected Outcome\+:}
+Ensure that the UART can handle mixed data inputs effectively, regardless of their order. 
+\end{DoxyParagraph}
+\mbox{\Hypertarget{Testes_8h_acd5a992dd6fa87988049138f7efdb7a7}\label{Testes_8h_acd5a992dd6fa87988049138f7efdb7a7}} 
+\index{Testes.h@{Testes.h}!Teste\_Proc\_All@{Teste\_Proc\_All}}
+\index{Teste\_Proc\_All@{Teste\_Proc\_All}!Testes.h@{Testes.h}}
+\doxysubsubsection{\texorpdfstring{Teste\_Proc\_All()}{Teste\_Proc\_All()}}
+{\footnotesize\ttfamily void Teste\+\_\+\+Proc\+\_\+\+All (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Performs a test for all the functionality using UNITY. 
+
+\begin{DoxyParagraph}{Test 8 – Comprehensive Testing}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Objective\+:}
+Perform an extensive test covering all previous tests (1-\/7), along with additional evaluations of the UART\textquotesingle{}s ability to retrieve the last 20 samples of each data type and reset them. 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Method\+:}
+Execute tests 1-\/7 sequentially, followed by retrieving the last 20 samples of each data type and resetting them, and verify the UART\textquotesingle{}s performance. 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Expected Outcome\+:}
+Confirm that all previous tests are successful, and validate the UART\textquotesingle{}s ability to manage historical data and reset functionality. 
+\end{DoxyParagraph}
+\mbox{\Hypertarget{Testes_8h_a1f01e94d270f5e5e796e32ed3c166be8}\label{Testes_8h_a1f01e94d270f5e5e796e32ed3c166be8}} 
+\index{Testes.h@{Testes.h}!Teste\_Proc\_CO2@{Teste\_Proc\_CO2}}
+\index{Teste\_Proc\_CO2@{Teste\_Proc\_CO2}!Testes.h@{Testes.h}}
+\doxysubsubsection{\texorpdfstring{Teste\_Proc\_CO2()}{Teste\_Proc\_CO2()}}
+{\footnotesize\ttfamily void Teste\+\_\+\+Proc\+\_\+\+CO2 (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Performs a test for the CO2 processing functionality using UNITY. 
+
+\begin{DoxyParagraph}{Test 6 – CO2 Data Handling}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Objective\+:}
+Validate the UART\textquotesingle{}s capability to handle CO2 data and provide accurate CO2 level readings. 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Method\+:}
+CO2 data is transmitted to the UART to verify its correct interpretation and return of the CO2 level. 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Expected Outcome\+:}
+Confirm that the UART accurately processes CO2 data and provides correct CO2 level readings. 
+\end{DoxyParagraph}
+\mbox{\Hypertarget{Testes_8h_a624924ff43374614af48eb05602c0acb}\label{Testes_8h_a624924ff43374614af48eb05602c0acb}} 
+\index{Testes.h@{Testes.h}!Teste\_Proc\_Hum@{Teste\_Proc\_Hum}}
+\index{Teste\_Proc\_Hum@{Teste\_Proc\_Hum}!Testes.h@{Testes.h}}
+\doxysubsubsection{\texorpdfstring{Teste\_Proc\_Hum()}{Teste\_Proc\_Hum()}}
+{\footnotesize\ttfamily void Teste\+\_\+\+Proc\+\_\+\+Hum (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Performs a test for the humidity processing functionality using UNITY. 
+
+\begin{DoxyParagraph}{Test 5 – Humidity Data Handling}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Objective\+:}
+Assess the UART\textquotesingle{}s ability to handle humidity data and provide accurate humidity readings. 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Method\+:}
+Similar to Test 4, humidity data is sent to the UART to ensure it interprets and returns the correct humidity value. 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Expected Outcome\+:}
+Ensure that the UART can accurately process humidity data and provide correct humidity readings. 
+\end{DoxyParagraph}
+\mbox{\Hypertarget{Testes_8h_a27b039428869c5fe9aab346119a9ba2a}\label{Testes_8h_a27b039428869c5fe9aab346119a9ba2a}} 
+\index{Testes.h@{Testes.h}!Teste\_Proc\_Temp@{Teste\_Proc\_Temp}}
+\index{Teste\_Proc\_Temp@{Teste\_Proc\_Temp}!Testes.h@{Testes.h}}
+\doxysubsubsection{\texorpdfstring{Teste\_Proc\_Temp()}{Teste\_Proc\_Temp()}}
+{\footnotesize\ttfamily void Teste\+\_\+\+Proc\+\_\+\+Temp (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Performs a test for the temperature processing functionality using UNITY. 
+
+\begin{DoxyParagraph}{Test 4 – Temperature Data Handling}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Objective\+:}
+Verify the UART\textquotesingle{}s capability to handle temperature data and provide accurate temperature readings. 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Method\+:}
+Send temperature data to the UART and verify that it interprets the information correctly, returning the expected temperature value. 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Expected Outcome\+:}
+Confirm that the UART can process temperature data accurately and provide correct temperature readings. 
+\end{DoxyParagraph}
+\mbox{\Hypertarget{Testes_8h_ae67b2a2125cc3951ee28d7aa094f6a69}\label{Testes_8h_ae67b2a2125cc3951ee28d7aa094f6a69}} 
+\index{Testes.h@{Testes.h}!Teste\_RxChar@{Teste\_RxChar}}
+\index{Teste\_RxChar@{Teste\_RxChar}!Testes.h@{Testes.h}}
+\doxysubsubsection{\texorpdfstring{Teste\_RxChar()}{Teste\_RxChar()}}
+{\footnotesize\ttfamily void Teste\+\_\+\+Rx\+Char (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Performs a test for the rx\+Char function using UNITY. 
+
+\begin{DoxyParagraph}{Test 1 – Data Reception}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Objective\+:}
+Validate the UART\textquotesingle{}s proficiency in receiving data from an external device. 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Method\+:}
+Data from an external device is sent to the microcontroller through UART, and the received data is compared against the expected input. 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Expected Outcome\+:}
+Confirm that the UART can accurately receive and process incoming data. 
+\end{DoxyParagraph}
+\mbox{\Hypertarget{Testes_8h_a1a19c10259f84e157df409c3cb9de032}\label{Testes_8h_a1a19c10259f84e157df409c3cb9de032}} 
+\index{Testes.h@{Testes.h}!Teste\_TxChar@{Teste\_TxChar}}
+\index{Teste\_TxChar@{Teste\_TxChar}!Testes.h@{Testes.h}}
+\doxysubsubsection{\texorpdfstring{Teste\_TxChar()}{Teste\_TxChar()}}
+{\footnotesize\ttfamily void Teste\+\_\+\+Tx\+Char (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Performs a test for the tx\+Char function using UNITY. 
+
+\begin{DoxyParagraph}{Test 2 – Data Transmission}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Objective\+:}
+Verify the UART\textquotesingle{}s operational capability in transmitting data accurately to an external device. 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Method\+:}
+This test involves sending data through the UART interface and validating that the transmitted data aligns with the expected output. 
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Expected Outcome\+:}
+Ensure that data transmitted via the UART is precise and devoid of errors. 
+\end{DoxyParagraph}
