@@ -14,9 +14,9 @@
  * @author 
  * - Pedro Afonso (104206)
  * - Carlos Teixeira (103187)
+ *
+ *@date 19/05/2024
  * 
- * @bug If you encounter any issues while using this emulator, please report them 
- * <a href="https://github.com/pisko19/SETR/issues">here</a>.
  */
 
 #include "../src/sc_types.h"

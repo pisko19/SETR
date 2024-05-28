@@ -40,7 +40,7 @@
  - <b>Statechart_required.h:</b> Header file containing prototypes for functions required by the state machine implementation.
  
  <b>Usage:</b>
- To use this vending machine emulator in your C program, include the header file VendingMachine.h in your source code. You can then call the provided functions to interact with the vending machine via button inputs and LED outputs.
+ To use this vending machine emulator in your C program, include the header file statechart.h in your source code. You can then call the provided functions to interact with the vending machine via button inputs and LED outputs. Additionally, ensure that statechart_required.h is included to access the required function prototypes for the state machine implementation.
  
  <b>Test Scenarios:</b>
  The module includes test scenarios in the main.c file to demonstrate the functionality of the vending machine emulator. Additionally, the Test.h and Test.c files provide test functions for verifying the behavior of the vending machine. These functions perform various operations such as inserting coins, browsing products, making purchases, and returning credit.
