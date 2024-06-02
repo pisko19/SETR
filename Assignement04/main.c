@@ -4,50 +4,63 @@
 #include <zephyr/devicetree.h>	    /* for DT_NODELABEL() */
 #include <zephyr/drivers/gpio.h>    /* for GPIO API*/
 #include <zephyr/drivers/adc.h>     /* for ADC API*/
+#include <zephyr/drivers/uart.h>    /* for UART API*/
 #include <zephyr/sys/printk.h>      /* for printk()*/
-#include <string.h>
 #include <zephyr/timing/timing.h>
+#include <stdio.h>                  /* for sprintf() */
+#include <stdlib.h>
+#include <string.h>
 
 /* Error codes */
 #define OK  0
 #define Error -1
 
+/* Thread Initialization */
 /* Size of stack area used by each thread (can be thread specific, if necessary)*/
 #define STACK_SIZE 1024
 
 /* Thread scheduling priority: 1...MAX, decreasing (smaller value -> Higher priority) */
 #define thread_A_prio 1 /* Higher priority */ 
 #define thread_B_prio 2 /* Middle priority */
+#define thread_C_prio 3 /* Lower priority */
 
 /* Thread periodicity (in ms)*/
-#define thread_A_period 10
+#define thread_A_period 5
 #define thread_B_period 10
+#define thread_C_period 200
 
 /* Create thread stack space */
 K_THREAD_STACK_DEFINE(thread_A_stack, STACK_SIZE);
 K_THREAD_STACK_DEFINE(thread_B_stack, STACK_SIZE);
+K_THREAD_STACK_DEFINE(thread_C_stack, STACK_SIZE); 
   
 /* Create variables for thread data */
 struct k_thread thread_A_data;
 struct k_thread thread_B_data;
+struct k_thread thread_C_data;
 
 /* Create task IDs */
 k_tid_t thread_A_tid;
 k_tid_t thread_B_tid;
+k_tid_t thread_C_tid;
 
 /* Thread code prototypes */
 void thread_A_code(void *argA, void *argB, void *argC);
 void thread_B_code(void *argA, void *argB, void *argC);
+void thread_C_code(void *argA, void *argB, void *argC);
 
 /* Define timers for tasks activations */
 K_TIMER_DEFINE(thread_A_timer, NULL, NULL);
 K_TIMER_DEFINE(thread_B_timer, NULL, NULL);
+K_TIMER_DEFINE(thread_C_timer, NULL, NULL);
 
 /*Define mutex */
 K_MUTEX_DEFINE(Buttons_Mutex);
 K_MUTEX_DEFINE(Leds_Mutex);
+K_MUTEX_DEFINE(ADC_Mutex);
+K_MUTEX_DEFINE(UART_Mutex);
 
-
+/* GPIO Initialization*/
 /*Define the number of leds and buttons*/
 #define Num_Leds 4
 #define Num_Buts 4
@@ -73,6 +86,7 @@ static const struct gpio_dt_spec but2 = GPIO_DT_SPEC_GET(BUT2_NODE, gpios);
 static const struct gpio_dt_spec but3 = GPIO_DT_SPEC_GET(BUT3_NODE, gpios);
 static const struct gpio_dt_spec buts[Num_Buts] = {but0, but1, but2, but3};
 
+/*ADC Initialization*/
 /*ADC definitions and includes*/
 #include <hal/nrf_saadc.h>
 #define ADC_RESOLUTION 10
@@ -122,12 +136,40 @@ static int adc_sample(void)
 	return ret;
 }
 
-static int ret=0;
+/*UART Initializaton*/
+#define RXBUF_SIZE 2                    /* RX buffer size */
+#define TXBUF_SIZE 60                   /* TX buffer size */
+#define MSG_BUF_SIZE 100                /* Buffer for messages sent vai UART */
+#define RX_TIMEOUT 1000                 /* Inactivity period after the instant when last char was received that triggers an rx event (in us) */
+#define UART_NODE DT_NODELABEL(uart0)   /* UART0 node ID*/
 
+/* Struct for UART configuration. */
+const struct uart_config uart_cfg = {
+		.baudrate = 115200,
+		.parity = UART_CFG_PARITY_NONE,
+		.stop_bits = UART_CFG_STOP_BITS_1,
+		.data_bits = UART_CFG_DATA_BITS_8,
+		.flow_ctrl = UART_CFG_FLOW_CTRL_NONE
+};
+
+
+/* UART related variables */
+const struct device *uart_dev = DEVICE_DT_GET(UART_NODE);
+static uint8_t rx_buf[RXBUF_SIZE];      /* RX buffer, to store received data */
+static uint8_t rx_chars[RXBUF_SIZE];    /* chars actually received  */
+volatile int uart_rxbuf_nchar=0;        /* Number of chars currrntly on the rx buffer */
+
+/* UART callback function prototype */
+static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data);
+
+
+/*Glocal variables */
+static int ret=0;
 volatile bool LedsStates[Num_Leds] = {0};
 volatile bool ButsStates[Num_Buts] = {0};
 volatile uint16_t ADC_Raw = 0;
 volatile uint16_t ADC_Voltage = 0;
+
 
 /* Hardware initialization */
 int Init(void) {
@@ -172,11 +214,38 @@ int Init(void) {
     /* It is recommended to calibrate the SAADC at least once before use, and whenever the ambient temperature has changed by more than 10 °C */
     NRF_SAADC->TASKS_CALIBRATEOFFSET = 1;
 
+
+    /* Check if uart device is open */
+    if (!device_is_ready(uart_dev)) {
+        printk("device_is_ready(uart) returned error! Aborting! \n\r");
+        return Error;
+    }
+    
+    /* Configure UART */
+    ret = uart_configure(uart_dev, &uart_cfg);
+    if (ret == -ENOSYS) { /* If invalid configuration */
+        printk("uart_configure() error. Invalid configuration\n\r");
+        return Error; 
+    }
+        
+    /* Register callback */
+    ret = uart_callback_set(uart_dev, uart_cb, NULL);
+    if (ret) {
+        printk("uart_callback_set() error. Error code:%d\n\r",ret);
+        return Error;
+    }
+    
+    /* Enable data reception */
+    ret =  uart_rx_enable(uart_dev ,rx_buf,sizeof(rx_buf),RX_TIMEOUT);
+    if (ret) {
+        printk("uart_rx_enable() error. Error code:%d\n\r",ret);
+        return Error;
+    }
     /* Successfully initialized */
     return OK;
 }
 
-
+/* MAIN */
 int main (){
     ret = Init();
     if (ret < 0) {
@@ -192,11 +261,17 @@ int main (){
     thread_B_tid = k_thread_create(&thread_B_data, thread_B_stack,
         K_THREAD_STACK_SIZEOF(thread_B_stack), thread_B_code,
         NULL, NULL, NULL, thread_B_prio, 0, K_NO_WAIT);
+
+    thread_C_tid = k_thread_create(&thread_C_data, thread_C_stack,
+        K_THREAD_STACK_SIZEOF(thread_C_stack), thread_C_code,
+        NULL, NULL, NULL, thread_C_prio, 0, K_NO_WAIT);
     return OK;
 }
 
 
-/* Thread code implementation */
+/* Thread code implementation 
+   Thread A -> Responsible to read the buttons satates and set the leds*/
+
 void thread_A_code(void *argA , void *argB, void *argC)
 {
     /* Local vars */
@@ -210,7 +285,6 @@ void thread_A_code(void *argA , void *argB, void *argC)
     while(1) {        
         
         init_time = k_uptime_get();
-        printk("\n\rThread A activated");  
 
         /*Block the mutex corresponding to the buttons*/
         ret = k_mutex_lock(&Buttons_Mutex,K_FOREVER);
@@ -221,7 +295,7 @@ void thread_A_code(void *argA , void *argB, void *argC)
         
         /*Set the state of the buttons to an array*/
         for (int i = 0; i < Num_Buts; i++) {
-           ButsStates[i] = gpio_pin_get_dt(&buts[i]);
+            ButsStates[i] = gpio_pin_get_dt(&buts[i]);    
         }
         
         /*Unblock the mutex corresponding to the buttons*/
@@ -254,7 +328,6 @@ void thread_A_code(void *argA , void *argB, void *argC)
 
         /* Wait for next release instant */ 
         fin_time = k_uptime_get();
-        printk("\n\rThread A Ended -> Time %lld\n\r",(fin_time-init_time)); 
 
         if( fin_time < release_time) {
             k_msleep(release_time - fin_time);
@@ -266,9 +339,10 @@ void thread_A_code(void *argA , void *argB, void *argC)
     timing_stop();
 }
 
+/* Thread B -> Responsible to read the ADC RAW and convert to the respective voltage*/
 void thread_B_code(void *argA , void *argB, void *argC)
 {
-     /* Local vars */
+    /* Local vars */
     int64_t fin_time=0, release_time=0, init_time=0;     /* Timing variables to control task periodicity */
     
     /* Compute next release instant */
@@ -277,7 +351,12 @@ void thread_B_code(void *argA , void *argB, void *argC)
     while(1){
         init_time = k_uptime_get();
 
-        printk("\n\rThread B activated"); 
+        /*Block the mutex corresponding to the ADC*/
+        ret = k_mutex_lock(&ADC_Mutex,K_FOREVER);
+        if (ret < 0){
+            printk("Error: Buttons mutex doesn't lock, error:%d",ret);
+            break;
+        }
 
         /* Get one sample, checks for errors and prints the values */
         ret=adc_sample();
@@ -296,9 +375,15 @@ void thread_B_code(void *argA , void *argB, void *argC)
             }
         }
 
+        /*Unblock the mutex corresponding to the ADC*/
+        ret = k_mutex_unlock(&ADC_Mutex);
+        if (ret < 0){
+            printk("Error: Buttons mutex doesn't lock, error:%d",ret);
+            break;
+        }
+
         /* Wait for next release instant */ 
         fin_time = k_uptime_get();
-        printk("\n\rThread B Ended -> Time %lld\n\r",(fin_time-init_time)); 
 
         if(fin_time < release_time) {
             k_msleep(release_time - fin_time);
@@ -308,4 +393,115 @@ void thread_B_code(void *argA , void *argB, void *argC)
     }
     /* Stop timing functions */
     timing_stop();
+}
+
+void thread_C_code(void *argA, void *argB, void *argC){
+
+    /* Local vars */
+    int64_t fin_time=0, release_time=0, init_time=0;     /* Timing variables to control task periodicity */
+    
+    /* Compute next release instant */
+    release_time = k_uptime_get() + thread_C_period;
+
+    uint8_t welcome_mesg[] = "What operation you want to do ?\n\r1 -> See buttons states\n\r2 -> See leds states\n\r";
+
+    while(1){
+
+        //printk("\x1B[2J\x1B[H");
+        init_time = k_uptime_get();
+
+        ret = uart_tx(uart_dev, welcome_mesg, sizeof(welcome_mesg), SYS_FOREVER_MS);
+        if (ret) {
+            printk("uart_tx() error. Error code:%d\n\r",ret);
+            break;
+        }
+        
+        if(uart_rxbuf_nchar>0){
+            switch (rx_chars[0])
+            {
+            case '1':
+                printk("\x1B[2J");
+                while(rx_chars[0]!= '0'){
+                    printk("\x1B[H");
+                    printk("The states of the button are:\n");
+                    for (int i=0; i < Num_Buts; i++){
+                        printk("The state of button%d is %d\n\r",i,ButsStates[i]);
+                    }
+                }
+                break;
+
+            default:
+                break;
+            }
+        }
+        /* Wait for next release instant */ 
+        fin_time = k_uptime_get();
+
+        if(fin_time < release_time) {
+            k_msleep(release_time - fin_time);
+            release_time += thread_C_period;
+
+        }
+    }
+    /* Stop timing functions */
+    timing_stop();
+}
+/* UART callback implementation */
+/* Note that callback functions are executed in the scope of interrupt handlers. */
+/* They run asynchronously after hardware/software interrupts and have a higher priority than tasks/threads */
+/* Should be kept as short and simple as possible. Heavier processing should be deferred to a task with suitable priority*/
+static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data)
+{   
+    int err;
+    
+    switch (evt->type) {
+	
+        case UART_TX_DONE:
+		    //printk("UART_TX_DONE event \n\r");
+            break;
+
+    	case UART_TX_ABORTED:
+	    	//printk("UART_TX_ABORTED event \n\r");
+		    break;
+		
+	    case UART_RX_RDY:
+		    printk("UART_RX_RDY event \n\r");
+            /* Just copy data to a buffer. */
+            /* Simple approach, just for illustration. In most cases it is necessary to use */
+            /*    e.g. a FIFO or a circular buffer to communicate with a task that shall process the messages*/
+            memcpy(&rx_chars[uart_rxbuf_nchar],&(rx_buf[evt->data.rx.offset]),evt->data.rx.len); 
+            uart_rxbuf_nchar++;           
+		    break;
+
+	    case UART_RX_BUF_REQUEST:
+		    printk("UART_RX_BUF_REQUEST event \n\r");
+            /* Should be used to allow continuous reception */
+            /* To this end, declare at least two buffers and switch among them here */
+            /*      using function uart_rx_buf_rsp() */
+		    break;
+
+	    case UART_RX_BUF_RELEASED:
+		    printk("UART_RX_BUF_RELEASED event \n\r");
+            uart_rxbuf_nchar = 0; 
+		    break;
+		
+	    case UART_RX_DISABLED: 
+            /* When the RX_BUFF becomes full RX is disabled automaticaly.  */
+            /* It must be re-enabled manually for continuous reception */
+            printk("UART_RX_DISABLED event \n\r");
+		    err =  uart_rx_enable(uart_dev ,rx_buf,sizeof(rx_buf),RX_TIMEOUT);
+            if (err) {
+                printk("uart_rx_enable() error. Error code:%d\n\r",err);
+                exit(Error);                
+            }
+		    break;
+
+	    case UART_RX_STOPPED:
+		    printk("UART_RX_STOPPED event \n\r");
+		    break;
+		
+	    default:
+            printk("UART: unknown event \n\r");
+		    break;
+    }
 }
