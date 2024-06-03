@@ -22,8 +22,8 @@
  - <b>DIO_Update:</b> Periodically updates the digital input and output statuses in the RTDB.
  - <b>AN_Update:</b> Periodically updates the analog input status in the RTDB.
 
- <b>System Architecture Diagram:</b>
- <img src="images/schematic.png" alt="System Architecture" width="200" height ="200"/>
+ <b>System Architecture Diagram:</b><br>
+ <img src="https://github.com/pisko19/SETR/blob/main/images/schematic.png?raw=true" alt="System Architecture" style="width: 600px;"/>
 
  <b>Functional Requirements:</b>
  - <b>Read Button Status:</b> The PC can request the status of any of the 4 buttons.
@@ -59,16 +59,6 @@
 
  <b>File Structure:</b>
  - **main.c**: Main program file demonstrating usage of the I/O module and interaction with the hardware.
- - **RTDB.h**: Header file for the Real-Time Database (RTDB) used in the I/O module.
- - **RTDB.c**: Source file containing implementations of functions declared in RTDB.h.
- - **UART_CMD_Processor.h**: Header file containing prototypes for the UART command processor.
- - **UART_CMD_Processor.c**: Source file implementing the UART command processor.
- - **DIO_Update.h**: Header file for digital input/output update functions.
- - **DIO_Update.c**: Source file implementing the digital input/output update functions.
- - **AN_Update.h**: Header file for analog input update functions.
- - **AN_Update.c**: Source file implementing the analog input update functions.
- - **Test.h**: Header file for test functions.
- - **Test.c**: Source file containing test functions to verify the behavior of the I/O module.
 
  <b>Authors:</b>
  - Pedro Afonso (104206)
@@ -76,5 +66,5 @@
 
  <b>Bug Reports:</b>
  If you encounter any bugs or issues while using this I/O module, please report them [here](https://github.com/pisko19/SETR/issues).
- */
+
 

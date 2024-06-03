@@ -1,0 +1,84 @@
+This project implements a simple Input/\+Output sensor/actuator module using the Nordic n\+RF52840 Dev\+Kit with the Zephyr RTOS. This project aims to implement an I/O module with the n\+RF52840 Dev\+Kit, featuring UART communication with a PC. The system architecture follows a real-\/time model using a Real-\/\+Time Database (RTDB) to synchronize data between the UART command processor and the I/O modules.
+
+{\bfseries{Project Overview\+:}}
+\begin{DoxyItemize}
+\item {\bfseries{Purpose\+:}} Implement an I/O module with the n\+RF52840 Dev\+Kit.
+\item {\bfseries{Operating System\+:}} Zephyr RTOS.
+\item {\bfseries{Interface\+:}} UART (USB VCom) to a PC for simplicity, with the possibility to switch to BLE in the future.
+\end{DoxyItemize}
+
+{\bfseries{Inputs and Outputs\+:}}
+\begin{DoxyItemize}
+\item {\bfseries{Digital Inputs\+:}} 4 buttons to select sensors.
+\item {\bfseries{Digital Outputs\+:}} 4 LEDs acting as actuators.
+\item {\bfseries{Analog Input\+:}} 1 (can be emulated using a potentiometer).
+\end{DoxyItemize}
+
+{\bfseries{System Architecture\+:}} The system follows a real-\/time model where a Real-\/\+Time Database (RTDB) is used to synchronize data between the UART command processor and the I/O modules\+:
+\begin{DoxyItemize}
+\item {\bfseries{UART CMD Processor\+:}} Handles communication between the PC and the RTDB via UART.
+\item {\bfseries{RTDB\+:}} Stores the status of LEDs, buttons, and the analog sensor.
+\item {\bfseries{DIO\+\_\+\+Update\+:}} Periodically updates the digital input and output statuses in the RTDB.
+\item {\bfseries{AN\+\_\+\+Update\+:}} Periodically updates the analog input status in the RTDB.
+\end{DoxyItemize}
+
+{\bfseries{System Architecture Diagram\+:}}~\newline
+ 
+
+{\bfseries{Functional Requirements\+:}}
+\begin{DoxyItemize}
+\item {\bfseries{Read Button Status\+:}} The PC can request the status of any of the 4 buttons.
+\item {\bfseries{Set LED Status\+:}} The PC can set the status of any of the 4 LEDs.
+\item {\bfseries{Read Analog Sensor Value\+:}} The PC can request the raw ADC value and the converted value of the analog sensor.
+\end{DoxyItemize}
+
+{\bfseries{Optional Functional Requirements\+:}}
+\begin{DoxyItemize}
+\item Configuration Commands\+: Allow the PC to configure parameters such as\+:
+\begin{DoxyItemize}
+\item Frequency of digital I/O updates.
+\item Frequency of analog input sampling.
+\item Parameters for converting raw ADC values to a scaled value.
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+{\bfseries{Command Structure\+:}} Commands should be text-\/based to allow interaction via a terminal. The emphasis is on structuring the software according to the real-\/time model, with suitable activation modes and inter-\/process communication mechanisms.
+
+{\bfseries{Development Guidelines\+:}}
+\begin{DoxyItemize}
+\item Modular Architecture\+: Ensure the software is modular, especially to facilitate future transitions from UART to BLE.
+\item Documentation and Testing\+: Properly document the code and include unit tests for key parts.
+\item Communication Protocol\+: Develop a robust protocol for UART communication.
+\end{DoxyItemize}
+
+{\bfseries{Real-\/\+Time Constraints\+:}}
+\begin{DoxyItemize}
+\item Asynchronous Operations\+: External read/write operations are asynchronous with respect to internal real-\/time periodic tasks.
+\item Task Activation and Synchronization\+: Use suitable activation methods and synchronization protocols for tasks.
+\end{DoxyItemize}
+
+{\bfseries{Safety Note\+:}}
+\begin{DoxyItemize}
+\item Voltage Limits\+: Ensure the input voltage does not exceed 3V to avoid damaging the devkit. Use the internal power supply for the analog sensor.
+\end{DoxyItemize}
+
+{\bfseries{Next Steps\+:}}
+\begin{DoxyItemize}
+\item Define UART Commands\+: Create a set of text-\/based commands for reading inputs, setting outputs, and configuring parameters.
+\item Develop Firmware\+: Implement the UART command processor, RTDB, DIO\+\_\+\+Update, and AN\+\_\+\+Update modules in the Zephyr RTOS.
+\item Test\+: Ensure proper functionality and real-\/time performance through unit tests and integration tests.
+\item Document\+: Provide detailed documentation of the code and system architecture.
+\end{DoxyItemize}
+
+{\bfseries{File Structure\+:}}
+\begin{DoxyItemize}
+\item {\bfseries{main.\+c}}\+: Main program file demonstrating usage of the I/O module and interaction with the hardware.
+\end{DoxyItemize}
+
+{\bfseries{Authors\+:}}
+\begin{DoxyItemize}
+\item Pedro Afonso (104206)
+\item Carlos Teixeira (103187)
+\end{DoxyItemize}
+
+{\bfseries{Bug Reports\+:}} If you encounter any bugs or issues while using this I/O module, please report them \href{https://github.com/pisko19/SETR/issues}{\texttt{ here}}. 
