@@ -20,12 +20,12 @@
 #define STACK_SIZE 1024
 
 /* Thread scheduling priority: 1...MAX, decreasing (smaller value -> Higher priority) */
-#define thread_A_prio 1 /* Higher priority */ 
+#define thread_A_prio 2 /* Higher priority */ 
 #define thread_B_prio 2 /* Middle priority */
 #define thread_C_prio 3 /* Lower priority */
 
 /* Thread periodicity (in ms)*/
-#define thread_A_period 5
+#define thread_A_period 200
 #define thread_B_period 10
 #define thread_C_period 200
 
@@ -59,11 +59,13 @@ K_MUTEX_DEFINE(Buttons_Mutex);
 K_MUTEX_DEFINE(Leds_Mutex);
 K_MUTEX_DEFINE(ADC_Mutex);
 K_MUTEX_DEFINE(UART_Mutex);
+K_MUTEX_DEFINE(Sensores_Mutex);
 
 /* GPIO Initialization*/
 /*Define the number of leds and buttons*/
 #define Num_Leds 4
 #define Num_Buts 4
+#define Num_Sensores 4
 
 #define LED0_NODE DT_ALIAS(led0)
 #define LED1_NODE DT_ALIAS(led1)
@@ -139,7 +141,7 @@ static int adc_sample(void)
 /*UART Initializaton*/
 #define RX_TIMEOUT 1000                 /* Inactivity period after the instant when last char was received that triggers an rx event (in us) */
 #define UART_NODE DT_NODELABEL(uart0)   /* UART0 node ID*/
-#define RXBUF_SIZE 20
+#define RXBUF_SIZE 30
 
 /* Struct for UART configuration. */
 const struct uart_config uart_cfg = {
@@ -153,10 +155,10 @@ const struct uart_config uart_cfg = {
 
 /* UART related variables */
 const struct device *uart_dev = DEVICE_DT_GET(UART_NODE);
-static uint8_t rx_buf_1[RXBUF_SIZE];      /* RX buffer 1, to store received data */
-static uint8_t rx_buf_2[RXBUF_SIZE];      /* RX buffer 2, to store received data */
-static uint8_t rx_chars[RXBUF_SIZE];    /* chars actually received  */
-static int uart_rxbuf_nchar=0;        /* Number of chars currrntly on the rx buffer */
+static u_int8_t rx_buf_1[RXBUF_SIZE];      /* RX buffer 1, to store received data */
+static u_int8_t rx_buf_2[RXBUF_SIZE];      /* RX buffer 2, to store received data */
+static u_int8_t rx_chars[RXBUF_SIZE];    /* chars actually received  */
+static u_int8_t uart_rxbuf_nchar = 0;        /* Number of chars currrntly on the rx buffer */
 bool buffer = 1;
 
 /* UART callback function prototype */
@@ -252,7 +254,7 @@ int main (){
     printk("Main thread initialization\n");
 
     if (Init() != OK) {
-        printk("System initialization failed\n");
+        printk("System initialization fauint8_tiled\n");
         return Error;
     }
     
@@ -316,7 +318,7 @@ void thread_A_code(void *argA , void *argB, void *argC)
         /*Block the mutex corresponding to the leds*/
         ret = k_mutex_lock(&Leds_Mutex,K_FOREVER);
         if (ret < 0){
-            printk("\n\rError: Buttons mutex doesn't lock, error:%d",ret);
+            printk("\n\rError: Leds mutex doesn't lock, error:%d",ret);
             break;
         }
 
@@ -330,7 +332,7 @@ void thread_A_code(void *argA , void *argB, void *argC)
         /*Unblock the mutex corresponding to the leds*/
         ret = k_mutex_unlock(&Leds_Mutex);
         if (ret < 0){
-            printk("\n\rError: Buttons mutex doesn't unlock, error:%d",ret);
+            printk("\n\rError: Leds mutex doesn't unlock, error:%d",ret);
             break;
         }
 
@@ -362,7 +364,7 @@ void thread_B_code(void *argA , void *argB, void *argC)
         /*Block the mutex corresponding to the ADC*/
         ret = k_mutex_lock(&ADC_Mutex,K_FOREVER);
         if (ret < 0){
-            printk("Error: Buttons mutex doesn't lock, error:%d",ret);
+            printk("Error: ADC mutex doesn't lock, error:%d",ret);
             break;
         }
 
@@ -383,15 +385,29 @@ void thread_B_code(void *argA , void *argB, void *argC)
             }
         }
 
-        Sensores[0] = ADC_Voltage *(100000/3000);
-        Sensores[1] = ADC_Voltage *(80000/3000);
+        /*Unblock the mutex corresponding to the Sensores*/
+        ret = k_mutex_lock(&Sensores_Mutex,K_FOREVER);
+        if (ret < 0){
+            printk("Error: Sensors mutex doesn't lock, error:%d",ret);
+            break;
+        }
+
+        Sensores[0] = ADC_Voltage *(10000/3000);
+        Sensores[1] = ADC_Voltage *(8000/3000);
         Sensores[2] = ADC_Voltage *(25000/3000) + 500;
         Sensores[3] = ADC_Voltage *(10000/3000) + 30;
         
+        /*Unblock the mutex corresponding to the Sensores*/
+        ret = k_mutex_unlock(&Sensores_Mutex);
+        if (ret < 0){
+            printk("Error: Sensors mutex doesn't lock, error:%d",ret);
+            break;
+        }
+
         /*Unblock the mutex corresponding to the ADC*/
         ret = k_mutex_unlock(&ADC_Mutex);
         if (ret < 0){
-            printk("Error: Buttons mutex doesn't lock, error:%d",ret);
+            printk("Error: ADC mutex doesn't lock, error:%d",ret);
             break;
         }
 
@@ -424,14 +440,12 @@ void thread_C_code(void *argA, void *argB, void *argC){
         init_time = k_uptime_get();
 
         uart_tx(uart_dev, welcome_mesg, sizeof(welcome_mesg), SYS_FOREVER_MS);
-        
-        k_mutex_lock(&UART_Mutex,K_FOREVER);
 
-        switch (rx_chars[uart_rxbuf_nchar])
+        switch (rx_chars[uart_rxbuf_nchar-1])
         {
             case '1':
                 printk("\x1B[2J");
-                while(rx_chars[uart_rxbuf_nchar]!= '0'){
+                while(rx_chars[uart_rxbuf_nchar-1]!= '0'){
                     printk("\x1B[HThe states of the button are:\n");
                     for (int i=0; i < Num_Buts; i++){
                         printk("The state of button%d is %d\n\r",i,ButsStates[i]);
@@ -442,10 +456,10 @@ void thread_C_code(void *argA, void *argB, void *argC){
 
             case '2':
                 printk("\x1B[2J");
-                while(rx_chars[uart_rxbuf_nchar]!= '0'){
+                while(rx_chars[uart_rxbuf_nchar-1]!= '0'){
                     printk("\x1B[HThe states of the Leds are:\n");
                     for (int i=0; i < Num_Leds; i++){
-                        printk("The state of leds%d is %d\n\r",i,ButsStates[i]);
+                        printk("The state of leds%d is %d\n\r",i,LedsStates[i]);
                     }
                 }
                 printk("\x1B[2J");
@@ -453,7 +467,7 @@ void thread_C_code(void *argA, void *argB, void *argC){
 
             case '3':
                 printk("\x1B[2J");
-                while(rx_chars[uart_rxbuf_nchar]!= '0'){
+                while(rx_chars[uart_rxbuf_nchar-1]!= '0'){
                     printk("\x1B[HThe Values of the ADC are:\n");
                     printk("ADC RAW -> %d\n",ADC_Raw);
                     printk("ADC Voltage -> %d\n",ADC_Voltage);
@@ -463,9 +477,9 @@ void thread_C_code(void *argA, void *argB, void *argC){
 
             case '4':
                 printk("\x1B[2J");
-                while(rx_chars[uart_rxbuf_nchar]!= '0'){
+                while(rx_chars[uart_rxbuf_nchar-1]!= '0'){
                     printk("\x1B[HThe states of the sensores are:\n");
-                    for (int i=0; i < Num_Leds; i++){
+                    for (int i=0; i < Num_Sensores; i++){
                         printk("The state of sensor%d is %d\n\r",i,Sensores[i]);
                     }
                 }
@@ -476,7 +490,6 @@ void thread_C_code(void *argA, void *argB, void *argC){
                 break;
         }
         
-        k_mutex_unlock(&UART_Mutex);
         /* Wait for next release instant */ 
         fin_time = k_uptime_get();
 
@@ -491,21 +504,16 @@ void thread_C_code(void *argA, void *argB, void *argC){
 }
 
 static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data) {
-    k_mutex_lock(&UART_Mutex,K_FOREVER);
     switch (evt->type) {
         case UART_RX_RDY:
-            memcpy(rx_chars , evt->data.rx.buf, evt->data.rx.len);
+            memcpy(rx_chars + uart_rxbuf_nchar, evt->data.rx.buf + uart_rxbuf_nchar, evt->data.rx.len);
             uart_rxbuf_nchar += evt->data.rx.len;  // Update the number of characters received
-
-            // Print the characters received so far
-            for (int i = 0; i < uart_rxbuf_nchar; i++) {
-                printk("%c", rx_chars[i]);
-            }
-            printk("\n");
+            break;
 
 
         case UART_RX_BUF_REQUEST:
             /* Provide a new buffer */
+            printk("\nTESTE 1\n");
             if (buffer) {
                 uart_rx_buf_rsp(dev, rx_buf_1, sizeof(rx_buf_1));
             } else {
@@ -531,5 +539,4 @@ static void uart_cb(const struct device *dev, struct uart_event *evt, void *user
         default:
             break;
     }
-    k_mutex_unlock(&UART_Mutex);
 }
