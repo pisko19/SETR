@@ -23,7 +23,7 @@
  - <b>AN_Update:</b> Periodically updates the analog input status in the RTDB.
 
  <b>System Architecture Diagram:</b><br>
- <img src="https://github.com/pisko19/SETR/blob/main/images/schematic.png?raw=true" alt="System Architecture" style="width: 600px;"/>
+ <img src="https://github.com/pisko19/SETR/blob/19e909e65e64cdf18ef0f9a9eee19c59e993592a/Assignement04/doc/images/schematic.png" alt="System Architecture" style="width: 600px;"/>
 
  <b>Functional Requirements:</b>
  - <b>Read Button Status:</b> The PC can request the status of any of the 4 buttons.
