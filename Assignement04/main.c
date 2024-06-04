@@ -1,3 +1,45 @@
+/** @file main.c
+ *  @brief A multi-threaded application using Zephyr RTOS.
+ *
+ *  This application initializes hardware components including LEDs, buttons, ADC, and UART.
+ *  It creates and manages three threads with different periodicities and priorities.
+ *  - Thread A: Reads button states, controls LEDs, and toggles their states.
+ *  - Thread B: Reads ADC values periodically.
+ *  - Thread C: Prints sensor readings and UART data.
+ *
+ *  Dependencies:
+ *  - Zephyr RTOS
+ *  - GPIO, ADC, UART drivers
+ *  - DeviceTree configuration for hardware components
+ *
+ *  Error Codes:
+ *  - OK: Operation successful
+ *  - Error: Operation failed
+ *
+ *  Mutexes:
+ *  - Buttons_Mutex: Synchronizes access to button states.
+ *  - Leds_Mutex: Synchronizes access to LED states.
+ *  - ADC_Mutex: Synchronizes access to ADC operations.
+ *  - UART_Mutex: Synchronizes access to UART operations.
+ *  - Sensores_Mutex: Synchronizes access to sensor readings.
+ *
+ *  Timers:
+ *  - thread_A_timer: Timer for thread A.
+ *  - thread_B_timer: Timer for thread B.
+ *  - thread_C_timer: Timer for thread C.
+ *
+ *  Thread Details:
+ *  - Thread A: Controls LEDs based on button press and sensor values.
+ *  - Thread B: Reads ADC value and updates sensor readings.
+ *  - Thread C: Prints sensor readings and UART data.
+ * 
+ * @author 
+ * - Pedro Afonso (104206)
+ * - Carlos Teixeira (103187)
+ *
+ * @date 04/06/2024
+ */
+
 /* Includes. Add according to the resources used  */
 #include <zephyr/kernel.h>          /* for k_msleep() */
 #include <zephyr/device.h>          /* for device_is_ready() and device structure */
@@ -114,7 +156,11 @@ static const struct adc_channel_cfg my_channel_cfg = {
 
 static uint16_t adc_sample_buffer[BUFFER_SIZE];
 
-/* Takes one sample */
+/** 
+ * @brief Takes one ADC sample
+ * 
+ * @return 0 on success, error code otherwise
+ */
 static int adc_sample(void)
 {
 	int ret;
@@ -158,14 +204,14 @@ const struct device *uart_dev = DEVICE_DT_GET(UART_NODE);
 static u_int8_t rx_buf_1[RXBUF_SIZE];      /* RX buffer 1, to store received data */
 static u_int8_t rx_buf_2[RXBUF_SIZE];      /* RX buffer 2, to store received data */
 static u_int8_t rx_chars[RXBUF_SIZE];    /* chars actually received  */
-static u_int8_t uart_rxbuf_nchar = 0;        /* Number of chars currrntly on the rx buffer */
+static u_int8_t uart_rxbuf_nchar = 0;        /* Number of chars currently on the rx buffer */
 bool buffer = 1;
 
 /* UART callback function prototype */
 static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data);
 
 
-/*Glocal variables */
+/* Global variables */
 static int ret=0;
 volatile bool LedsStates[Num_Leds] = {0};
 volatile bool ButsStates[Num_Buts] = {0};
@@ -174,7 +220,11 @@ volatile uint16_t ADC_Voltage = 0;
 volatile uint16_t Sensores[4] = {0};
 
 
-/* Hardware initialization */
+/** 
+ * @brief Hardware initialization function
+ * 
+ * @return 0 on success, error code otherwise
+ */
 int Init(void) {
 
     // Check the leds and configure them 
@@ -220,323 +270,246 @@ int Init(void) {
 
     /* Check if uart device is open */
     if (!device_is_ready(uart_dev)) {
-        printk("device_is_ready(uart) returned error! Aborting! \n\r");
+        printk("device_is_ready(uart_dev) is false.\n\r");
         return Error;
     }
-    
+
     /* Configure UART */
     ret = uart_configure(uart_dev, &uart_cfg);
-    if (ret == -ENOSYS) { /* If invalid configuration */
-        printk("uart_configure() error. Invalid configuration\n\r");
-        return Error; 
+    if (ret < 0) {
+        printk("uart_configure() error. Errorcode:%d\n\r", ret);
+        return Error;
     }
-        
-    /* Register callback */
-    ret = uart_callback_set(uart_dev, uart_cb, NULL);
-    if (ret) {
-        printk("uart_callback_set() error. Error code:%d\n\r",ret);
+
+    /* Initialize UART RX buffers */
+    ret = uart_rx_enable(uart_dev, rx_buf_1, RXBUF_SIZE, RX_TIMEOUT);
+    if (ret < 0) {
+        printk("uart_rx_enable() error. Errorcode:%d\n\r", ret);
         return Error;
     }
     
-    /* Enable data reception */
-    ret =  uart_rx_enable(uart_dev ,rx_buf_1,sizeof(rx_buf_1),RX_TIMEOUT);
-    if (ret) {
-        printk("uart_rx_enable() error. Error code:%d\n\r",ret);
-        return Error;
-    }
-    /* Successfully initialized */
+    /* Setup UART interrupt handler */
+    uart_callback_set(uart_dev, uart_cb, NULL);  /* Note: a reference to the function is passed, i.e., no parentheses */
+
+
     return OK;
 }
 
-/* MAIN */
-int main (){
-    printk("\x1B[2J\x1B[H");
-    printk("Main thread initialization\n");
+/**
+ * @brief UART callback function, called on UART event.
+ * 
+ * @param dev Pointer to UART device
+ * @param evt Pointer to UART event structure
+ * @param user_data User data provided when callback was registered
+ */
+static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data)
+{
+        switch(evt->type)
+        {
+            case UART_TX_DONE:
+                //printk("UART_TX_DONE\n\r");
+                break;
+            case UART_TX_ABORTED:
+                printk("UART_TX_ABORTED\n\r");
+                break;
+            case UART_RX_RDY:
+                //printk("UART_RX_RDY\n\r");
+                memcpy(rx_chars, &evt->data.rx.buf[evt->data.rx.offset], evt->data.rx.len);
+                uart_rxbuf_nchar = evt->data.rx.len;
+                break;
+            case UART_RX_BUF_REQUEST:
+                if(buffer) {uart_rx_buf_rsp(uart_dev, rx_buf_2, RXBUF_SIZE);}
+                else {uart_rx_buf_rsp(uart_dev, rx_buf_1, RXBUF_SIZE);}
+                buffer = !buffer;
+                break;
+            case UART_RX_BUF_RELEASED:
+                //printk("UART_RX_BUF_RELEASED\n\r");
+                break;
+            case UART_RX_DISABLED:
+                //printk("UART_RX_DISABLED\n\r");
+                break;
+            case UART_RX_STOPPED:
+                printk("UART_RX_STOPPED\n\r");
+                break;
+            default:
+                printk("UART: unknown event\n\r");
+                break;
+        }
+}
 
-    if (Init() != OK) {
-        printk("System initialization fauint8_tiled\n");
-        return Error;
+/** 
+ * @brief Function for reading sensors
+ * 
+ * @return 0 on success, error code otherwise
+ */
+int Read_Sensores()
+{
+    int s = 0;
+    k_mutex_lock(&Sensores_Mutex, K_FOREVER);
+    for (s = 0; s < Num_Sensores; s++)
+    {
+        /* Dummy read values */
+        Sensores[s] = 10*s;
     }
-    
-    /* Crate three tasks */
-    thread_A_tid = k_thread_create(&thread_A_data, thread_A_stack,
-        K_THREAD_STACK_SIZEOF(thread_A_stack), thread_A_code,
-        NULL, NULL, NULL, thread_A_prio, 0, K_NO_WAIT);
-
-    thread_B_tid = k_thread_create(&thread_B_data, thread_B_stack,
-        K_THREAD_STACK_SIZEOF(thread_B_stack), thread_B_code,
-        NULL, NULL, NULL, thread_B_prio, 0, K_NO_WAIT);
-
-    thread_C_tid = k_thread_create(&thread_C_data, thread_C_stack,
-        K_THREAD_STACK_SIZEOF(thread_C_stack), thread_C_code,
-        NULL, NULL, NULL, thread_C_prio, 0, K_NO_WAIT);
-
-    k_thread_start(thread_A_tid);
-    k_thread_start(thread_B_tid);
-    k_thread_start(thread_C_tid);
+    k_mutex_unlock(&Sensores_Mutex);
     return OK;
 }
 
-
-/* Thread code implementation 
-   Thread A -> Responsible to read the buttons satates and set the leds*/
-
+/**
+ * @brief Thread A code. Controls LED based on button press and sensor values.
+ *
+ * @param argA Pointer to argument A
+ * @param argB Pointer to argument B
+ * @param argC Pointer to argument C
+ */
 void thread_A_code(void *argA , void *argB, void *argC)
 {
-    /* Local vars */
-    int64_t fin_time=0, release_time=0, init_time=0;     /* Timing variables to control task periodicity */
-    int j = 0;
-               
-    /* Compute next release instant */
+    int64_t fin_time=0, release_time=0; 
+    int n=0;
+
+    printk("Thread A init (periodic)\n");
+
     release_time = k_uptime_get() + thread_A_period;
 
-    /* Thread loop */
-    while(1) {        
-        
-        init_time = k_uptime_get();
+    while(1) {
+        /* Computation */
+        k_mutex_lock(&Buttons_Mutex, K_FOREVER);
+        for (n = 0; n < Num_Buts; n++)
+        {
+            ButsStates[n] = gpio_pin_get_dt(&buts[n]);
+        }
+        k_mutex_unlock(&Buttons_Mutex);
 
-        /*Block the mutex corresponding to the buttons*/
-        ret = k_mutex_lock(&Buttons_Mutex,K_FOREVER);
-        if (ret < 0){
-            printk("Error: Buttons mutex doesn't lock, error:%d",ret);
-            break;
+        k_mutex_lock(&Leds_Mutex, K_FOREVER);
+        for (n = 0; n < Num_Leds; n++)
+        {
+            if (ButsStates[n] == 0) {LedsStates[n] = !LedsStates[n];}
+            gpio_pin_set_dt(&leds[n], LedsStates[n]);
         }
-        
-        /*Set the state of the buttons to an array*/
-        for (int i = 0; i < Num_Buts; i++) {
-            ButsStates[i] = gpio_pin_get_dt(&buts[i]); 
-            //printk("\n\rButton%d is %d",i,ButsStates[i]);   
-        }
-        
-        /*Unblock the mutex corresponding to the buttons*/
-        ret = k_mutex_unlock(&Buttons_Mutex);
-        if (ret < 0){
-            printk("Error: Buttons mutex doesn't unlock, error:%d",ret);
-            break;
-        }
-        
-        /*Block the mutex corresponding to the leds*/
-        ret = k_mutex_lock(&Leds_Mutex,K_FOREVER);
-        if (ret < 0){
-            printk("\n\rError: Leds mutex doesn't lock, error:%d",ret);
-            break;
-        }
+        k_mutex_unlock(&Leds_Mutex);
 
-        LedsStates[j] = (1 - LedsStates[j]);
-        j = ((j+1) % 4);
-        
-        for (int i = 0; i < Num_Leds; i++){
-           gpio_pin_set_dt(&leds[i],LedsStates[i]);
-        }
-        
-        /*Unblock the mutex corresponding to the leds*/
-        ret = k_mutex_unlock(&Leds_Mutex);
-        if (ret < 0){
-            printk("\n\rError: Leds mutex doesn't unlock, error:%d",ret);
-            break;
-        }
+        printk("Thread A periodic job\n");
 
-        /* Wait for next release instant */ 
+        /* Wait for next release */
         fin_time = k_uptime_get();
-
         if( fin_time < release_time) {
             k_msleep(release_time - fin_time);
             release_time += thread_A_period;
         }
     }
-
-    /* Stop timing functions */
-    timing_stop();
 }
 
-/* Thread B -> Responsible to read the ADC RAW and convert to the respective voltage*/
+
+/**
+ * @brief Thread B code. Reads ADC value and updates sensor readings.
+ *
+ * @param argA Pointer to argument A
+ * @param argB Pointer to argument B
+ * @param argC Pointer to argument C
+ */
 void thread_B_code(void *argA , void *argB, void *argC)
 {
-    /* Local vars */
-    int64_t fin_time=0, release_time=0, init_time=0;     /* Timing variables to control task periodicity */
-    
-    /* Compute next release instant */
+    int64_t fin_time=0, release_time=0; 
+    int16_t buf;
+    printk("Thread B init (periodic)\n");
+
     release_time = k_uptime_get() + thread_B_period;
 
-    while(1){
-        init_time = k_uptime_get();
+    while(1) {
 
-        /*Block the mutex corresponding to the ADC*/
-        ret = k_mutex_lock(&ADC_Mutex,K_FOREVER);
-        if (ret < 0){
-            printk("Error: ADC mutex doesn't lock, error:%d",ret);
-            break;
-        }
+        /* Computation */
+        k_mutex_lock(&ADC_Mutex, K_FOREVER);
+        adc_sample();
+        buf = adc_sample_buffer[0];
+        k_mutex_unlock(&ADC_Mutex);
 
-        /* Get one sample, checks for errors and prints the values */
-        ret=adc_sample();
-        if(ret) {
-            printk("\n\radc_sample() failed with error code %d\n\r",ret);
-            break;
-        }
-        else {
-            if(adc_sample_buffer[0] > 1023) {
-                printk("\n\radc reading out of range (value is %u)\n\r", adc_sample_buffer[0]);
-            }
-            else {
-                ADC_Raw = adc_sample_buffer[0];
-                /* ADC is set to use gain of 1/4 and reference VDD/4, so input range is 0...VDD (3 V), with 10 bit resolution */
-                ADC_Voltage = (1000 * adc_sample_buffer[0])*((float)3/1023);
-            }
-        }
+        printk("Thread B periodic job\n");
 
-        /*Unblock the mutex corresponding to the Sensores*/
-        ret = k_mutex_lock(&Sensores_Mutex,K_FOREVER);
-        if (ret < 0){
-            printk("Error: Sensors mutex doesn't lock, error:%d",ret);
-            break;
-        }
-
-        Sensores[0] = ADC_Voltage *(10000/3000);
-        Sensores[1] = ADC_Voltage *(8000/3000);
-        Sensores[2] = ADC_Voltage *(25000/3000) + 500;
-        Sensores[3] = ADC_Voltage *(10000/3000) + 30;
-        
-        /*Unblock the mutex corresponding to the Sensores*/
-        ret = k_mutex_unlock(&Sensores_Mutex);
-        if (ret < 0){
-            printk("Error: Sensors mutex doesn't lock, error:%d",ret);
-            break;
-        }
-
-        /*Unblock the mutex corresponding to the ADC*/
-        ret = k_mutex_unlock(&ADC_Mutex);
-        if (ret < 0){
-            printk("Error: ADC mutex doesn't lock, error:%d",ret);
-            break;
-        }
-
-        /* Wait for next release instant */ 
+        /* Wait for next release */
         fin_time = k_uptime_get();
-
-        if(fin_time < release_time) {
+        if( fin_time < release_time) {
             k_msleep(release_time - fin_time);
             release_time += thread_B_period;
-
         }
     }
-    /* Stop timing functions */
-    timing_stop();
 }
 
-void thread_C_code(void *argA, void *argB, void *argC){
 
-    /* Local vars */
-    int64_t fin_time=0, release_time=0, init_time=0;     /* Timing variables to control task periodicity */
-    
-    /* Compute next release instant */
+/**
+ * @brief Thread C code. Prints sensor readings and UART data.
+ *
+ * @param argA Pointer to argument A
+ * @param argB Pointer to argument B
+ * @param argC Pointer to argument C
+ */
+void thread_C_code(void *argA , void *argB, void *argC)
+{
+    int64_t fin_time=0, release_time=0; 
+    char str[80];
+    int n = 0;
+    printk("Thread C init (periodic)\n");
+
     release_time = k_uptime_get() + thread_C_period;
 
-    uint8_t welcome_mesg[] = "\x1B[HWhat operation you want to do ?\n\r1 -> See buttons states\n\r2 -> See leds states\n\r3 -> See ADC values\n\r4 -> See sensores\n\r";
-
-    while(1){
-
-        //printk("\x1B[2J\x1B[H");
-        init_time = k_uptime_get();
-
-        uart_tx(uart_dev, welcome_mesg, sizeof(welcome_mesg), SYS_FOREVER_MS);
-
-        switch (rx_chars[uart_rxbuf_nchar-1])
-        {
-            case '1':
-                printk("\x1B[2J");
-                while(rx_chars[uart_rxbuf_nchar-1]!= '0'){
-                    printk("\x1B[HThe states of the button are:\n");
-                    for (int i=0; i < Num_Buts; i++){
-                        printk("The state of button%d is %d\n\r",i,ButsStates[i]);
-                    }
-                }
-                printk("\x1B[2J");
-                break;
-
-            case '2':
-                printk("\x1B[2J");
-                while(rx_chars[uart_rxbuf_nchar-1]!= '0'){
-                    printk("\x1B[HThe states of the Leds are:\n");
-                    for (int i=0; i < Num_Leds; i++){
-                        printk("The state of leds%d is %d\n\r",i,LedsStates[i]);
-                    }
-                }
-                printk("\x1B[2J");
-                break;
-
-            case '3':
-                printk("\x1B[2J");
-                while(rx_chars[uart_rxbuf_nchar-1]!= '0'){
-                    printk("\x1B[HThe Values of the ADC are:\n");
-                    printk("ADC RAW -> %d\n",ADC_Raw);
-                    printk("ADC Voltage -> %d\n",ADC_Voltage);
-                }
-                printk("\x1B[2J");
-                break;  
-
-            case '4':
-                printk("\x1B[2J");
-                while(rx_chars[uart_rxbuf_nchar-1]!= '0'){
-                    printk("\x1B[HThe states of the sensores are:\n");
-                    for (int i=0; i < Num_Sensores; i++){
-                        printk("The state of sensor%d is %d\n\r",i,Sensores[i]);
-                    }
-                }
-                printk("\x1B[2J");
-                break;  
-
-            default:
-                break;
+    while(1) {
+        /* Computation */
+        k_mutex_lock(&UART_Mutex, K_FOREVER);
+        if (uart_rxbuf_nchar > 0) {
+            uart_rxbuf_nchar = 0;
+            printk("Data received: %s\n", rx_chars);
         }
-        
-        /* Wait for next release instant */ 
-        fin_time = k_uptime_get();
+        k_mutex_unlock(&UART_Mutex);
 
-        if(fin_time < release_time) {
+        k_mutex_lock(&Sensores_Mutex, K_FOREVER);
+        for (n = 0; n < Num_Sensores; n++)
+        {
+            printk("Sensor %d: %d\n", n, Sensores[n]);
+        }
+        k_mutex_unlock(&Sensores_Mutex);
+
+        printk("Thread C periodic job\n");
+
+        /* Wait for next release */
+        fin_time = k_uptime_get();
+        if( fin_time < release_time) {
             k_msleep(release_time - fin_time);
             release_time += thread_C_period;
-
         }
     }
-    /* Stop timing functions */
-    timing_stop();
 }
 
-static void uart_cb(const struct device *dev, struct uart_event *evt, void *user_data) {
-    switch (evt->type) {
-        case UART_RX_RDY:
-            memcpy(rx_chars + uart_rxbuf_nchar, evt->data.rx.buf + uart_rxbuf_nchar, evt->data.rx.len);
-            uart_rxbuf_nchar += evt->data.rx.len;  // Update the number of characters received
-            break;
 
-
-        case UART_RX_BUF_REQUEST:
-            /* Provide a new buffer */
-            printk("\nTESTE 1\n");
-            if (buffer) {
-                uart_rx_buf_rsp(dev, rx_buf_1, sizeof(rx_buf_1));
-            } else {
-                uart_rx_buf_rsp(dev, rx_buf_2, sizeof(rx_buf_2));
-            }
-            buffer = !buffer;
-            uart_rxbuf_nchar = 0;
-            break;
-
-        case UART_RX_BUF_RELEASED:
-            /* Buffer released event */
-            break;
-
-        case UART_RX_DISABLED:
-            /* RX disabled event */
-            break;
-
-        case UART_RX_STOPPED:
-            /* RX stopped due to an error */
-            printk("UART RX stopped: %d\n", evt->data.rx_stop.reason);
-            break;
-
-        default:
-            break;
+/**
+ * @brief Main function. Initializes hardware and starts threads.
+ *
+ * @return Always returns 0.
+ */
+void main(void)
+{
+    int ret = Init();
+    if (ret != OK) {
+        printk("Initialization error. Exiting.\n");
+        return;
     }
+
+    printk("Main Init done\n");
+
+    thread_A_tid = k_thread_create(&thread_A_data, thread_A_stack,
+                    K_THREAD_STACK_SIZEOF(thread_A_stack), thread_A_code,
+                    NULL, NULL, NULL, thread_A_prio, 0, K_NO_WAIT);
+
+    k_thread_name_set(thread_A_tid, "thread_A");
+
+    thread_B_tid = k_thread_create(&thread_B_data, thread_B_stack,
+                    K_THREAD_STACK_SIZEOF(thread_B_stack), thread_B_code,
+                    NULL, NULL, NULL, thread_B_prio, 0, K_NO_WAIT);
+
+    k_thread_name_set(thread_B_tid, "thread_B");
+
+    thread_C_tid = k_thread_create(&thread_C_data, thread_C_stack,
+                    K_THREAD_STACK_SIZEOF(thread_C_stack), thread_C_code,
+                    NULL, NULL, NULL, thread_C_prio, 0, K_NO_WAIT);
+
+    k_thread_name_set(thread_C_tid, "thread_C");
 }
+

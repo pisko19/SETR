@@ -1,0 +1,389 @@
+\hypertarget{main_8c}{}\doxysection{/home/pedro/\+Documentos/\+SETR/\+Assignement04/main.c File Reference}
+\label{main_8c}\index{/home/pedro/Documentos/SETR/Assignement04/main.c@{/home/pedro/Documentos/SETR/Assignement04/main.c}}
+
+
+A multi-\/threaded application using Zephyr RTOS.  
+
+
+{\ttfamily \#include $<$zephyr/kernel.\+h$>$}\newline
+{\ttfamily \#include $<$zephyr/device.\+h$>$}\newline
+{\ttfamily \#include $<$zephyr/devicetree.\+h$>$}\newline
+{\ttfamily \#include $<$zephyr/drivers/gpio.\+h$>$}\newline
+{\ttfamily \#include $<$zephyr/drivers/adc.\+h$>$}\newline
+{\ttfamily \#include $<$zephyr/drivers/uart.\+h$>$}\newline
+{\ttfamily \#include $<$zephyr/sys/printk.\+h$>$}\newline
+{\ttfamily \#include $<$zephyr/timing/timing.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$hal/nrf\+\_\+saadc.\+h$>$}\newline
+Include dependency graph for main.\+c\+:
+% FIG 0
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8c_aba51915c87d64af47fb1cc59348961c9}\label{main_8c_aba51915c87d64af47fb1cc59348961c9}} 
+\#define {\bfseries OK}~0
+\item 
+\mbox{\Hypertarget{main_8c_a0f20a163dec609fb464cba845e043be8}\label{main_8c_a0f20a163dec609fb464cba845e043be8}} 
+\#define {\bfseries Error}~-\/1
+\item 
+\mbox{\Hypertarget{main_8c_a6423a880df59733d2d9b509c7718d3a9}\label{main_8c_a6423a880df59733d2d9b509c7718d3a9}} 
+\#define {\bfseries STACK\+\_\+\+SIZE}~1024
+\item 
+\mbox{\Hypertarget{main_8c_a5936222e9802dbe8ceb1e99bd667466a}\label{main_8c_a5936222e9802dbe8ceb1e99bd667466a}} 
+\#define {\bfseries thread\+\_\+\+A\+\_\+prio}~2 /$\ast$ Higher priority $\ast$/
+\item 
+\mbox{\Hypertarget{main_8c_aa9928aa4491a20c74a19c5904ba9530a}\label{main_8c_aa9928aa4491a20c74a19c5904ba9530a}} 
+\#define {\bfseries thread\+\_\+\+B\+\_\+prio}~2 /$\ast$ Middle priority $\ast$/
+\item 
+\mbox{\Hypertarget{main_8c_a1bd72aae8d0dd6e887547a1d5e0a8902}\label{main_8c_a1bd72aae8d0dd6e887547a1d5e0a8902}} 
+\#define {\bfseries thread\+\_\+\+C\+\_\+prio}~3 /$\ast$ Lower priority $\ast$/
+\item 
+\mbox{\Hypertarget{main_8c_a2ed7791f41bc6281906a0878492b0894}\label{main_8c_a2ed7791f41bc6281906a0878492b0894}} 
+\#define {\bfseries thread\+\_\+\+A\+\_\+period}~200
+\item 
+\mbox{\Hypertarget{main_8c_a85e1e738201e8f4eef6266717bd5bd36}\label{main_8c_a85e1e738201e8f4eef6266717bd5bd36}} 
+\#define {\bfseries thread\+\_\+\+B\+\_\+period}~10
+\item 
+\mbox{\Hypertarget{main_8c_ab012623edae6603682cdaf0eb0a220f2}\label{main_8c_ab012623edae6603682cdaf0eb0a220f2}} 
+\#define {\bfseries thread\+\_\+\+C\+\_\+period}~200
+\item 
+\mbox{\Hypertarget{main_8c_a7fb73b945b2bc0a00cc40b8176aff926}\label{main_8c_a7fb73b945b2bc0a00cc40b8176aff926}} 
+\#define {\bfseries Num\+\_\+\+Leds}~4
+\item 
+\mbox{\Hypertarget{main_8c_a37a7cc8b4f00dc4e03ece910ebf23715}\label{main_8c_a37a7cc8b4f00dc4e03ece910ebf23715}} 
+\#define {\bfseries Num\+\_\+\+Buts}~4
+\item 
+\mbox{\Hypertarget{main_8c_ac82915fdddd7dc3d43dc450575c1f7d5}\label{main_8c_ac82915fdddd7dc3d43dc450575c1f7d5}} 
+\#define {\bfseries Num\+\_\+\+Sensores}~4
+\item 
+\mbox{\Hypertarget{main_8c_a661852bec8ab9683d43ad02881c2f2b5}\label{main_8c_a661852bec8ab9683d43ad02881c2f2b5}} 
+\#define {\bfseries LED0\+\_\+\+NODE}~DT\+\_\+\+ALIAS(led0)
+\item 
+\mbox{\Hypertarget{main_8c_ac8b7bbb65d5065e43a35775d9fc3e322}\label{main_8c_ac8b7bbb65d5065e43a35775d9fc3e322}} 
+\#define {\bfseries LED1\+\_\+\+NODE}~DT\+\_\+\+ALIAS(led1)
+\item 
+\mbox{\Hypertarget{main_8c_a9014b2cb02041c926b50b6411232ee82}\label{main_8c_a9014b2cb02041c926b50b6411232ee82}} 
+\#define {\bfseries LED2\+\_\+\+NODE}~DT\+\_\+\+ALIAS(led2)
+\item 
+\mbox{\Hypertarget{main_8c_ad5246f73682d98292ef7d7b038582700}\label{main_8c_ad5246f73682d98292ef7d7b038582700}} 
+\#define {\bfseries LED3\+\_\+\+NODE}~DT\+\_\+\+ALIAS(led3)
+\item 
+\mbox{\Hypertarget{main_8c_aae95411f1701c6da6aee1d9cfd974513}\label{main_8c_aae95411f1701c6da6aee1d9cfd974513}} 
+\#define {\bfseries BUT0\+\_\+\+NODE}~DT\+\_\+\+ALIAS(sw0)
+\item 
+\mbox{\Hypertarget{main_8c_ad4ede373699c5e72c9bfb39773deb391}\label{main_8c_ad4ede373699c5e72c9bfb39773deb391}} 
+\#define {\bfseries BUT1\+\_\+\+NODE}~DT\+\_\+\+ALIAS(sw1)
+\item 
+\mbox{\Hypertarget{main_8c_a8c2121bb4a318cb9ed0a125e0400fe49}\label{main_8c_a8c2121bb4a318cb9ed0a125e0400fe49}} 
+\#define {\bfseries BUT2\+\_\+\+NODE}~DT\+\_\+\+ALIAS(sw2)
+\item 
+\mbox{\Hypertarget{main_8c_ad88fe5b9d4ddf47b3530bc588d86ce70}\label{main_8c_ad88fe5b9d4ddf47b3530bc588d86ce70}} 
+\#define {\bfseries BUT3\+\_\+\+NODE}~DT\+\_\+\+ALIAS(sw3)
+\item 
+\mbox{\Hypertarget{main_8c_a00978ca9e8220475258dcbbbb7d29129}\label{main_8c_a00978ca9e8220475258dcbbbb7d29129}} 
+\#define {\bfseries ADC\+\_\+\+RESOLUTION}~10
+\item 
+\mbox{\Hypertarget{main_8c_a2bbc7e1578f01928d36ef7fa94ac4905}\label{main_8c_a2bbc7e1578f01928d36ef7fa94ac4905}} 
+\#define {\bfseries ADC\+\_\+\+GAIN}~ADC\+\_\+\+GAIN\+\_\+1\+\_\+4
+\item 
+\mbox{\Hypertarget{main_8c_a317868c528ebe27fbca094a8bc2d910c}\label{main_8c_a317868c528ebe27fbca094a8bc2d910c}} 
+\#define {\bfseries ADC\+\_\+\+REFERENCE}~ADC\+\_\+\+REF\+\_\+\+VDD\+\_\+1\+\_\+4
+\item 
+\mbox{\Hypertarget{main_8c_aeb8de5967ac4465f35317d818eeb129b}\label{main_8c_aeb8de5967ac4465f35317d818eeb129b}} 
+\#define {\bfseries ADC\+\_\+\+ACQUISITION\+\_\+\+TIME}~ADC\+\_\+\+ACQ\+\_\+\+TIME(ADC\+\_\+\+ACQ\+\_\+\+TIME\+\_\+\+MICROSECONDS, 40)
+\item 
+\mbox{\Hypertarget{main_8c_a8bfca74ee546715af6682194ea92286a}\label{main_8c_a8bfca74ee546715af6682194ea92286a}} 
+\#define {\bfseries ADC\+\_\+\+CHANNEL\+\_\+\+ID}~1
+\item 
+\mbox{\Hypertarget{main_8c_a5508ef7e762284248c2e87e16865522e}\label{main_8c_a5508ef7e762284248c2e87e16865522e}} 
+\#define {\bfseries ADC\+\_\+\+CHANNEL\+\_\+\+INPUT}~NRF\+\_\+\+SAADC\+\_\+\+INPUT\+\_\+\+AIN1
+\item 
+\mbox{\Hypertarget{main_8c_a6b20d41d6252e9871430c242cb1a56e7}\label{main_8c_a6b20d41d6252e9871430c242cb1a56e7}} 
+\#define {\bfseries BUFFER\+\_\+\+SIZE}~1
+\item 
+\mbox{\Hypertarget{main_8c_ad18e73e408fd9f8cd35a2312d590351f}\label{main_8c_ad18e73e408fd9f8cd35a2312d590351f}} 
+\#define {\bfseries ADC\+\_\+\+NODE}~DT\+\_\+\+NODELABEL(adc)
+\item 
+\mbox{\Hypertarget{main_8c_ab6426fc74901f4fbec94862ebb672b81}\label{main_8c_ab6426fc74901f4fbec94862ebb672b81}} 
+\#define {\bfseries RX\+\_\+\+TIMEOUT}~1000                 /$\ast$ Inactivity period after the instant when last char was received that triggers an rx event (in us) $\ast$/
+\item 
+\mbox{\Hypertarget{main_8c_a07b40c5bd9acc44f62a9182527dbcc9b}\label{main_8c_a07b40c5bd9acc44f62a9182527dbcc9b}} 
+\#define {\bfseries UART\+\_\+\+NODE}~DT\+\_\+\+NODELABEL(uart0)   /$\ast$ UART0 node ID$\ast$/
+\item 
+\mbox{\Hypertarget{main_8c_a630686ccbe0cb17e592951055a5da582}\label{main_8c_a630686ccbe0cb17e592951055a5da582}} 
+\#define {\bfseries RXBUF\+\_\+\+SIZE}~30
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8c_aa25f5f9092ccf13998f3cb9e9e1d10a6}\label{main_8c_aa25f5f9092ccf13998f3cb9e9e1d10a6}} 
+{\bfseries K\+\_\+\+THREAD\+\_\+\+STACK\+\_\+\+DEFINE} (thread\+\_\+\+A\+\_\+stack, STACK\+\_\+\+SIZE)
+\item 
+\mbox{\Hypertarget{main_8c_a8318aa1ed5939244957a68387085ddec}\label{main_8c_a8318aa1ed5939244957a68387085ddec}} 
+{\bfseries K\+\_\+\+THREAD\+\_\+\+STACK\+\_\+\+DEFINE} (thread\+\_\+\+B\+\_\+stack, STACK\+\_\+\+SIZE)
+\item 
+\mbox{\Hypertarget{main_8c_a331fd55d9b95c3e662a4148fbc522271}\label{main_8c_a331fd55d9b95c3e662a4148fbc522271}} 
+{\bfseries K\+\_\+\+THREAD\+\_\+\+STACK\+\_\+\+DEFINE} (thread\+\_\+\+C\+\_\+stack, STACK\+\_\+\+SIZE)
+\item 
+void \mbox{\hyperlink{main_8c_a61675a61bbec86901b2fe28f008e881c}{thread\+\_\+\+A\+\_\+code}} (void $\ast$argA, void $\ast$argB, void $\ast$argC)
+\begin{DoxyCompactList}\small\item\em Thread A code. Controls LED based on button press and sensor values. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_a99cef2c8673e9c73162dd97f0247ca8e}{thread\+\_\+\+B\+\_\+code}} (void $\ast$argA, void $\ast$argB, void $\ast$argC)
+\begin{DoxyCompactList}\small\item\em Thread B code. Reads ADC value and updates sensor readings. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_a6eec62f04743b40b6d744ecd2f31cdd2}{thread\+\_\+\+C\+\_\+code}} (void $\ast$argA, void $\ast$argB, void $\ast$argC)
+\begin{DoxyCompactList}\small\item\em Thread C code. Prints sensor readings and UART data. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{main_8c_a3db01d479f61f658ccda47b849556de0}\label{main_8c_a3db01d479f61f658ccda47b849556de0}} 
+{\bfseries K\+\_\+\+TIMER\+\_\+\+DEFINE} (thread\+\_\+\+A\+\_\+timer, NULL, NULL)
+\item 
+\mbox{\Hypertarget{main_8c_ab33f6e1880af2514b990bc4e7eb28dd7}\label{main_8c_ab33f6e1880af2514b990bc4e7eb28dd7}} 
+{\bfseries K\+\_\+\+TIMER\+\_\+\+DEFINE} (thread\+\_\+\+B\+\_\+timer, NULL, NULL)
+\item 
+\mbox{\Hypertarget{main_8c_a982600ee34fe86f8983052bf383f28c6}\label{main_8c_a982600ee34fe86f8983052bf383f28c6}} 
+{\bfseries K\+\_\+\+TIMER\+\_\+\+DEFINE} (thread\+\_\+\+C\+\_\+timer, NULL, NULL)
+\item 
+\mbox{\Hypertarget{main_8c_a74679cea285a4b1066c5dafdf31fe61b}\label{main_8c_a74679cea285a4b1066c5dafdf31fe61b}} 
+{\bfseries K\+\_\+\+MUTEX\+\_\+\+DEFINE} (Buttons\+\_\+\+Mutex)
+\item 
+\mbox{\Hypertarget{main_8c_a9d59d1260529cdb5adde3d7a8ef8e7f8}\label{main_8c_a9d59d1260529cdb5adde3d7a8ef8e7f8}} 
+{\bfseries K\+\_\+\+MUTEX\+\_\+\+DEFINE} (Leds\+\_\+\+Mutex)
+\item 
+\mbox{\Hypertarget{main_8c_ac1572bc326c6e148b625bf0174fc05fd}\label{main_8c_ac1572bc326c6e148b625bf0174fc05fd}} 
+{\bfseries K\+\_\+\+MUTEX\+\_\+\+DEFINE} (ADC\+\_\+\+Mutex)
+\item 
+\mbox{\Hypertarget{main_8c_abc46f31516e9f3364fdbe3d5125dc0a2}\label{main_8c_abc46f31516e9f3364fdbe3d5125dc0a2}} 
+{\bfseries K\+\_\+\+MUTEX\+\_\+\+DEFINE} (UART\+\_\+\+Mutex)
+\item 
+\mbox{\Hypertarget{main_8c_a12c2bdb932e16ddf78e1f1245b35c3fb}\label{main_8c_a12c2bdb932e16ddf78e1f1245b35c3fb}} 
+{\bfseries K\+\_\+\+MUTEX\+\_\+\+DEFINE} (Sensores\+\_\+\+Mutex)
+\item 
+int \mbox{\hyperlink{main_8c_a4d85e5a3379fb205d633974f88d1e34e}{Init}} (void)
+\begin{DoxyCompactList}\small\item\em Hardware initialization function. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{main_8c_a6db0865de2e0a56c792bb6f561c21b3d}{Read\+\_\+\+Sensores}} ()
+\begin{DoxyCompactList}\small\item\em Function for reading sensors. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_a6288eba0f8e8ad3ab1544ad731eb7667}{main}} (void)
+\begin{DoxyCompactList}\small\item\em Main function. Initializes hardware and starts threads. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8c_a6d4412666e45fbd3d7bb2e537e3e4921}\label{main_8c_a6d4412666e45fbd3d7bb2e537e3e4921}} 
+struct k\+\_\+thread {\bfseries thread\+\_\+\+A\+\_\+data}
+\item 
+\mbox{\Hypertarget{main_8c_ad832c1a3de4a77b89216efc38eddcb72}\label{main_8c_ad832c1a3de4a77b89216efc38eddcb72}} 
+struct k\+\_\+thread {\bfseries thread\+\_\+\+B\+\_\+data}
+\item 
+\mbox{\Hypertarget{main_8c_a9723f8aa3cfd56015ee57bc31879f8ec}\label{main_8c_a9723f8aa3cfd56015ee57bc31879f8ec}} 
+struct k\+\_\+thread {\bfseries thread\+\_\+\+C\+\_\+data}
+\item 
+\mbox{\Hypertarget{main_8c_aaac68d6bd12397c115c8f5fb8b8dae16}\label{main_8c_aaac68d6bd12397c115c8f5fb8b8dae16}} 
+k\+\_\+tid\+\_\+t {\bfseries thread\+\_\+\+A\+\_\+tid}
+\item 
+\mbox{\Hypertarget{main_8c_af2bd9deb85bd5ac0cdf3a0b077411289}\label{main_8c_af2bd9deb85bd5ac0cdf3a0b077411289}} 
+k\+\_\+tid\+\_\+t {\bfseries thread\+\_\+\+B\+\_\+tid}
+\item 
+\mbox{\Hypertarget{main_8c_a3e9a231be3f7d1a28871ddfdf5ca8fe3}\label{main_8c_a3e9a231be3f7d1a28871ddfdf5ca8fe3}} 
+k\+\_\+tid\+\_\+t {\bfseries thread\+\_\+\+C\+\_\+tid}
+\item 
+\mbox{\Hypertarget{main_8c_a445f79326d40128ece59a749adff6894}\label{main_8c_a445f79326d40128ece59a749adff6894}} 
+const struct device $\ast$ {\bfseries adc\+\_\+dev} = DEVICE\+\_\+\+DT\+\_\+\+GET(ADC\+\_\+\+NODE)
+\item 
+const struct uart\+\_\+config {\bfseries uart\+\_\+cfg}
+\item 
+\mbox{\Hypertarget{main_8c_a660f23134aaae43c9ff2c6096fa59342}\label{main_8c_a660f23134aaae43c9ff2c6096fa59342}} 
+const struct device $\ast$ {\bfseries uart\+\_\+dev} = DEVICE\+\_\+\+DT\+\_\+\+GET(UART\+\_\+\+NODE)
+\item 
+\mbox{\Hypertarget{main_8c_a0e0ff970abe71c59dd1d3334fa840ea6}\label{main_8c_a0e0ff970abe71c59dd1d3334fa840ea6}} 
+bool {\bfseries buffer} = 1
+\item 
+\mbox{\Hypertarget{main_8c_a75cd36b45bb3b3937e1e3087bd3c6aa7}\label{main_8c_a75cd36b45bb3b3937e1e3087bd3c6aa7}} 
+volatile bool {\bfseries Leds\+States} \mbox{[}Num\+\_\+\+Leds\mbox{]} = \{0\}
+\item 
+\mbox{\Hypertarget{main_8c_a51242576e6ef256006fbef3ae4e058a3}\label{main_8c_a51242576e6ef256006fbef3ae4e058a3}} 
+volatile bool {\bfseries Buts\+States} \mbox{[}Num\+\_\+\+Buts\mbox{]} = \{0\}
+\item 
+\mbox{\Hypertarget{main_8c_aaec5bf46e922a0cc7adf9375bcb72537}\label{main_8c_aaec5bf46e922a0cc7adf9375bcb72537}} 
+volatile uint16\+\_\+t {\bfseries ADC\+\_\+\+Raw} = 0
+\item 
+\mbox{\Hypertarget{main_8c_afdbe1b6e7c16b1bd8a0e5ebb1384803f}\label{main_8c_afdbe1b6e7c16b1bd8a0e5ebb1384803f}} 
+volatile uint16\+\_\+t {\bfseries ADC\+\_\+\+Voltage} = 0
+\item 
+\mbox{\Hypertarget{main_8c_abcb1265934cde23438716671c3f81266}\label{main_8c_abcb1265934cde23438716671c3f81266}} 
+volatile uint16\+\_\+t {\bfseries Sensores} \mbox{[}4\mbox{]} = \{0\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A multi-\/threaded application using Zephyr RTOS. 
+
+This application initializes hardware components including LEDs, buttons, ADC, and UART. It creates and manages three threads with different periodicities and priorities.
+\begin{DoxyItemize}
+\item Thread A\+: Reads button states, controls LEDs, and toggles their states.
+\item Thread B\+: Reads ADC values periodically.
+\item Thread C\+: Prints sensor readings and UART data.
+\end{DoxyItemize}
+
+Dependencies\+:
+\begin{DoxyItemize}
+\item Zephyr RTOS
+\item GPIO, ADC, UART drivers
+\item Device\+Tree configuration for hardware components
+\end{DoxyItemize}
+
+Error Codes\+:
+\begin{DoxyItemize}
+\item OK\+: Operation successful
+\item Error\+: Operation failed
+\end{DoxyItemize}
+
+Mutexes\+:
+\begin{DoxyItemize}
+\item Buttons\+\_\+\+Mutex\+: Synchronizes access to button states.
+\item Leds\+\_\+\+Mutex\+: Synchronizes access to LED states.
+\item ADC\+\_\+\+Mutex\+: Synchronizes access to ADC operations.
+\item UART\+\_\+\+Mutex\+: Synchronizes access to UART operations.
+\item Sensores\+\_\+\+Mutex\+: Synchronizes access to sensor readings.
+\end{DoxyItemize}
+
+Timers\+:
+\begin{DoxyItemize}
+\item thread\+\_\+\+A\+\_\+timer\+: Timer for thread A.
+\item thread\+\_\+\+B\+\_\+timer\+: Timer for thread B.
+\item thread\+\_\+\+C\+\_\+timer\+: Timer for thread C.
+\end{DoxyItemize}
+
+Thread Details\+:
+\begin{DoxyItemize}
+\item Thread A\+: Controls LEDs based on button press and sensor values.
+\item Thread B\+: Reads ADC value and updates sensor readings.
+\item Thread C\+: Prints sensor readings and UART data.
+\end{DoxyItemize}
+
+\begin{DoxyAuthor}{Author}
+
+\begin{DoxyItemize}
+\item Pedro Afonso (104206)
+\item Carlos Teixeira (103187)
+\end{DoxyItemize}
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+04/06/2024 
+\end{DoxyDate}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{main_8c_a4d85e5a3379fb205d633974f88d1e34e}\label{main_8c_a4d85e5a3379fb205d633974f88d1e34e}} 
+\index{main.c@{main.c}!Init@{Init}}
+\index{Init@{Init}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{Init()}{Init()}}
+{\footnotesize\ttfamily int Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Hardware initialization function. 
+
+\begin{DoxyReturn}{Returns}
+0 on success, error code otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8c_a6288eba0f8e8ad3ab1544ad731eb7667}\label{main_8c_a6288eba0f8e8ad3ab1544ad731eb7667}} 
+\index{main.c@{main.c}!main@{main}}
+\index{main@{main}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily void main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Main function. Initializes hardware and starts threads. 
+
+\begin{DoxyReturn}{Returns}
+Always returns 0. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8c_a6db0865de2e0a56c792bb6f561c21b3d}\label{main_8c_a6db0865de2e0a56c792bb6f561c21b3d}} 
+\index{main.c@{main.c}!Read\_Sensores@{Read\_Sensores}}
+\index{Read\_Sensores@{Read\_Sensores}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{Read\_Sensores()}{Read\_Sensores()}}
+{\footnotesize\ttfamily int Read\+\_\+\+Sensores (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function for reading sensors. 
+
+\begin{DoxyReturn}{Returns}
+0 on success, error code otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{main_8c_a61675a61bbec86901b2fe28f008e881c}\label{main_8c_a61675a61bbec86901b2fe28f008e881c}} 
+\index{main.c@{main.c}!thread\_A\_code@{thread\_A\_code}}
+\index{thread\_A\_code@{thread\_A\_code}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{thread\_A\_code()}{thread\_A\_code()}}
+{\footnotesize\ttfamily void thread\+\_\+\+A\+\_\+code (\begin{DoxyParamCaption}\item[{void $\ast$}]{argA,  }\item[{void $\ast$}]{argB,  }\item[{void $\ast$}]{argC }\end{DoxyParamCaption})}
+
+
+
+Thread A code. Controls LED based on button press and sensor values. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argA} & Pointer to argument A \\
+\hline
+{\em argB} & Pointer to argument B \\
+\hline
+{\em argC} & Pointer to argument C \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8c_a99cef2c8673e9c73162dd97f0247ca8e}\label{main_8c_a99cef2c8673e9c73162dd97f0247ca8e}} 
+\index{main.c@{main.c}!thread\_B\_code@{thread\_B\_code}}
+\index{thread\_B\_code@{thread\_B\_code}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{thread\_B\_code()}{thread\_B\_code()}}
+{\footnotesize\ttfamily void thread\+\_\+\+B\+\_\+code (\begin{DoxyParamCaption}\item[{void $\ast$}]{argA,  }\item[{void $\ast$}]{argB,  }\item[{void $\ast$}]{argC }\end{DoxyParamCaption})}
+
+
+
+Thread B code. Reads ADC value and updates sensor readings. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argA} & Pointer to argument A \\
+\hline
+{\em argB} & Pointer to argument B \\
+\hline
+{\em argC} & Pointer to argument C \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{main_8c_a6eec62f04743b40b6d744ecd2f31cdd2}\label{main_8c_a6eec62f04743b40b6d744ecd2f31cdd2}} 
+\index{main.c@{main.c}!thread\_C\_code@{thread\_C\_code}}
+\index{thread\_C\_code@{thread\_C\_code}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{thread\_C\_code()}{thread\_C\_code()}}
+{\footnotesize\ttfamily void thread\+\_\+\+C\+\_\+code (\begin{DoxyParamCaption}\item[{void $\ast$}]{argA,  }\item[{void $\ast$}]{argB,  }\item[{void $\ast$}]{argC }\end{DoxyParamCaption})}
+
+
+
+Thread C code. Prints sensor readings and UART data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argA} & Pointer to argument A \\
+\hline
+{\em argB} & Pointer to argument B \\
+\hline
+{\em argC} & Pointer to argument C \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{main_8c_acbbb8dc9e34f2cbd68792504dc18da81}\label{main_8c_acbbb8dc9e34f2cbd68792504dc18da81}} 
+\index{main.c@{main.c}!uart\_cfg@{uart\_cfg}}
+\index{uart\_cfg@{uart\_cfg}!main.c@{main.c}}
+\doxysubsubsection{\texorpdfstring{uart\_cfg}{uart\_cfg}}
+{\footnotesize\ttfamily const struct uart\+\_\+config uart\+\_\+cfg}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{        .baudrate = 115200,}
+\DoxyCodeLine{        .parity = UART\_CFG\_PARITY\_NONE,}
+\DoxyCodeLine{        .stop\_bits = UART\_CFG\_STOP\_BITS\_1,}
+\DoxyCodeLine{        .data\_bits = UART\_CFG\_DATA\_BITS\_8,}
+\DoxyCodeLine{        .flow\_ctrl = UART\_CFG\_FLOW\_CTRL\_NONE}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
