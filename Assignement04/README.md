@@ -39,23 +39,12 @@
  <b>Command Structure:</b>
  Commands should be text-based to allow interaction via a terminal. The emphasis is on structuring the software according to the real-time model, with suitable activation modes and inter-process communication mechanisms.
 
- <b>Development Guidelines:</b>
- - Modular Architecture: Ensure the software is modular, especially to facilitate future transitions from UART to BLE.
- - Documentation and Testing: Properly document the code and include unit tests for key parts.
- - Communication Protocol: Develop a robust protocol for UART communication.
-
  <b>Real-Time Constraints:</b>
  - Asynchronous Operations: External read/write operations are asynchronous with respect to internal real-time periodic tasks.
  - Task Activation and Synchronization: Use suitable activation methods and synchronization protocols for tasks.
 
  <b>Safety Note:</b>
  - Voltage Limits: Ensure the input voltage does not exceed 3V to avoid damaging the devkit. Use the internal power supply for the analog sensor.
-
- <b>Next Steps:</b>
- - Define UART Commands: Create a set of text-based commands for reading inputs, setting outputs, and configuring parameters.
- - Develop Firmware: Implement the UART command processor, RTDB, DIO_Update, and AN_Update modules in the Zephyr RTOS.
- - Test: Ensure proper functionality and real-time performance through unit tests and integration tests.
- - Document: Provide detailed documentation of the code and system architecture.
 
  <b>File Structure:</b>
  - **main.c**: Main program file demonstrating usage of the I/O module and interaction with the hardware.
