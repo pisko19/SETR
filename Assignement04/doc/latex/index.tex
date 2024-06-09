@@ -44,13 +44,6 @@ This project implements a simple Input/\+Output sensor/actuator module using the
 
 {\bfseries{Command Structure\+:}} Commands should be text-\/based to allow interaction via a terminal. The emphasis is on structuring the software according to the real-\/time model, with suitable activation modes and inter-\/process communication mechanisms.
 
-{\bfseries{Development Guidelines\+:}}
-\begin{DoxyItemize}
-\item Modular Architecture\+: Ensure the software is modular, especially to facilitate future transitions from UART to BLE.
-\item Documentation and Testing\+: Properly document the code and include unit tests for key parts.
-\item Communication Protocol\+: Develop a robust protocol for UART communication.
-\end{DoxyItemize}
-
 {\bfseries{Real-\/\+Time Constraints\+:}}
 \begin{DoxyItemize}
 \item Asynchronous Operations\+: External read/write operations are asynchronous with respect to internal real-\/time periodic tasks.
@@ -60,14 +53,6 @@ This project implements a simple Input/\+Output sensor/actuator module using the
 {\bfseries{Safety Note\+:}}
 \begin{DoxyItemize}
 \item Voltage Limits\+: Ensure the input voltage does not exceed 3V to avoid damaging the devkit. Use the internal power supply for the analog sensor.
-\end{DoxyItemize}
-
-{\bfseries{Next Steps\+:}}
-\begin{DoxyItemize}
-\item Define UART Commands\+: Create a set of text-\/based commands for reading inputs, setting outputs, and configuring parameters.
-\item Develop Firmware\+: Implement the UART command processor, RTDB, DIO\+\_\+\+Update, and AN\+\_\+\+Update modules in the Zephyr RTOS.
-\item Test\+: Ensure proper functionality and real-\/time performance through unit tests and integration tests.
-\item Document\+: Provide detailed documentation of the code and system architecture.
 \end{DoxyItemize}
 
 {\bfseries{File Structure\+:}}

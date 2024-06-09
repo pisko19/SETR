@@ -100,23 +100,12 @@ $(function() {
 </li>
 </ul>
 <p><b>Command Structure:</b> Commands should be text-based to allow interaction via a terminal. The emphasis is on structuring the software according to the real-time model, with suitable activation modes and inter-process communication mechanisms.</p>
-<p><b>Development Guidelines:</b></p><ul>
-<li>Modular Architecture: Ensure the software is modular, especially to facilitate future transitions from UART to BLE.</li>
-<li>Documentation and Testing: Properly document the code and include unit tests for key parts.</li>
-<li>Communication Protocol: Develop a robust protocol for UART communication.</li>
-</ul>
 <p><b>Real-Time Constraints:</b></p><ul>
 <li>Asynchronous Operations: External read/write operations are asynchronous with respect to internal real-time periodic tasks.</li>
 <li>Task Activation and Synchronization: Use suitable activation methods and synchronization protocols for tasks.</li>
 </ul>
 <p><b>Safety Note:</b></p><ul>
 <li>Voltage Limits: Ensure the input voltage does not exceed 3V to avoid damaging the devkit. Use the internal power supply for the analog sensor.</li>
-</ul>
-<p><b>Next Steps:</b></p><ul>
-<li>Define UART Commands: Create a set of text-based commands for reading inputs, setting outputs, and configuring parameters.</li>
-<li>Develop Firmware: Implement the UART command processor, RTDB, DIO_Update, and AN_Update modules in the Zephyr RTOS.</li>
-<li>Test: Ensure proper functionality and real-time performance through unit tests and integration tests.</li>
-<li>Document: Provide detailed documentation of the code and system architecture.</li>
 </ul>
 <p><b>File Structure:</b></p><ul>
 <li><b><a class="el" href="main_8c.html" title="A multi-threaded application using Zephyr RTOS.">main.c</a></b>: Main program file demonstrating usage of the I/O module and interaction with the hardware.</li>
